@@ -1,0 +1,1327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sparkstr Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="../img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../img/Logo.png">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+  <!-- FullCalendar Core + Plugins (from CDN) -->
+    <script src="https://kit.fontawesome.com/16576df6c7.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales-all.global.min.js"></script>
+  <!-- Include Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+
+:root {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 14%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 262 80% 74%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 266 34% 54%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 223 47% 20%;
+  --muted-foreground: 215 20.2% 75.1%;
+  --accent: 266 34% 54%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 22.5%;
+  --input: 217.2 32.6% 22.5%;
+  --ring: 263.4 70% 50.4%;
+  --radius: 0.75rem;
+}
+
+/* Base Styles */
+* {
+  border-color: hsl(var(--border));
+}
+
+body, html {
+  overflow-x: hidden !important;
+  width: 100vw !important;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+.bg-background {
+  background-color: hsl(var(--background));
+}
+
+.bg-card {
+  background-color: hsl(var(--card));
+}
+
+.text-card-foreground {
+  color: hsl(var(--card-foreground));
+}
+
+.bg-muted {
+  background-color: hsl(var(--muted));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.border-border {
+  border-color: hsl(var(--border));
+}
+
+.bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+.text-primary {
+  color: hsl(var(--primary));
+}
+
+.text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
+.bg-purple-500 {
+  background-color: #9b87f5;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.hover\:bg-purple-600:hover {
+  background-color: #8a6af4;
+}
+
+.hover\:bg-muted:hover {
+  background-color: hsla(var(--muted), 0.5);
+}
+
+/* Calendar Grid Layouts */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 4rem repeat(7, 1fr);
+}
+
+.calendar-grid-day {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+}
+
+.calendar-grid-month {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: calc(100vh - 12rem);
+}
+
+/* Calendar Event Styling */
+.calendar-event {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.375rem;
+  padding: 0.25rem;
+  font-size: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.calendar-event:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Color Dots for Event Colors */
+.color-dot {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-dot:hover,
+.color-dot.selected {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 40;
+  animation: fade-in 0.2s ease-out;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: hsl(var(--card));
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+  width: 90%;
+  max-width: 28rem;
+  overflow: hidden;
+  animation: fade-in 0.2s ease-out;
+  /* Add for mobile responsiveness */
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 60vh; /* Ensures scroll on desktop */
+}
+
+@media (max-width: 640px) {
+  .modal-container {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    min-width: 0 !important;
+    max-height: 98vh !important;
+    border-radius: 0.25rem;
+    padding: 0;
+  }
+  .modal-body {
+    max-height: 70vh !important;
+    padding: 0.5rem !important;
+  }
+  .modal-header, .modal-footer {
+    padding: 0.5rem !important;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+/* Form Input Fields - Updated with darker background */
+input[type="text"], 
+input[type="time"], 
+select, 
+textarea {
+  background-color: hsl(var(--background)) !important;
+  color: #ffffff !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+  opacity: 0.7;
+}
+
+/* Tab Styling */
+.tab-active {
+  position: relative;
+  color: hsl(var(--primary));
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: hsl(var(--primary));
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.toggle-slider {
+  width: 2.75rem;
+  height: 1.5rem;
+  background-color: #4b5563;
+  border-radius: 9999px;
+  position: relative;
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  background-color: white;
+  border-radius: 9999px;
+  height: 1.25rem;
+  width: 1.25rem;
+  transition: all 0.3s;
+}
+
+input:checked + .toggle-slider {
+  background-color: hsl(var(--primary));
+}
+
+input:checked + .toggle-slider::after {
+  transform: translateX(1.25rem);
+}
+
+/* Toast styling */
+.toast {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 24rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  align-items: center;
+  border-radius: 0.375rem;
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  animation: slideIn 0.2s ease-out;
+}
+
+.toast-success {
+  border-left: 4px solid #10b981;
+}
+
+.toast-error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast-icon {
+  margin-right: 0.75rem;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.toast-description {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.toast-close {
+  margin-left: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Utility Classes */
+.space-y-1 > * + * {
+  margin-top: 0.25rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-x-1 > * + * {
+  margin-left: 0.25rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+.calendar-event {
+  cursor: grab;
+  user-select: none;
+  padding: 4px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.calendar-event:active {
+  cursor: grabbing;
+}
+
+.calendar-event.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+/* Week/Day view specific styles */
+[data-hour] .calendar-event {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: calc(100% - 8px);
+}
+
+.drag-over {
+  background-color: rgba(147, 51, 234, 0.1) !important;
+}
+
+[data-date] {
+  cursor: pointer;
+  position: relative;
+}
+
+[data-date][data-hour] {
+  min-height: 4rem;
+}
+
+[data-date].drag-over {
+  cursor: copy;
+}
+
+/* Time indicator for potential drop */
+[data-hour].drag-over::after {
+  content: attr(data-hour) ':00';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: rgb(147, 51, 234);
+  font-weight: 500;
+}
+#moreEventsPopup {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-width: 90vw;
+}
+
+#moreEventsPopup .calendar-event {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+#moreEventsPopup .calendar-event:hover {
+  filter: brightness(0.95);
+}
+
+.more-events-trigger {
+  transition: color 0.2s;
+}
+
+.more-events-trigger:hover {
+  color: rgb(147, 51, 234);
+}
+/* Add this to your CSS */
+.modal-large {
+  max-width: 800px !important;
+  width: 90vw !important;
+  max-height: 80vh !important;
+}
+
+.modal-large .modal-body {
+  max-height: calc(80vh - 120px);
+  overflow-y: auto;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) rgba(255,255,255,0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+/* Base Template Styles */
+.template {
+  padding: 2rem;
+  color: #e5e7eb;
+  background: rgba(31, 31, 35, 0.6);
+  border-radius: 1rem;
+  backdrop-filter: blur(12px);
+}
+
+/* Template Title */
+.template-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #a78bfa;
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(167, 139, 250, 0.2);
+}
+
+/* Legend and Section Headers */
+legend {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #a78bfa;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  width: 100%;
+}
+
+/* Labels */
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  margin-bottom: 0.5rem;
+}
+
+/* Textareas and Inputs */
+.custom-textarea,
+.custom-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.custom-textarea:focus,
+.custom-input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Checkbox Groups */
+.subcategory-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.subcategory {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.subcategory:hover {
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.subcategory input[type="checkbox"] {
+  display: none;
+}
+
+.subcategory input[type="checkbox"]:checked + span {
+  color: #a78bfa;
+}
+
+/* Circle Checkboxes */
+.circle-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.icon-circle {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.icon-circle i {
+  font-size: 1.25rem;
+  color: #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.circle-checkbox input[type="checkbox"]:checked ~ .icon-circle {
+  background: #a78bfa;
+  border-color: #a78bfa;
+}
+
+.circle-checkbox input[type="checkbox"]:checked ~ .icon-circle i {
+  color: #1f1f23;
+}
+
+/* Counter Styles */
+.counter-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.counter-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.counter-btn:hover {
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.counter {
+  width: 4rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #e5e7eb;
+  padding: 0.5rem;
+}
+
+/* File Upload Area */
+.upload-container {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.upload-box,
+.url-box {
+  flex: 1;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(167, 139, 250, 0.3);
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.upload-box:hover,
+.url-box:hover {
+  background: rgba(167, 139, 250, 0.1);
+}
+
+.upload-icon {
+  font-size: 2rem;
+  color: #a78bfa;
+  margin-bottom: 1rem;
+}
+
+.upload-button {
+  padding: 0.5rem 1rem;
+  background: #a78bfa;
+  color: #1f1f23;
+  border-radius: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+  background: #9461fb;
+}
+
+/* Disabled States */
+.upload-button:disabled,
+.counter-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Scrollbar Styling */
+.template {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(167, 139, 250, 0.3) rgba(255, 255, 255, 0.05);
+}
+
+.template::-webkit-scrollbar {
+  width: 8px;
+}
+
+.template::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.template::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.3);
+  border-radius: 4px;
+}
+/* Add these styles for URL container */
+.url-area {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.url-display {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.display-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 30px); /* 30px accounts for the delete button */
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .url-area {
+    width: 100%;
+    min-width: 0;
+  }
+  
+  .url-display {
+    font-size: 14px;
+  }
+}
+#recurrenceCount{
+  background-color: hsl(var(--background)) !important
+}
+#recurrenceUntil{
+  background-color:hsl(var(--background)) !important
+}
+/* Desktop: calendar fits viewport minus collapsed sidebar width */
+@media (min-width: 768px) {
+  #root {
+    width: calc(100vw - 79px) !important;
+    margin-left: 79px !important;
+    transition: margin-left 0.3s, width 0.3s;
+    overflow-x: hidden !important;
+  }
+  /* When sidebar overlays, don't change calendar width */
+  .sidebar-expanded ~ #root {
+    margin-left: 79px !important;
+    width: calc(100vw - 79px) !important;
+  }
+}
+
+/* Mobile: calendar takes full width, sidebar hidden */
+@media (max-width: 767px) {
+  #root {
+    width: 100vw !important;
+    margin-left: 0 !important;
+    overflow-x: hidden !important;
+  }
+  .sidebar-collapsed,
+  .sidebar-expanded {
+    display: none !important;
+  }
+  #mobileSidebarHamburger {
+    display: block !important;
+  }
+}
+/* Hide sidebar and its content on mobile */
+@media (max-width: 767px) {
+  .sidebar-expanded,
+  .sidebar-collapsed,
+  [data-sidebar],
+  .sidebar-nav,
+  .sidebar-header,
+  .sidebar-footer {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) {
+  h1 {
+    margin-left: 44px !important; /* Space for hamburger */
+    transition: margin-left 0.2s;
+  }
+}
+
+
+/* Add to your existing CSS section */
+
+.markdown-content {
+  color: inherit;
+  line-height: 1.6;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-content h1 { font-size: 1.5em; }
+.markdown-content h2 { font-size: 1.25em; }
+.markdown-content h3 { font-size: 1.125em; }
+.markdown-content h4 { font-size: 1em; }
+
+.markdown-content p {
+  margin-bottom: 1em;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25em;
+}
+
+.markdown-content code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1em;
+  border-radius: 0.5em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+}
+
+.markdown-content a {
+  color: #9b87f5;
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  color: #b297f4;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5em;
+}
+
+.markdown-content th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+@media (max-width: 767px) {
+  .calendar-event {
+    font-size: 1em !important;
+    padding: 6px !important;
+    margin-bottom: 4px !important;
+    border-radius: 8px !important;
+  }
+  .calendar-grid-month .min-h-\[8rem\] {
+    min-height: 5rem !important;
+  }
+  .mobile-add-event-btn {
+    display: flex !important;
+  }
+}
+
+.fc .fc-daygrid-day-frame {
+  height: auto !important;
+  min-height: 60px;
+  box-sizing: border-box;
+  transition: height 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .fc .fc-daygrid-day-frame {
+    min-height: 44px;
+  }
+}
+
+/* Make view buttons scrollable on mobile */
+@media (max-width: 500px) {
+  .calendar-container .border {
+    max-width: 300px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none;
+  }
+  .calendar-container .border::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Force modal card background / foreground to the theme variables */
+.modal-container {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+}
+
+/* Inputs inside modals should respect the theme too */
+.modal-container input,
+.modal-container textarea,
+.modal-container select{
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Ensure color-dot keeps its inline background-color */
+.color-dot {
+  border: 2px solid rgba(255,255,255,0.12);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+}
+.month-fixed-grid > .grid.grid-cols-7 {
+  border-bottom: 1px solid hsl(var(--border));
+  background-clip: padding-box;
+  position: relative;
+  z-index: 1;
+}
+.month-fixed-grid > .grid.grid-cols-7 > div {
+  border-right: 1px solid hsl(var(--border));
+  background-clip: padding-box;
+  position: relative;
+  z-index: 2;
+}
+select, select:focus, select:active {
+      background-color: #23232b !important;
+      color: #fff !important;
+      border: 1px solid #444 !important;
+    }
+    /* Markdown styling for event description */
+.markdown-description {
+  color: #e5e7eb;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  background: rgba(51,65,85,0.13);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.markdown-description h1, .markdown-description h2, .markdown-description h3 {
+  color: #a78bfa;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+.markdown-description ul, .markdown-description ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+.markdown-description p {
+  margin-bottom: 0.8em;
+}
+.markdown-description a {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+<script>
+  window.md = window.markdownit();
+</script>
+ <!-- PDF.js -->
+  <script
+    src="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.min.js"
+    crossorigin="anonymous">
+  </script>
+  <script>
+    // 👉 Tell PDF.js where to find its worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
+  </script>
+
+
+<!-- JSZip for reading .docx (ZIP) in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css">
+<script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+
+<!-- Change these lines in your <head> section -->
+<link rel="manifest" href="../manifest.webmanifest">
+<script src="../pwa.js" defer></script>
+
+</head>
+   <body class="bg-[#1A1A2E] text-white">
+    <div id="root" class="h-screen w-screen flex flex-col bg-background overflow-hidden">
+<header class="border-b border-border py-4 flex-shrink-0">
+  <div class="container mx-auto px-4 md:px-6">
+    <!-- Only ONE hamburger button! -->
+    <button id="mobileSidebarHamburger" class="md:hidden p-1 rounded bg-muted" style="position: absolute; left: 12px; top: 22px; z-index: 1;">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <line x1="4" y1="12" x2="20" y2="12"/>
+    <line x1="4" y1="18" x2="20" y2="18"/>
+  </svg>
+</button>
+    <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
+      Sparkstr Calendar
+    </h1>
+  </div>
+</header>
+      
+      <main class="flex-grow overflow-hidden w-full h-full">
+        <div class="w-full h-full">
+          <div class="calendar-container flex flex-col w-full h-full">
+            <!-- Calendar Header -->
+            <div class="flex items-center justify-between mb-4 px-4">
+              <div class="flex items-center gap-2">
+                <button 
+                  id="prevPeriodBtn"
+                  class="p-2 rounded-md hover:bg-muted transition-colors"
+                  aria-label="Previous period"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                
+                <h2 id="calendarTitle" class="text-xl font-bold">
+                  <!-- Calendar title will be inserted here -->
+                </h2>
+                
+                <button 
+                  id="nextPeriodBtn"
+                  class="p-2 rounded-md hover:bg-muted transition-colors"
+                  aria-label="Next period"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+                
+                <button
+                  id="todayBtn"
+                  class="ml-4 p-2 rounded-md hover:bg-muted transition-colors"
+                  aria-label="Today"
+                >
+                  <span class="text-sm font-medium">Today</span>
+                </button>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <div class="border border-border rounded-md overflow-x-auto flex px-2 max-w-[300px] md:max-w-none" style="scrollbar-width: none;">
+  <button id="monthViewBtn" class="px-3 py-1.5 text-sm bg-purple-500 text-white">Month</button>
+  <button id="weekViewBtn" class="px-3 py-1.5 text-sm hover:bg-muted">Week</button>
+  <button id="dayViewBtn" class="px-3 py-1.5 text-sm hover:bg-muted">Day</button>
+</div>
+              </div>
+            </div>
+            <div id="calendarLoader" class="fixed inset-0 flex items-center justify-center bg-[#1a1a2e]/80 z-50" style="display:none;">
+  <div class="flex flex-col items-center gap-4">
+    <div class="animate-spin rounded-full h-14 w-14 border-t-4 border-purple-400 border-opacity-60"></div>
+    <div class="text-lg font-semibold text-purple-300 drop-shadow">Loading calendar...</div>
+  </div>
+</div>
+            <!-- Calendar Views Container -->
+            <div id="calendarViewsContainer" class="overflow-auto h-[calc(100vh-12rem)]">
+              <!-- Calendar views will be inserted here -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Event Modal Template -->
+    <div id="taskModal" class="modal hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-container">
+        <div class="modal-header">
+          <div class="flex items-center">
+            <button 
+              id="modalBackBtn" 
+              class="mr-2 p-1 rounded-full hover:bg-muted transition-colors"
+              onclick="console.log('inline click!')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            
+            <h2 id="modalTitle" class="text-lg font-semibold">
+              Choose Task Type
+            </h2>
+          </div>
+        </div>
+        
+        <div id="modalBody" class="modal-body">
+          <!-- Modal content will be inserted here -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Event Details Modal Template -->
+    <div id="eventDetailsModal" class="modal hidden">
+      <div class="modal-overlay"></div>
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2 id="eventTitle" class="text-lg font-semibold">Event Title</h2>
+          <div class="flex items-center space-x-1">
+            <button 
+              id="editEventBtn"
+              class="p-1.5 rounded-md hover:bg-muted transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            </button>
+            
+            <button 
+              id="deleteEventBtn"
+              class="p-1.5 rounded-md hover:bg-muted transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            </button>
+            
+            <button 
+              id="closeEventDetailsBtn"
+              class="p-1.5 rounded-md hover:bg-muted transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="border-b border-border">
+          <div class="flex px-4">
+            <button 
+              id="detailsTab"
+              class="px-4 py-3 border-b-2 border-purple-500 text-purple-500 text-sm font-medium"
+            >
+              Details
+            </button>
+            
+            <button 
+              id="aiTab" 
+              class="px-4 py-3 border-b-2 border-transparent hover:border-border text-sm font-medium hidden"
+            >
+              AI Response
+            </button>
+          </div>
+        </div>
+        
+        <div id="eventDetailsContent" class="modal-body">
+          <!-- Event details will be inserted here -->
+        </div>
+        
+        <div class="modal-footer">
+          <button 
+            id="closeEventDetailsFooterBtn"
+            class="px-4 py-2 rounded-md"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50"></div>
+
+  <script src="Calendar.js" type="module"></script>
+  <script type='module' src="../tutorial.js"></script>
+
+<script type="module">
+  import { createSidebar } from '../sidebar.js';
+  window.sidebarAPI = createSidebar();
+  function isMobile() {
+    return window.innerWidth < 768;
+  }
+
+  let sidebarAPI = null;
+  let sidebarContainer = null;
+
+  function setupDesktopSidebar() {
+    if (!isMobile()) {
+      // Always show sidebar on desktop
+      if (!sidebarAPI) {
+        sidebarAPI = createSidebar();
+        sidebarContainer = sidebarAPI.getElement();
+        document.body.appendChild(sidebarContainer);
+      }
+      // Hide hamburger on desktop
+      const hamburger = document.getElementById('mobileSidebarHamburger');
+      if (hamburger) hamburger.style.display = 'none';
+    }
+  }
+
+  function showMobileSidebar() {
+    if (isMobile()) {
+      if (!sidebarAPI) {
+        import('../sidebar.js').then(({ createSidebar }) => {
+          sidebarAPI = createSidebar();
+          sidebarContainer = sidebarAPI.getElement();
+          document.body.appendChild(sidebarContainer);
+
+          // Observe sidebar close (X)
+          const observer = new MutationObserver(() => {
+            if (!sidebarAPI.isOpen()) {
+              if (sidebarContainer && sidebarContainer.parentNode) {
+                sidebarContainer.parentNode.removeChild(sidebarContainer);
+              }
+              sidebarAPI = null;
+              sidebarContainer = null;
+              observer.disconnect();
+            }
+          });
+          observer.observe(sidebarContainer, { childList: true, subtree: true });
+          sidebarAPI.toggle(); // Open sidebar
+        });
+      } else {
+        sidebarAPI.toggle();
+      }
+    }
+  }
+
+  // Hamburger click handler
+  document.getElementById('mobileSidebarHamburger').addEventListener('click', () => {
+    if (isMobile()) {
+      showMobileSidebar();
+      console.log('Mobile: Sidebar should open');
+    } else {
+      console.log('Desktop: Hamburger does nothing');
+    }
+  });
+
+  // On load and resize, setup sidebar for desktop
+  window.addEventListener('resize', setupDesktopSidebar);
+  setupDesktopSidebar();
+</script>
+
+</body>
+</html>
+
+
+
