@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing – Sparkstr</title>
+  <link rel="icon" href="./img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/Logo.png">
+  <meta name="description" content="Sparkstr pricing: Compare affordable plans for AI-powered productivity, calendar management, document editing, and chat. Choose Free, Basic, or Pro. Flexible monthly subscriptions in GBP, EUR, or USD. See features, limits, and select the best plan for your workflow.">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+  <style>
+    :root {
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --gold: #fbbf24;
+      --gray-bg: #f9fafb;
+      --text: #111827;
+      --tick-color: #7c3aed;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 3rem 1rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--purple), var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p {
+      color: #6b7280;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .pricing-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .plan {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 650px;
+      position: relative;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .plan.expanded {
+      z-index: 2;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+      height: auto;
+    }
+    .plan .details {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: flex-start;
+      height: 100%;
+    }
+    .plan .details-buttons {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .plan:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+
+    .plan.recommended {
+      border: 2px solid var(--purple);
+      background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+    }
+
+    .plan h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+    .plan .price {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+    .plan .summary {
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+    .plan .details, .plan .limits {
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .plan .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .plan.free .badge { background: white; color: #111; border: 1px solid #111; }
+    .plan.basic .badge { background: var(--purple-light); color: white; }
+    .plan.pro .badge { background: var(--gold); color: #78350f; }
+
+    ul {
+      margin: 0.5rem 0 1rem 1rem;
+      padding: 0;
+      list-style: none; /* Add this line */
+    }
+    ul li {
+      margin: 0.3rem 0;
+      position: relative;
+      padding-left: 1.5rem;
+      list-style-type: none; /* Add this line */
+    }
+    ul li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: var(--tick-color);
+    }
+
+    .plan button {
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 0.5rem;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--purple), var(--purple-light));
+      color: white;
+    }
+    .btn-secondary {
+      background: #f3f4f6;
+      color: var(--purple);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 1rem 0 0 1rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(90deg, #7c3aed, #a855f7);
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(124,58,237,0.12);
+      transition: background 0.2s;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .back-btn:hover {
+      background: linear-gradient(90deg, #a855f7, #7c3aed);
+    }
+
+    @media (max-width: 600px) {
+      .back-btn {
+        width: 90vw;
+        margin: 1rem auto 0 auto;
+        display: block;
+        text-align: center;
+        font-size: 1rem;
+        padding: 0.9rem 0;
+      }
+    }
+    .currency-note {
+  font-size: 0.8rem;
+  color: var(--purple);
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.currency-note::before {
+  content: "*";
+  color: var(--purple);
+  margin-right: 0.2rem;
+}
+/* Page wrapper - give the pricing area breathing room */
+.pricing-page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;          /* center on large screens */
+  padding: 32px 28px;      /* away from edges */
+  box-sizing: border-box;
+}
+
+/* Currency selector wrapper - nicer placement and styling */
+.currency-selector-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Label */
+.currency-selector-wrapper .currency-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Fancy select styling */
+#currency-selector-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 10px 42px 10px 14px;  /* leave space for custom arrow */
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,0.08);
+  background: #ffffff;
+  box-shadow: 0 4px 18px rgba(2,6,23,0.06);
+  font-weight: 600;
+  min-width: 170px;
+  cursor: pointer;
+  position: relative;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #111 50%),
+    linear-gradient(135deg, #111 50%, transparent 50%);
+  background-position: calc(100% - 18px) 45%, calc(100% - 12px) 45%;
+  background-size: 8px 8px, 8px 8px;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* hover/focus */
+#currency-selector-select:focus {
+  outline: none;
+  border-color: rgba(59,130,246,0.9);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.12);
+}
+
+/* Make sure the currency note also sits nicely */
+.currency-note {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+/* Slight card tweak so recommended card feels premium */
+.plan.recommended {
+  transform: translateY(-6px);
+  transition: transform .18s ease;
+}
+
+/* Responsive: center selector on mobile */
+@media (max-width: 900px) {
+  .pricing-page-wrapper { padding: 20px 14px; }
+  .currency-selector-wrapper { justify-content: center; margin-bottom: 12px; }
+}
+
+  </style>
+</head>
+<body>
+<header style="display:flex; align-items:center; justify-content:center; gap:1rem;">
+  <a href="index.html" class="back-btn">← Back to Home</a>
+  <h1 style="margin:0;">Choose Your Plan</h1>
+</header>
+<p style="text-align: center; font-size: 1.2rem; margin: 1rem 0;">
+  <span style="background: linear-gradient(120deg, rgba(124,58,237,0.1) 0%, rgba(168,85,247,0.15) 100%); padding: 0.2em 0.4em; border-radius: 4px;">Sparkstr</span> • Simple pricing that scales with you
+</p>
+<!-- Insert the currency selector block right here (before your pricing container) -->
+<div class="currency-selector-wrapper">
+  <label for="currency-selector-select" class="currency-label">Currency:</label>
+  <select id="currency-selector-select" aria-label="Select currency">
+    <option value="AUTO">Auto-detect</option>
+    <option value="GBP">£ — GBP</option>
+    <option value="EUR">€ — EUR</option>
+    <option value="USD">$ — USD</option>
+  </select>
+</div>
+<main class="pricing-container" id="pricing-container"></main>
+
+
+<script type="module">
+import { PLAN_LIMITS } from './backend/planLimits.js';
+
+/* ============================
+   Plan descriptions & limits
+   (kept from your original file)
+   ============================ */
+const PLAN_DESCRIPTIONS = {
+  free: {
+    summary: "Great for users starting off. Access all main features (Calendar, Doc Live, Just Chat) but with restrictions, perfect for testing.",
+    details: `
+      <div>
+        <span class="badge">Calendar & Events</span>
+        <span class="badge">Nano AI Chat</span>
+        <span class="badge">All features available</span>
+      </div>
+      <ul>
+        <li>Ideal for personal use & testing</li>
+        <li>Upgrade to unlock more AI power, uploads, and context</li>
+      </ul>
+    `
+  },
+  basic: {
+    summary: "Detailed plan for light use. More events, uploads, and smarter AI access.",
+    details: `
+      <div>
+        <span class="badge">File & image uploads</span>
+        <span class="badge">Attach context</span>
+        <span class="badge">GPT 4.1 mini</span>
+        <span class="badge">Attach more context</span>
+        <span class="badge">Generate more plans</span>
+      </div>
+      <ul>
+        <li>All Free features, plus:</li>
+        <li>Upload files, images, and attach context to plans</li>
+        <li>Smarter AI (Mini) for chats</li>
+        <li>Connect responses from the Response Centre in Doc Live for the ultimate writing experience</li>
+      </ul>
+    `
+  },
+  pro: {
+    summary: "All features unlocked. Heavy use, full AI models, max uploads & Doc Live access.",
+    details: `
+      <div>
+        <span class="badge">GPT-4.1 available</span>
+        <span class="badge">Priority Support</span>
+        <span class="badge">Early access to features</span>
+        <span class="badge">All chat & focus models</span>
+        <span class="badge">More file/url uploads</span>
+        <span class="badge">Significantly Increased rates</span>
+      </div>
+      <ul>
+        <li>Everything in Basic, plus:</li>
+        <li>Early access to new features</li>
+        <li>Priority support</li>
+      </ul>
+    `
+  }
+};
+
+const LIMIT_LABELS = {
+  responsesGeneratedPerDay: "AI-enabled simple events per day",
+  complexEventsPerDay: "Complex events per day",
+  complexEventsWithAttachmentPerDay: "Complex events with attachments per day",
+  justChatNanoPerDay: "Nano AI chat messages",
+  justChatMiniPerDay: "Mini AI chat messages",
+  justChatFullPerDay: "Full AI chat messages",
+  justChatFileAndUrlPerDay: "Chat with files/links per day",
+  justChatEventModePerDay: "Just Chat Event Mode per day",
+  focusNanoPerDay: "Nano Focus sessions",
+  focusMiniPerDay: "Mini Focus sessions",
+  focusFullPerDay: "Full Focus sessions",
+  focusFileAndUrlPerDay: "Focus with files/links per day",
+  smartPlanContextAttachPerDay: "Attach context to plans per day",
+  docLiveNanoPerDay: "Doc Live (Nano) per day",
+  docLiveMiniPerDay: "Doc Live (Mini) per day",
+  docLiveFullPerDay: "Doc Live (Full) per day",
+  docFileAndUrlPerDay: "Doc Live with files/links per day",
+  docContextAttachPerDay: "Attach context to Doc Live per day",
+  docActionClickPerDay: "Doc Live action clicks per day",
+  smartPlanGenPerDay: "Smart plan generations per day",
+  smartPlanUpdatePerDay: "Smart plan updates per day",
+};
+
+const LIMIT_SECTIONS = [
+  { title: "Calendar", keys: ["responsesGeneratedPerDay","complexEventsPerDay","complexEventsWithAttachmentPerDay"] },
+  { title: "Responses", keys: ["smartPlanGenPerDay","smartPlanUpdatePerDay"] },
+  { title: "Focus Mode", keys: ["focusNanoPerDay","focusMiniPerDay","focusFullPerDay","focusFileAndUrlPerDay","smartPlanContextAttachPerDay"] },
+  { title: "Just Chat", keys: ["justChatNanoPerDay","justChatMiniPerDay","justChatFullPerDay","justChatFileAndUrlPerDay","justChatEventModePerDay"] },
+  { title: "Doc Live", keys: ["docLiveNanoPerDay","docLiveMiniPerDay","docLiveFullPerDay","docFileAndUrlPerDay","docContextAttachPerDay","docActionClickPerDay"] }
+];
+
+/* ============================
+   Pricing / currency settings
+   ============================ */
+/* Base amounts are in GBP (your canonical price amounts) */
+const PRICE_MAP = {
+  basic: {
+    GBP: { amount: 2.49, label: "£2.49" },
+    EUR: { amount: 2.99, label: "€2.89" },
+    USD: { amount: 3.49, label: "$3.29" }
+  },
+  pro: {
+    GBP: { amount: 4.99, label: "£4.99" },
+    EUR: { amount: 5.99, label: "€5.49" },
+    USD: { amount: 6.79, label: "$6.79" }
+  }
+};
+
+/* Storage keys (used by pricing page and read by signup.js) */
+const LS_KEYS = {
+  selectedPlan: 'selectedPlan',               // plan key (free/basic/pro)
+  selectedCurrency: 'selectedCurrency',       // final currency used (GBP/EUR/USD)
+  currencySource: 'selectedCurrencySource',   // 'auto' or 'manual'
+  selectedPriceAmount: 'selectedPriceAmount', // numeric amount (string)
+  preferredCurrency: 'preferredCurrency'      // manual preference (if user picks it)
+};
+
+/* Simple locale -> currency detection (cheap & private): navigator.language */
+function detectCurrency() {
+  try {
+    const locale = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+    const lower = locale.toLowerCase();
+
+    // UK and Ireland
+    if (lower.startsWith("en-gb") || lower.includes("uk") || lower === "gb" || lower.includes("ie")) {
+      return "GBP";
+    }
+
+    // Expanded Euro zone countries
+    const euroCountries = [
+      "de", "fr", "es", "it", "nl", "be", "pt", "ie", "gr", "at", 
+      "fi", "se", "dk", "pl", "cz", "ro", "hu", "bg", "hr", "lv", 
+      "lt", "ee", "sk", "si", "mt", "cy", "lu", "mc", "sm", "va"
+    ];
+    for (const country of euroCountries) {
+      if (lower.startsWith(country)) return "EUR";
+    }
+
+    // Fallback to trying to get user's timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone) {
+      if (timezone.startsWith("Europe/London")) return "GBP";
+      if (timezone.startsWith("Europe/")) return "EUR";
+    }
+
+    // Default to USD for all other cases
+    return "USD";
+  } catch {
+    return "USD";
+  }
+}
+function convertFromGBP(gbpAmount, targetCurrency) {
+  const rate = FIXED_RATES[targetCurrency] ?? FIXED_RATES.USD;
+  return +(gbpAmount * rate); // return number
+}
+
+function formatCurrency(amount, currency) {
+  try {
+    return new Intl.NumberFormat(undefined, { style: 'currency', currency, maximumFractionDigits: 2 }).format(amount);
+  } catch (e) {
+    return `${currency} ${Number(amount).toFixed(2)}`;
+  }
+}
+
+/* ============================
+   DOM references
+   ============================ */
+const container = document.getElementById('pricing-container');
+if (!container) {
+  console.error('pricing: #pricing-container not found. Make sure this script runs after the container element exists.');
+}
+
+/* Currency selector element id (we will inject behavior)
+   The HTML for the selector should be placed right BEFORE the #pricing-container (see instructions below). */
+const CURRENCY_SELECTOR_ID = 'currency-selector-select';
+
+/* ============================
+   Rendering functions (main)
+   ============================ */
+
+function getEffectiveCurrency() {
+  // 1. Manual override
+  const manual = localStorage.getItem(LS_KEYS.preferredCurrency);
+  if (manual && PRICE_MAP.basic[manual]) return { currency: manual, source: 'manual' };
+  // 2. Robust autodetect
+  const detected = detectCurrency();
+  if (PRICE_MAP.basic[detected]) return { currency: detected, source: 'auto' };
+  // 3. Fallback
+  return { currency: 'USD', source: 'auto' };
+}
+
+function savePlanSelectionAndRedirect(planKey, currency, source, amount) {
+  localStorage.setItem(LS_KEYS.selectedPlan, planKey);
+  localStorage.setItem(LS_KEYS.selectedCurrency, currency);
+  localStorage.setItem(LS_KEYS.currencySource, source);
+  // store numeric string for convenience (signup.js can parseFloat)
+  localStorage.setItem(LS_KEYS.selectedPriceAmount, Number(amount).toFixed(2));
+  // redirect to signup
+  window.location.href = './Login/signup.html';
+}
+
+/* Build the UI for each plan and attach event handlers.
+   This preserves your original expand/limits logic, only changing price formatting & storage when plan selected.
+*/
+function renderPlans() {
+  container.innerHTML = '';
+  const isMobile = window.innerWidth < 900;
+  const { currency: effectiveCurrency } = getEffectiveCurrency();
+
+  Object.entries(PLAN_LIMITS).forEach(([planKey, plan]) => {
+    const card = document.createElement('div');
+    card.className = `plan ${planKey} ${planKey === 'basic' ? 'recommended' : ''}`;
+
+    // compute price label
+    let priceLabel = 'Free';
+    let priceAmount = 0;
+    if (planKey !== 'free') {
+      const priceObj = PRICE_MAP[planKey][effectiveCurrency] || { amount: 0, label: 'N/A' };
+      priceLabel = `${priceObj.label}/mo`;
+      priceAmount = priceObj.amount;
+    }
+
+    card.innerHTML = `
+      <h2>${planKey === 'free' ? 'Starter' : plan.planName} ${planKey === 'basic' ? '<span class="badge">Recommended</span>' : ''}</h2>
+      <p class="price">${priceLabel}</p>
+      <p class="summary">${PLAN_DESCRIPTIONS[planKey].summary}</p>
+      <div class="details">
+        <div style="margin-bottom:1rem;">${PLAN_DESCRIPTIONS[planKey].details}</div>
+        <div class="details-buttons">
+          <button class="btn-secondary view-limits">View Limits</button>
+          <button class="btn-primary plan-action-btn">${planKey === 'free' ? 'Get Started' : 'Select'}</button>
+        </div>
+      </div>
+      <div class="limits"></div>
+    `;
+    container.appendChild(card);
+
+    const details = card.querySelector('.details');
+    const limits = card.querySelector('.limits');
+    if (isMobile) {
+      details.style.display = 'none';
+      card.addEventListener('click', e => {
+        if (e.target.tagName.toLowerCase() === 'button') return;
+        toggleExpand(card);
+      });
+    } else {
+      details.style.display = 'flex';
+    }
+
+    card.querySelector('.view-limits').addEventListener('click', e => {
+      e.stopPropagation();
+      renderLimits(card, planKey, plan);
+      card.classList.add('expanded');
+    });
+
+    card.querySelector('.plan-action-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const { currency, source } = getEffectiveCurrency();
+      const priceObj = PRICE_MAP[planKey][currency] || { amount: 0 };
+      savePlanSelectionAndRedirect(planKey, currency, source, priceObj.amount);
+    });
+  });
+
+  // ensure currency selector reflects effective currency
+  syncCurrencySelectorUI();
+}
+
+/* Keep your existing functions for expand & limits but unchanged except using our formatting */
+function toggleExpand(card) {
+  const details = card.querySelector('.details');
+  const limits = card.querySelector('.limits');
+  const open = details.style.display === 'block';
+  details.style.display = open ? 'none' : 'block';
+  if (open) {
+    limits.style.display = 'none';
+    card.classList.remove('expanded');
+  }
+}
+
+function renderLimits(card, planKey, plan) {
+  const limitsDiv = card.querySelector('.limits');
+  let html = '';
+  LIMIT_SECTIONS.forEach(section => {
+    const rows = section.keys.filter(k => plan[k] > 0).map(k => `<li>${LIMIT_LABELS[k]}: <b>${plan[k]}</b></li>`).join('');
+    if (rows) html += `<h4>${section.title}</h4><ul>${rows}</ul>`;
+  });
+  limitsDiv.innerHTML = `
+    <div style="flex:1"></div>
+    <div class="details-buttons" style="margin-top:auto;display:flex;flex-direction:column;gap:0.5rem;">
+      <button class="btn-secondary back-limits">Back</button>
+      <button class="btn-primary plan-action-btn">${planKey === 'free' ? 'Get Started' : 'Select'}</button>
+    </div>
+    ${html}
+  `;
+  limitsDiv.style.display = 'flex';
+  limitsDiv.style.flexDirection = 'column';
+  card.querySelector('.details').style.display = 'none';
+  limitsDiv.querySelector('.back-limits').addEventListener('click', e => {
+    e.stopPropagation();
+    limitsDiv.style.display = 'none';
+    card.querySelector('.details').style.display = 'flex';
+    card.classList.remove('expanded');
+  });
+  limitsDiv.querySelector('.plan-action-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    const { currency, source } = getEffectiveCurrency();
+    const priceObj = PRICE_MAP[planKey][currency] || { amount: 0 };
+    savePlanSelectionAndRedirect(planKey, currency, source, priceObj.amount);
+  });
+}
+
+/* ============================
+   Currency selector behavior
+   ============================ */
+
+/* Call this on load to create the selector listeners.
+   Note: The HTML for the selector should exist in the page with:
+     <select id="currency-selector-select"> ... </select>
+   (see instructions below where to paste)
+*/
+function initCurrencySelector() {
+  const select = document.getElementById(CURRENCY_SELECTOR_ID);
+  if (!select) return;
+
+  // Only allow valid currencies
+  const validCurrencies = Object.keys(PRICE_MAP.basic);
+  Array.from(select.options).forEach(opt => {
+    if (opt.value !== "AUTO" && !validCurrencies.includes(opt.value)) {
+      opt.disabled = true;
+    }
+  });
+
+  const { currency: effectiveCurrency } = getEffectiveCurrency();
+  select.value = localStorage.getItem(LS_KEYS.preferredCurrency) || effectiveCurrency;
+
+  select.addEventListener('change', (e) => {
+    const val = e.target.value;
+    if (!val || val === 'AUTO') {
+      localStorage.removeItem(LS_KEYS.preferredCurrency);
+    } else if (validCurrencies.includes(val)) {
+      localStorage.setItem(LS_KEYS.preferredCurrency, val);
+    }
+    renderPlans();
+  });
+}
+
+/* Make sure the selector UI shows the right value */
+function syncCurrencySelectorUI() {
+  const select = document.getElementById(CURRENCY_SELECTOR_ID);
+  if (!select) return;
+  const manual = localStorage.getItem(LS_KEYS.preferredCurrency);
+  if (manual) select.value = manual;
+  else {
+    const { currency } = getEffectiveCurrency();
+    select.value = currency;
+  }
+}
+
+/* ============================
+   Init
+   ============================ */
+(function init() {
+  // ensure global PLAN_DESCRIPTIONS is available like previous code expected
+  window.PLAN_DESCRIPTIONS = PLAN_DESCRIPTIONS;
+
+  // initialize currency selector listeners (it must exist in DOM before this runs)
+  initCurrencySelector();
+
+  // render plans
+  renderPlans();
+
+  // respond to window resize (keeps your mobile/desktop logic)
+  window.addEventListener('resize', () => {
+    renderPlans();
+  });
+})();
+</script>
+
+</body>
+</html>

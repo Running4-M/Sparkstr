@@ -1,0 +1,3963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparkstr - AI-Powered Productivity Calendar</title>
+    <meta name="description" content="Transform your calendar into a personal productivity partner with AI. Create, plan, and achieve with intelligent assistance that adapts to your workflow.">
+    <meta name="author" content="Sparkstr">
+
+    <meta property="og:title" content="Sparkstr - AI-Powered Productivity Calendar">
+    <meta property="og:description" content="Transform your calendar into a personal productivity partner with AI. Create, plan, and achieve with intelligent assistance that adapts to your workflow.">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="description" content="Transform your calendar into a personal productivity partner with AI. Sparkstr helps you plan events, get smart AI responses, manage tasks, chat, and edit documents seamlessly.">
+
+    <style>
+      /* Design System Variables */
+:root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 267 57% 50%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 267 100% 75%;
+
+    --secondary: 267 15% 97%;
+    --secondary-foreground: 267 57% 25%;
+
+    --muted: 267 15% 96%;
+    --muted-foreground: 267 8% 45%;
+
+    --accent: 267 35% 92%;
+    --accent-foreground: 267 57% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 267 15% 88%;
+    --input: 267 15% 88%;
+    --ring: 267 57% 50%;
+
+    /* Custom design tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(267 57% 50%), hsl(267 100% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(240 15% 8%) 0%, hsl(250 20% 12%) 50%, hsl(260 25% 15%) 100%);
+    --gradient-cta: linear-gradient(135deg, hsl(267 57% 50%) 0%, hsl(310 60% 55%) 50%, hsl(267 100% 75%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 99%), hsl(267 15% 96%));
+    --gradient-fire: linear-gradient(45deg, hsl(14 100% 60%), hsl(45 100% 70%), hsl(14 100% 60%), hsl(0 100% 65%));
+    
+    --shadow-glow: 0 0 40px hsl(267 100% 75% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(267 57% 50% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(267 20% 20% / 0.1);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --radius: 0.5rem;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    line-height: 1.6;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-size: 1rem;
+}
+
+.btn-hero {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    color: hsl(var(--primary-foreground));
+    border: 1px solid hsl(var(--primary-glow) / 0.3);
+}
+
+.btn-hero:hover {
+    background: linear-gradient(135deg, hsl(var(--primary-glow)), hsl(var(--primary)));
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-glow {
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Sizes */
+.btn {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+/* Icons */
+.arrow-icon,
+.sparkles-icon,
+.chevron-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.sparkles-icon {
+    width: 32px;
+    height: 32px;
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a0b2e 0%, #271344 50%, #1a0b2e 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-inner {
+    animation: fade-in 0.6s ease-out;
+}
+
+.hero-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.hero-slogan {
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    background: var(--gradient-fire);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fire-glow 2s ease-in-out infinite alternate;
+    margin-left: 1rem;
+    text-shadow: 0 4px 32px hsl(14 100% 60% / 0.25), 0 2px 8px hsl(45 100% 70% / 0.18);
+    line-height: 1.1;
+    display: inline-block;
+    filter: drop-shadow(0 2px 8px hsl(267 57% 50% / 0.15));
+}
+
+
+
+.hero-title {
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: bold;
+    color: white;
+    margin-bottom: 3rem;
+    line-height: 1.1;
+}
+
+.hero-title-text {
+    background: linear-gradient(to right, white, hsl(var(--primary-glow)), white);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-align: center;
+}
+
+.scroll-indicator:hover {
+    color: hsl(var(--primary-glow));
+}
+
+.scroll-indicator-inner {
+    width: 24px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    transition: var(--transition-smooth);
+}
+
+.scroll-indicator:hover .scroll-indicator-inner {
+    border-color: hsl(var(--primary-glow));
+}
+
+.scroll-dot {
+    width: 4px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    margin-top: 8px;
+    animation: bounce 2s infinite;
+    transition: var(--transition-smooth);
+}
+
+.scroll-indicator:hover .scroll-dot {
+    background: hsl(var(--primary-glow));
+}
+
+.scroll-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    transition: var(--transition-smooth);
+}
+
+.scroll-indicator:hover .scroll-text {
+    color: hsl(var(--primary-glow));
+}
+
+/* Story Section */
+.story-section {
+    padding: 8rem 0;
+    background: var(--gradient-subtle);
+    position: relative;
+}
+
+.story-line {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+}
+
+.desktop-line {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    display: block;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+}
+.mobile-line {
+    left: 0;
+    width: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+}
+@media (max-width: 768px) {
+    .desktop-line {
+        display: none;
+    }
+    .mobile-line {
+        display: block;
+    }
+}
+
+.story-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 10;
+}
+
+.story-header {
+    text-align: center;
+    margin-bottom: 8rem;
+}
+
+.story-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: bold;
+    color: hsl(var(--foreground));
+    margin-bottom: 1.5rem;
+}
+
+.story-title-highlight {
+    color: hsl(var(--primary));
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.story-features {
+    display: flex;
+    flex-direction: column;
+    gap: 12rem;
+}
+
+.story-feature {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    align-items: center;
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .story-feature {
+        flex-direction: row;
+    }
+    
+    .story-feature-reverse {
+        flex-direction: row-reverse;
+    }
+}
+
+@media (max-width: 1023px) {
+    .story-feature {
+        margin-left: 3rem;
+    }
+}
+
+.story-step {
+    position: absolute;
+    left: 1rem;
+    width: 32px;
+    height: 32px;
+    background: hsl(var(--primary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: hsl(var(--primary-foreground));
+    font-weight: bold;
+    font-size: 0.875rem;
+    z-index: 20;
+    top: 0;
+}
+@media (min-width: 768px) {
+    .story-step {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+    }
+}
+@media (max-width: 1023px) {
+    .story-step {
+        left: 1rem;
+        transform: none;
+        top: 0.5rem;
+    }
+    .story-content {
+        margin-top: 2.5rem !important;
+    }
+}
+
+.story-content {
+    flex: 1;
+    animation: slide-up 0.8s ease-out;
+}
+
+@media (max-width: 1023px) {
+    .story-content {
+        margin-left: 0;
+    }
+}
+
+.story-subtitle {
+    color: hsl(var(--primary));
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: 0.025em;
+    margin-bottom: 1rem;
+}
+
+.story-feature-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: bold;
+    color: hsl(var(--foreground));
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.story-description {
+    font-size: 1.125rem;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.6;
+    max-width: 32rem;
+}
+
+.story-gif {
+    flex: 1;
+    animation: fade-in 0.6s ease-out;
+}
+
+.gif-placeholder {
+    width: 100%;
+    height: 20rem;
+    background: hsl(var(--muted) / 0.3);
+    border-radius: 1rem;
+    border: 1px solid hsl(var(--muted-foreground) / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    text-align: center;
+}
+
+.gif-icon {
+    width: 64px;
+    height: 64px;
+    background: hsl(var(--primary) / 0.1);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.gif-icon-inner {
+    width: 32px;
+    height: 32px;
+    background: hsl(var(--primary) / 0.2);
+    border-radius: 0.5rem;
+}
+
+.gif-text {
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+}
+
+/* Future Section */
+.future-section {
+    padding: 8rem 0;
+    background: var(--gradient-subtle);
+}
+
+.future-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.future-header {
+    margin-bottom: 5rem;
+}
+
+.future-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: bold;
+    color: hsl(var(--foreground));
+    margin-bottom: 1.5rem;
+}
+
+.future-title-highlight {
+    color: hsl(var(--primary));
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.future-description {
+    font-size: 1.25rem;
+    color: hsl(var(--muted-foreground));
+    max-width: 32rem;
+    margin: 0 auto;
+}
+
+.future-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  align-items: start; /* <-- THIS IS THE FIX */
+}
+
+@media (min-width: 768px) {
+    .future-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .future-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.future-card {
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-align: left;
+  height: 200px; /* Fixed height for all cards */
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.future-card:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: var(--shadow-soft);
+}
+
+.future-card.expanded {
+  z-index: 2;
+  height: auto; /* Allow expanded card to grow */
+}
+
+.future-card-special {
+    background: var(--gradient-primary);
+    border-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary-foreground));
+}
+
+.future-card-special:hover {
+    box-shadow: var(--shadow-glow);
+}
+
+.future-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    background: hsl(var(--primary) / 0.1);
+}
+
+.future-card-special .future-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.future-icon svg {
+    width: 32px;
+    height: 32px;
+    color: hsl(var(--primary));
+}
+
+.future-card-special .future-icon svg {
+    color: hsl(var(--primary-foreground));
+}
+
+.future-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.future-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+}
+
+.future-card-special .future-card-title {
+    color: hsl(var(--primary-foreground));
+}
+
+.chevron-icon {
+    transition: transform 0.3s ease;
+    color: hsl(var(--muted-foreground));
+}
+
+.future-card-special .chevron-icon {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.future-card.expanded .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.future-card-description {
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 1rem;
+}
+
+.future-card-special .future-card-description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.future-expanded-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 0;
+  position: relative;
+}
+.future-card.expanded .future-expanded-content {
+  max-height: 400px;
+  opacity: 1;
+  animation: fade-in 0.3s ease-out;
+}
+
+.future-preview {
+    height: 8rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: hsl(var(--muted) / 0.5);
+    text-align: center;
+}
+
+.future-card-special .future-preview {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.preview-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    background: hsl(var(--primary) / 0.1);
+}
+
+.future-card-special .preview-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.preview-icon-inner {
+    width: 24px;
+    height: 24px;
+    border-radius: 0.25rem;
+    background: hsl(var(--primary) / 0.2);
+}
+
+.future-card-special .preview-icon-inner {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.preview-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+}
+
+.future-card-special .preview-text {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.future-detailed-description {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: hsl(var(--foreground));
+}
+
+.future-card-special .future-detailed-description {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.future-cta {
+    background: hsl(var(--card) / 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid hsl(var(--primary) / 0.2);
+    border-radius: 1.5rem;
+    padding: 3rem;
+}
+
+.future-cta-title {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: hsl(var(--foreground));
+    margin-bottom: 1rem;
+}
+
+.future-cta-description {
+    font-size: 1.125rem;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 2rem;
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.future-cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .future-cta-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* CTA Section */
+.cta-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-cta);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.cta-background, .cta-background * { pointer-events: none; }
+
+.cta-orb {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: multiply;
+    filter: blur(40px);
+}
+
+.cta-orb-1 {
+    top: 25%;
+    left: 25%;
+    width: 384px;
+    height: 384px;
+    background: hsl(var(--primary-glow));
+    opacity: 0.3;
+}
+
+.cta-orb-2 {
+    bottom: 25%;
+    right: 25%;
+    width: 384px;
+    height: 384px;
+    background: white;
+    opacity: 0.2;
+}
+
+.cta-orb-3 {
+    top: 50%;
+    left: 50%;
+    width: 256px;
+    height: 256px;
+    background: var(--gradient-primary);
+    opacity: 0.25;
+    filter: blur(80px);
+}
+
+.cta-particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+.cta-particle-1 {
+    top: 33.33%;
+    left: 20%;
+    width: 16px;
+    height: 16px;
+    background: hsl(var(--primary-glow));
+    animation: float 4s ease-in-out infinite;
+}
+
+.cta-particle-2 {
+    bottom: 33.33%;
+    right: 20%;
+    width: 12px;
+    height: 12px;
+    background: var(--gradient-primary);
+    opacity: 0.5;
+    animation: float-delayed 4s ease-in-out infinite 2s;
+}
+
+.cta-particle-3 {
+    top: 66.67%;
+    left: 66.67%;
+    width: 8px;
+    height: 8px;
+    background: hsl(var(--primary-glow));
+    opacity: 0.7;
+    animation: float 4s ease-in-out infinite;
+}
+
+.cta-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.cta-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+}
+.cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 64rem;
+    width: 100%;
+    margin: 0 auto;
+    animation: fade-in 0.6s ease-out;
+    text-align: center;
+}
+
+.cta-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.cta-badge-text {
+    color: hsl(var(--primary-glow));
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    margin-left: 0.75rem;
+}
+
+.cta-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: bold;
+    color: white;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+.cta-title-highlight {
+    background: linear-gradient(to right, hsl(var(--primary-glow)), white, hsl(var(--primary-glow)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .cta-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Footer */
+.footer {
+    padding: 4rem 0;
+    background: hsl(var(--background));
+    border-top: 1px solid hsl(var(--border));
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.footer-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .footer-main {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.footer-brand {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .footer-brand {
+        margin-bottom: 0;
+        text-align: left;
+    }
+}
+
+.footer-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: hsl(var(--primary));
+    margin-bottom: 0.5rem;
+}
+
+.footer-slogan {
+    color: hsl(var(--muted-foreground));
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .footer-links {
+        flex-direction: row;
+        gap: 3rem;
+        text-align: left;
+    }
+}
+
+.footer-column {
+    min-width: 120px;
+}
+
+.footer-heading {
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.75rem;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-link {
+    color: hsl(var(--muted-foreground));
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.footer-link:hover {
+    color: hsl(var(--primary));
+}
+
+.footer-bottom {
+    border-top: 1px solid hsl(var(--border));
+    margin-top: 3rem;
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.footer-copyright {
+    color: hsl(var(--muted-foreground));
+}
+
+/* Animations */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px hsl(267 100% 75% / 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px hsl(267 100% 75% / 0.6);
+    }
+}
+
+@keyframes fire-glow {
+    0% {
+        filter: brightness(1) hue-rotate(0deg);
+    }
+    50% {
+        filter: brightness(1.2) hue-rotate(10deg);
+    }
+    100% {
+        filter: brightness(1) hue-rotate(0deg);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes float-delayed {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40%, 43% {
+        transform: translateY(-8px);
+    }
+    70% {
+        transform: translateY(-4px);
+    }
+    90% {
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes draw-line {
+    0% {
+        stroke-dashoffset: 1000;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .story-title,
+    .future-title {
+        font-size: 2.5rem;
+    }
+    
+    .cta-title {
+        font-size: 3rem;
+    }
+    
+    .future-grid {
+        grid-template-columns: 1fr;
+    }
+}
+#hero-embers-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.7;
+}
+@media (max-width: 768px) {
+    #hero-embers-canvas { opacity: 0.9; }
+}
+#cta-plan-chooser-modern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2d1a4a 0%, #3a2563 60%, #1a1333 100%);
+  padding: 0;
+}
+.modern-plan-chooser-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.plan-chooser-title-modern {
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.plan-chooser-sub-modern {
+  font-size: 1.15rem;
+  color: #e0e7ef;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  max-width: 600px;
+}
+.plan-chooser-grid-modern {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 1100px) {
+  .plan-chooser-grid-modern { gap: 1.5rem; }
+}
+@media (max-width: 900px) {
+  .plan-chooser-grid-modern { flex-direction: column; gap: 2rem; align-items: center; }
+}
+.plan-card-modern {
+  background: linear-gradient(120deg, #232046 0%, #2d1a4a 100%);
+  color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 40px 0 rgba(30,41,59,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 320px;
+  max-width: 370px;
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 2.5px solid transparent;
+  margin-bottom: 0;
+}
+.plan-card-modern.recommended {
+  border-color: #fbbf24;
+  box-shadow: 0 12px 48px 0 #fbbf24a0, 0 8px 40px 0 rgba(30,41,59,0.18);
+  background: linear-gradient(120deg, #fbbf24 0%, #a855f7 100%);
+  color: #2d1600;
+}
+.plan-card-modern .plan-badge {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: #fbbf24;
+  color: #2d1600;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 12px #fbbf2440;
+  letter-spacing: 0.03em;
+}
+.plan-card-modern .plan-title {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+.plan-card-modern .plan-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #a855f7;
+}
+.plan-card-modern.recommended .plan-price { color: #b45309; }
+.plan-card-modern .plan-summary {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  color: #e0e7ef;
+}
+.plan-card-modern.recommended .plan-summary { color: #7c4700; }
+.plan-card-modern .plan-benefits {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.plan-card-modern .plan-benefit {
+  background: #fff;
+  color: #a855f7;
+  border-radius: 8px;
+  padding: 2px 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 4px 4px 0;
+  box-shadow: 0 2px 8px 0 rgba(30,41,59,0.10);
+  border: 1px solid #e0e7ef;
+}
+.plan-card-modern.recommended .plan-benefit {
+  background: #232046;
+  color: #fbbf24;
+  border: 1px solid #fbbf24;
+}
+.plan-card-modern .plan-details-btn {
+  background: none;
+  border: none;
+  color: #a855f7;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  padding: 0;
+}
+.plan-card-modern.recommended .plan-details-btn { color: #b45309; }
+.plan-card-modern .plan-limits {
+  display: none;
+  background: rgba(255,255,255,0.10);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.98rem;
+  color: #fff;
+}
+.plan-card-modern.recommended .plan-limits { color: #2d1600; background: rgba(255,255,255,0.20);}
+.plan-card-modern .plan-select-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: linear-gradient(90deg,#38bdf8, #a855f7);
+  color: #071033;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(30,41,59,0.08);
+}
+.plan-card-modern.recommended .plan-select-btn {
+  background: linear-gradient(90deg,#fbbf24,#f59e42);
+  color: #2d1600;
+}
+.plan-card-modern .plan-select-btn:hover {
+  filter: brightness(1.08);
+}
+.plan-chooser-close-modern {
+  margin-top: 2.5rem;
+  color: #fff;
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+@media (max-width: 600px) {
+  .modern-plan-chooser-container { padding: 1.5rem 0.25rem; }
+  .plan-card-modern { min-width: 95vw; max-width: 99vw; }
+  .plan-chooser-title-modern { font-size: 1.3rem; }
+}
+.pm-plan-chooser-back-btn, .pm-plan-details-back-btn {
+  background: linear-gradient(90deg, #e0e7ef 0%, #c7d2fe 100%);
+  color: #232046;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 32px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(30,41,59,0.08);
+  transition: background 0.2s;
+}
+.pm-plan-chooser-back-btn:hover, .pm-plan-details-back-btn:hover {
+  background: linear-gradient(90deg, #c7d2fe 0%, #e0e7ef 100%);
+}
+.pm-plan-details-btn {
+  background: none;
+  border: none;
+  color: #a855f7;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+.pm-plan-details-btn:hover {
+  color: #232046;
+  text-decoration: underline;
+}
+.pm-plan-chooser-title {
+  animation: fade-in 0.7s cubic-bezier(.4,0,.2,1);
+}
+.pm-plan-chooser-grid {
+  animation: fade-in 0.7s cubic-bezier(.4,0,.2,1);
+}
+        /* Sparkstr Design System - Premium Visual Impact */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(222.2, 84%, 4.9%);
+    line-height: 1.5;
+}
+
+/* CSS Variables - Design System */
+:root {
+    /* Core Brand Colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    
+    /* Sparkstr Brand Palette */
+    --primary: 268 83% 64%; /* Vibrant Purple */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 268 100% 80%;
+    --primary-dark: 268 83% 45%;
+    
+    --secondary: 251 91% 95%;
+    --secondary-foreground: 268 83% 20%;
+    
+    --accent: 320 65% 75%; /* Pink accent */
+    --accent-foreground: 320 65% 15%;
+    --accent-glow: 320 100% 85%;
+    
+    /* Gradient Variables */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-hero: linear-gradient(135deg, hsl(268, 83%, 64%) 0%, hsl(320, 65%, 75%) 50%, hsl(251, 91%, 70%) 100%);
+    --gradient-hero-light: linear-gradient(135deg, 
+        hsl(var(--background)) 0%, 
+        hsl(var(--primary) / 0.02) 50%, 
+        hsl(var(--accent) / 0.02) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(251, 91%, 98%) 0%, hsl(268, 50%, 96%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(268, 83%, 15%) 0%, hsl(320, 65%, 20%) 50%, hsl(222, 84%, 8%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%);
+    --gradient-vibrant: linear-gradient(135deg, hsl(45, 100%, 70%) 0%, hsl(320, 65%, 75%) 50%, hsl(268, 83%, 64%) 100%);
+    
+    /* Advanced Shadows */
+    --shadow-elegant: 0 10px 40px -10px hsl(var(--primary) / 0.3);
+    --shadow-mega: 0 25px 80px -15px hsl(var(--primary) / 0.4);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.6);
+    --shadow-accent: 0 15px 60px -10px hsl(var(--accent) / 0.4);
+    
+    /* Typography Scale */
+    --text-mega: clamp(3rem, 8vw, 8rem);
+    --text-hero: clamp(2.5rem, 6vw, 6rem);
+    --text-display: clamp(2rem, 4vw, 4rem);
+    --text-title: clamp(1.5rem, 3vw, 3rem);
+    
+    /* Animation Variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-elastic: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Component Variables */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --muted: 251 91% 95%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 268 50% 90%;
+    --input: 268 50% 90%;
+    --ring: 268 83% 64%;
+    --radius: 1rem;
+}
+
+/* Utility Classes */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.overflow-x-hidden {
+    overflow-x: hidden;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.top-0 { top: 0; }
+.left-0 { left: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.top-10 { top: 2.5rem; }
+.top-20 { top: 5rem; }
+.top-32 { top: 8rem; }
+.top-40 { top: 10rem; }
+.bottom-8 { bottom: 2rem; }
+.bottom-20 { bottom: 5rem; }
+.bottom-32 { bottom: 8rem; }
+.bottom-40 { bottom: 10rem; }
+.left-10 { left: 2.5rem; }
+.left-20 { left: 5rem; }
+.left-32 { left: 8rem; }
+.left-1\/2 { left: 50%; }
+.left-1\/4 { left: 25%; }
+.right-10 { right: 2.5rem; }
+.right-20 { right: 5rem; }
+.right-40 { right: 10rem; }
+.right-1\/3 { right: 33.333333%; }
+
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
+
+.w-1 { width: 0.25rem; }
+.w-6 { width: 1.5rem; }
+.w-8 { width: 2rem; }
+.w-12 { width: 3rem; }
+.w-16 { width: 4rem; }
+.w-20 { width: 5rem; }
+.w-24 { width: 6rem; }
+.w-32 { width: 8rem; }
+.w-full { width: 100%; }
+
+.h-3 { height: 0.75rem; }
+.h-8 { height: 2rem; }
+.h-10 { height: 2.5rem; }
+.h-12 { height: 3rem; }
+.h-16 { height: 4rem; }
+.h-20 { height: 5rem; }
+.h-24 { height: 6rem; }
+.h-32 { height: 8rem; }
+.h-64 { height: 16rem; }
+.h-80 { height: 20rem; }
+.h-96 { height: 24rem; }
+.h-full { height: 100%; }
+
+.max-w-4xl { max-width: 56rem; }
+.max-w-5xl { max-width: 64rem; }
+.max-w-6xl { max-width: 72rem; }
+.max-w-7xl { max-width: 80rem; }
+.max-w-8xl { max-width: 88rem; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.p-12 { padding: 3rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.px-8 { padding-left: 2rem; padding-right: 2rem; }
+
+.space-y-3 > * + * { margin-top: 0.75rem; }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+.space-y-8 > * + * { margin-top: 2rem; }
+.space-y-12 > * + * { margin-top: 3rem; }
+.space-y-16 > * + * { margin-top: 4rem; }
+.space-y-20 > * + * { margin-top: 5rem; }
+.space-y-24 > * + * { margin-top: 6rem; }
+.space-x-8 > * + * { margin-left: 2rem; }
+
+.gap-3 { gap: 0.75rem; }
+.gap-8 { gap: 2rem; }
+.gap-12 { gap: 3rem; }
+.gap-16 { gap: 4rem; }
+.gap-20 { gap: 5rem; }
+.gap-32 { gap: 8rem; }
+
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+.text-5xl { font-size: 3rem; line-height: 1; }
+.text-6xl { font-size: 3.75rem; line-height: 1; }
+.text-8xl { font-size: 6rem; line-height: 1; }
+
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+
+.leading-tight { line-height: 1.25; }
+.leading-relaxed { line-height: 1.625; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+.flex { display: flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+.block { display: block; }
+
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+
+.flex-col { flex-direction: column; }
+
+.rounded-full { border-radius: 9999px; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-3xl { border-radius: 1.5rem; }
+
+.border { border-width: 1px; }
+.border-2 { border-width: 2px; }
+.border-4 { border-width: 4px; }
+.border-l-4 { border-left-width: 4px; }
+.border-t { border-top-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+
+.transition-all { transition-property: all; }
+.transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; }
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+
+.cursor-pointer { cursor: pointer; }
+
+.opacity-10 { opacity: 0.1; }
+.opacity-20 { opacity: 0.2; }
+
+.pointer-events-none { pointer-events: none; }
+.overflow-hidden { overflow: hidden; }
+
+.transform { transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+.-translate-x-1\/2 { --tw-translate-x: -50%; }
+
+.underline { text-decoration: underline; }
+.decoration-2 { text-decoration-thickness: 2px; }
+.underline-offset-4 { text-underline-offset: 4px; }
+
+.drop-shadow-lg { filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)); }
+.drop-shadow-2xl { filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15)); }
+
+/* Typography Classes */
+.text-mega {
+    font-size: var(--text-mega);
+    line-height: 0.9;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.text-hero {
+    font-size: var(--text-hero);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.text-display {
+    font-size: var(--text-display);
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.text-title {
+    font-size: var(--text-title);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+/* Color Classes */
+.text-foreground { color: hsl(var(--foreground)); }
+.text-primary { color: hsl(var(--primary)); }
+.text-muted-foreground { color: hsl(var(--muted-foreground)); }
+.text-accent-foreground { color: hsl(var(--accent-foreground)); }
+.text-white { color: rgb(255, 255, 255); }
+.text-gray-300 { color: rgb(209, 213, 219); }
+.text-gray-600 { color: rgb(75, 85, 99); }
+.text-gray-700 { color: rgb(55, 65, 81); }
+.text-red-600 { color: rgb(220, 38, 38); }
+.text-red-700 { color: rgb(185, 28, 28); }
+.text-green-600 { color: rgb(22, 163, 74); }
+.text-green-700 { color: rgb(21, 128, 61); }
+.text-green-800 { color: rgb(22, 101, 52); }
+.text-purple-200 { color: rgb(196, 181, 253); }
+
+.bg-primary { background-color: hsl(var(--primary)); }
+.bg-accent { background-color: hsl(var(--accent)); }
+.bg-secondary { background-color: hsl(var(--secondary)); }
+.bg-red-50 { background-color: rgb(254, 242, 242); }
+.bg-red-100 { background-color: rgb(254, 226, 226); }
+.bg-green-100 { background-color: rgb(220, 252, 231); }
+.bg-green-200 { background-color: rgb(187, 247, 208); }
+
+.bg-primary-20 { background-color: hsl(var(--primary) / 0.2); }
+.bg-accent-20 { background-color: hsl(var(--accent) / 0.2); }
+
+.border-white-20 { border-color: rgb(255 255 255 / 0.2); }
+.border-white-50 { border-color: rgb(255 255 255 / 0.5); }
+.border-red-200 { border-color: rgb(254, 202, 202); }
+.border-red-400 { border-color: rgb(248, 113, 113); }
+.border-green-200 { border-color: rgb(187, 247, 208); }
+.border-green-400 { border-color: rgb(74, 222, 128); }
+.border-purple-400 { border-color: rgb(196, 181, 253); }
+
+.backdrop-blur-md { backdrop-filter: blur(12px); }
+.backdrop-blur-sm { backdrop-filter: blur(4px); }
+
+.bg-white-10 { background-color: rgb(255 255 255 / 0.1); }
+.bg-white-50 { background-color: rgb(255 255 255 / 0.5); }
+.bg-white-70 { background-color: rgb(255 255 255 / 0.7); }
+
+.bg-red-50-80 { background-color: rgb(254 242 242 / 0.8); }
+.bg-green-50-50 { background-color: rgb(240 253 244 / 0.5); }
+.bg-green-50-80 { background-color: rgb(240 253 244 / 0.8); }
+.bg-blue-50-50 { background-color: rgb(239 246 255 / 0.5); }
+.bg-purple-50-50 { background-color: rgb(250 245 255 / 0.5); }
+.bg-yellow-50-50 { background-color: rgb(254 252 232 / 0.5); }
+
+.bg-primary-20,
+.bg-accent-20,
+.bg-primary-15 {
+    display: inline;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.2em 0.5em;
+    margin: 0 -0.5em;
+    border-radius: 9999px;
+    line-height: 1.85;
+}
+/* Gradient Backgrounds */
+.bg-gradient-hero {
+    background: var(--gradient-hero);
+}
+
+.bg-gradient-hero-light {
+    background: var(--gradient-hero-light);
+}
+
+.bg-gradient-primary {
+    background: var(--gradient-primary);
+}
+
+.bg-gradient-secondary {
+    background: var(--gradient-secondary);
+}
+
+.bg-gradient-dark {
+    background: var(--gradient-dark);
+}
+
+.bg-gradient-accent {
+    background: var(--gradient-accent);
+}
+
+.bg-gradient-vibrant {
+    background: var(--gradient-vibrant);
+}
+
+.bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.from-gray-200 { --tw-gradient-from: rgb(229, 231, 235); --tw-gradient-to: rgb(229 231 235 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-gray-300 { --tw-gradient-to: rgb(209, 213, 219); }
+.from-gray-700 { --tw-gradient-from: rgb(55, 65, 81); --tw-gradient-to: rgb(55 65 81 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-gray-900 { --tw-gradient-to: rgb(17, 24, 39); }
+.from-yellow-200 { --tw-gradient-from: rgb(254, 240, 138); --tw-gradient-to: rgb(254 240 138 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-orange-300 { --tw-gradient-to: rgb(253, 186, 116); }
+.from-purple-400 { --tw-gradient-from: rgb(196, 181, 253); --tw-gradient-to: rgb(196 181 253 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-pink-400 { --tw-gradient-to: rgb(244, 114, 182); }
+.to-blue-500 { --tw-gradient-to: rgb(59, 130, 246); }
+.from-blue-400 { --tw-gradient-from: rgb(96, 165, 250); --tw-gradient-to: rgb(96 165 250 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-purple-500 { --tw-gradient-to: rgb(168, 85, 247); }
+.to-indigo-500 { --tw-gradient-to: rgb(99, 102, 241); }
+.from-green-400 { --tw-gradient-from: rgb(74, 222, 128); --tw-gradient-to: rgb(74 222 128 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-teal-500 { --tw-gradient-to: rgb(20, 184, 166); }
+.from-indigo-400 { --tw-gradient-from: rgb(129, 140, 248); --tw-gradient-to: rgb(129 140 248 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.from-teal-400 { --tw-gradient-from: rgb(45, 212, 191); --tw-gradient-to: rgb(45 212 191 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-cyan-500 { --tw-gradient-to: rgb(6, 182, 212); }
+.from-orange-400 { --tw-gradient-from: rgb(251, 146, 60); --tw-gradient-to: rgb(251 146 60 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-red-500 { --tw-gradient-to: rgb(239, 68, 68); }
+.from-red-400 { --tw-gradient-from: rgb(248, 113, 113); --tw-gradient-to: rgb(248 113 113 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-red-600 { --tw-gradient-to: rgb(220, 38, 38); }
+.from-green-100 { --tw-gradient-from: rgb(220, 252, 231); --tw-gradient-to: rgb(220 252 231 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-teal-100 { --tw-gradient-to: rgb(204, 251, 241); }
+.from-green-500 { --tw-gradient-from: rgb(34, 197, 94); --tw-gradient-to: rgb(34 197 94 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-teal-500 { --tw-gradient-to: rgb(20, 184, 166); }
+.to-pink-500 { --tw-gradient-to: rgb(236, 72, 153); }
+.from-purple-500 { --tw-gradient-from: rgb(168, 85, 247); --tw-gradient-to: rgb(168 85 247 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.from-red-500 { --tw-gradient-from: rgb(239, 68, 68); --tw-gradient-to: rgb(239 68 68 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-green-500 { --tw-gradient-to: rgb(34, 197, 94); }
+.from-green-400 { --tw-gradient-from: rgb(74, 222, 128); --tw-gradient-to: rgb(74 222 128 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+.to-green-600 { --tw-gradient-to: rgb(22, 163, 74); }
+
+/* Premium Shadows */
+.shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+}
+
+.shadow-mega {
+    box-shadow: var(--shadow-mega);
+}
+
+.shadow-glow {
+    box-shadow: var(--shadow-glow);
+}
+
+.shadow-accent {
+    box-shadow: var(--shadow-accent);
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.shadow-xl {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Interactive Elements */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-elegant);
+}
+
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-vibrant {
+    background: var(--gradient-vibrant);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Premium Buttons */
+.btn-hero {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-elegant);
+    transform: translateY(0);
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    scale: 1.05;
+}
+
+.btn-ghost {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    border: 2px solid hsl(var(--primary));
+    color: hsl(var(--primary));
+    background: transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-ghost:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    transform: translateY(-1px);
+}
+
+/* Layout Components */
+.section-padding {
+    padding: 6rem 1.5rem;
+}
+
+.container-wide {
+    max-width: 88rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container-content {
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* Comparison Cards */
+.comparison-old {
+    background-color: rgb(254, 242, 242);
+    border-left-width: 4px;
+    border-left-color: rgb(248, 113, 113);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.3);
+}
+
+.comparison-new {
+    background: linear-gradient(120deg, 
+        hsla(268, 83%, 90%, 0.95) 0%, 
+        hsla(320, 65%, 90%, 0.95) 50%, 
+        hsla(222, 84%, 90%, 0.95) 100%
+    );
+    border-left-width: 4px;
+    border-left-color: rgb(196, 181, 253);
+    padding: 2rem;
+    border-radius: 1rem;
+    color: #1a1a1a;  /* Changed to dark text for better readability */
+    box-shadow: var(--shadow-mega);
+}
+
+/* Also update the text colors inside comparison-new */
+.comparison-new .text-purple-200 {
+    color: #4c1d95;  /* darker purple for better contrast */
+}
+
+.comparison-new .text-white {
+    color: #1a1a1a;  /* dark text for better readability */
+}
+
+/* Image Placeholders */
+.image-placeholder {
+    background: linear-gradient(to bottom right, rgb(229, 231, 235), rgb(209, 213, 219));
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(75, 85, 99);
+    font-weight: 600;
+    min-height: 200px;
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255,255,255,0.1) 10px,
+        rgba(255,255,255,0.1) 20px
+    );
+}
+
+/* Animation Keyframes */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulseScale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+}
+
+/* Animation Utility Classes */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-zoom-in {
+    animation: zoomIn 0.6s ease-out forwards;
+}
+
+.animate-pulse-scale {
+    animation: pulseScale 2s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+    animation: gentleBounce 2s ease-in-out infinite;
+}
+
+.animate-wiggle {
+    animation: wiggle 2s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Stagger Animation Delays */
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Interactive hover effects */
+.hover-scale-105:hover {
+    transform: scale(1.05);
+}
+
+.hover-shadow-xl:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.hover-shadow-glow:hover {
+    box-shadow: var(--shadow-glow);
+}
+
+.scale-105 {
+    transform: scale(1.05);
+}
+
+.scale-110 {
+    transform: scale(1.1);
+}
+
+/* Navigation specific styles */
+nav a:hover {
+    color: hsl(var(--primary));
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .md\:flex { display: flex; }
+    .md\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .md\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .md\:text-5xl { font-size: 3rem; line-height: 1; }
+    .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
+    .md\:text-8xl { font-size: 6rem; line-height: 1; }
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+    .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .lg\:text-left { text-align: left; }
+    .lg\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .lg\:text-5xl { font-size: 3rem; line-height: 1; }
+    .lg\:text-6xl { font-size: 3.75rem; line-height: 1; }
+    .lg\:text-7xl { font-size: 4.5rem; line-height: 1; }
+    .lg\:text-8xl { font-size: 6rem; line-height: 1; }
+    .lg\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
+    .lg\:order-1 { order: 1; }
+    .lg\:order-2 { order: 2; }
+}
+
+.order-1 { order: 1; }
+.order-2 { order: 2; }
+
+/* Sparkstr specific gradients for comparison */
+.bg-gradient-to-br.from-background.via-purple-50.to-pink-50 {
+    background: linear-gradient(to bottom right, hsl(var(--background)), rgb(250, 245, 255), rgb(253, 242, 248));
+}
+
+/* Additional responsive utilities */
+@media (max-width: 767px) {
+    .section-padding {
+        padding: 4rem 1rem;
+    }
+    
+    .container-content {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Group hover effects */
+.group:hover .group-hover-animate-bounce-gentle {
+    animation: gentleBounce 2s ease-in-out infinite;
+}
+
+.group:hover .group-hover-animate-pulse-scale {
+    animation: pulseScale 2s ease-in-out infinite;
+}
+
+.group:hover .group-hover-animate-wiggle {
+    animation: wiggle 2s ease-in-out infinite;
+}
+
+.group:hover .group-hover-shadow-glow {
+    box-shadow: var(--shadow-glow);
+}
+
+.transition-elastic {
+    transition: var(--transition-elastic);
+}
+
+/* Scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Additional link styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Ensure proper text wrapping */
+h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Make sure buttons are accessible */
+button {
+    outline: none;
+    border: none;
+}
+
+button:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+}
+
+/* Improve image placeholder visibility */
+.image-placeholder {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255,255,255,0.1) 10px,
+        rgba(255,255,255,0.1) 20px
+    );
+}
+
+.image-placeholder > * {
+    position: relative;
+    z-index: 1;
+}
+.disabled-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(75, 85, 99, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.disabled-overlay span {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Universal Image & GIF Styling */
+img,
+.story-gif img {
+  max-width: 100%;       /* keeps images a bit smaller than full width */
+  height: auto;         /* keeps aspect ratio */
+  display: block;
+  margin: 2rem auto;    /* centered horizontally with spacing */
+  border-radius: 1rem;
+  box-shadow: var(--shadow-elegant);
+  object-fit: contain;
+}
+
+.chat-preview-img {
+    max-width: 900px !important;  /* Or your desired width */
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    box-shadow: var(--shadow-elegant);
+}
+
+@media (max-width: 768px) {
+    .chat-preview-img {
+        max-width: 100% !important;
+    }
+}
+
+
+
+/* Desktop: allow larger but still constrained */
+@media (min-width: 1024px) {
+  img,
+  .story-gif img {
+    max-width: 100%;     /* smaller than before, keeps centered */
+    max-height: 80vh;   /* never taller than viewport */
+  }
+}
+
+/* Tablet & Mobile */
+@media (max-width: 768px) {
+  img,
+  .story-gif img {
+    max-width: 100%;    /* fits screen width */
+    margin: 1.25rem auto;
+    height: auto;
+  }
+
+  .image-placeholder,
+  .image-placeholder img {
+    max-width: 95%;
+    height: auto;
+  }
+}
+/* Modal Styles */
+/* Update modal styles for fullscreen images */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 40px;
+}
+
+.modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+/* Add image optimization classes */
+.optimized-image {
+    width: 100%;
+    height: auto;
+    background-color: #f0f0f0; /* Placeholder color */
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.close-modal:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Make images clickable */
+img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.02);
+}
+/* Add to your existing CSS */
+.carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.carousel-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    margin: 0 !important;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    position: relative;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: hsl(var(--primary));
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-elegant);
+    z-index: 5;
+}
+
+.carousel-arrow:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+.carousel-arrow.prev {
+    left: 1rem;
+}
+
+.carousel-arrow.next {
+    right: 1rem;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 5;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: white;
+    transform: scale(1.2);
+}       
+/* Navigation Styles */
+nav {
+    height: 5rem;
+    background: rgba(20, 20, 25, 0.95); /* Luxurious dark background */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Updated Navigation Links */
+nav a:not(.btn-hero):not(.btn-ghost) {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+nav a:not(.btn-hero):not(.btn-ghost):hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    color: white;
+}
+
+/* Logo text color */
+nav .gradient-text {
+    background: linear-gradient(135deg, #fff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 2rem;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 49;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-menu.show {
+    transform: translateY(0);
+}
+
+.mobile-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-menu-items a {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background: rgba(0, 0, 0, 0.02);
+    color: hsl(var(--foreground));
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-items a:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: translateX(5px);
+    color: hsl(var(--primary));
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+    .mobile-menu {
+        display: none; /* Initially hidden */
+        position: fixed;
+        top: 5rem;
+        left: 0;
+        right: 0;
+        background: rgba(20, 20, 25, 0.98); /* Dark background */
+        padding: 1rem;
+        z-index: 49;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-menu.show {
+        display: block; /* Show when active */
+    }
+
+    .mobile-menu-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .mobile-menu-items a {
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu-items a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+    }
+
+    .mobile-menu-items a.btn-hero {
+        background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+        color: white;
+        margin-top: 0.5rem;
+    }
+
+    .mobile-menu-button {
+        display: block !important;
+    }
+    
+    nav .container-content > div:nth-child(2) {
+        display: none;
+    }
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+    display: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+}
+
+.mobile-menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+}
+
+.mobile-menu-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Menu Styles */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    right: 0;
+    background: rgba(20, 20, 25, 0.98);
+    padding: 1.5rem;
+    z-index: 49;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-100%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu.show {
+    display: block;
+    transform: translateY(0);
+}
+
+.mobile-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-menu-items a {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Regular nav link */
+.mobile-menu-items a:not(.btn-hero):not(.btn-ghost) {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+/* Login button */
+.mobile-menu-items a.btn-ghost {
+    background: transparent;
+    border: 2px solid hsl(var(--primary));
+    color: hsl(var(--primary));
+}
+
+/* Get Started button */
+.mobile-menu-items a.btn-hero {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    color: white;
+    font-weight: 700;
+}
+
+nav .container-content {
+    padding-top: 1.25rem; /* Adjusted vertical centering */
+    padding-bottom: 1.25rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Updated Navigation Links */
+nav a:not(.btn-hero):not(.btn-ghost) {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(90deg, transparent, transparent);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+}
+
+nav a:not(.btn-hero):not(.btn-ghost):hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    background-size: 200% 100%;
+    background-position: 0 0;
+    transform: translateY(-1px);
+    color: white;
+}
+
+
+.future-card.full-width {
+    grid-column: 1 / -1;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.future-card.full-width .future-header-content {
+    justify-content: center;
+}
+
+.future-card.full-width .future-expanded-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+/* Modal Styles */
+.policy-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.policy-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    padding: 1rem;
+    border-radius: 1rem;
+    max-width: 1500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-elegant);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.policy-modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: hsl(var(--foreground));
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: hsl(var(--muted));
+}
+    </style>
+    <link rel="icon" href="./img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/Logo.png">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+</head>
+<body>
+    <div class="min-h-screen">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <!-- Floating particles -->
+            <canvas id="hero-embers-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;"></canvas>
+            
+            <div class="hero-content">
+                <div class="hero-inner">
+                    <div class="hero-badge">
+                        
+                        <span class="hero-slogan">Fuel the start, not the schedule</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        <span class="hero-title-text">Sparkstr</span>
+                    </h1>
+                    
+                    
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div class="scroll-indicator" onclick="scrollToStory()">
+                <div class="scroll-indicator-inner">
+                    <div class="scroll-dot"></div>
+                </div>
+                <p class="scroll-text">Scroll</p>
+            </div>
+        </section>
+
+    <div class="min-h-screen overflow-x-hidden">
+        <!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50">
+    <div class="container-content">
+        <div class="flex items-center gap-3">
+            <img src="img/logo.png" alt="Logo" decoding="async" loading="eager" class="w-10 h-10 object-contain" />
+            <span class="text-2xl font-bold gradient-text">
+                Sparkstr
+            </span>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#calendar">Calendar</a>
+            <a href="#just-chat">Just Chat</a>
+            <a href="#doclive">DocLive</a>
+            <a href="./Login/signup.html" class="btn-ghost">Login</a>
+            <a href="pricing.html" class="btn-hero">Get Started</a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-button md:hidden">
+            <div class="mobile-menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-items">
+            <a href="#calendar">Calendar</a>
+            <a href="#just-chat">Just Chat</a>
+            <a href="#doclive">DocLive</a>
+            <a href="./Login/signup.html">Login</a>
+            <a href="pricing.html" class="btn-hero">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+        <!-- Hero Section -->
+        <section class="min-h-screen bg-gradient-hero-light relative overflow-hidden flex items-center">
+            <!-- Animated Background Elements -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-primary animate-float"></div>
+                <div class="absolute bottom-20 right-10 w-24 h-24 rounded-full bg-gradient-accent animate-float animate-delay-200"></div>
+                <div class="absolute top-1/2 left-1/4 w-16 h-16 rounded-full bg-gradient-vibrant animate-float animate-delay-400"></div>
+                <div class="absolute bottom-32 right-1/3 w-20 h-20 rounded-full bg-gradient-primary animate-pulse-scale"></div>
+            </div>
+
+            <div class="container-content relative z-10 text-center">
+                <div class="space-y-16 animate-fade-in-up">
+                    <div class="space-y-8">
+                        <h1 class="text-hero font-black leading-tight animate-zoom-in">
+                            Create simple events,<br />
+                            <span class="gradient-text">reminders</span> and 
+                            <span class="gradient-text-vibrant">tasks</span>
+                        </h1>
+                        <div class="animate-slide-in-left animate-delay-300">
+                            <p class="text-display text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                                <span class="bg-accent-20 px-4 py-2 rounded-full text-accent-foreground font-semibold">
+                                    Just like any other calendar, right?
+                                </span> 
+                                🤔
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="animate-slide-in-right animate-delay-500">
+    <a href="pricing.html" class="btn-hero">
+        🚀 Experience Sparkstr
+    </a>
+</div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle">
+                <div class="w-6 h-10 border-2 border-white-50 rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-white-70 rounded-full mt-2 animate-pulse"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar" class="section-padding bg-gradient-secondary relative overflow-hidden">
+            <!-- Background decorative elements -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-primary animate-float"></div>
+                <div class="absolute bottom-20 right-10 w-24 h-24 rounded-full bg-gradient-accent animate-float animate-delay-200"></div>
+                <div class="absolute top-1/2 left-1/4 w-16 h-16 rounded-full bg-gradient-vibrant animate-float animate-delay-400"></div>
+            </div>
+
+            <div class="container-content relative z-10">
+                <div class="space-y-24 animate-fade-in-up">
+                    <div class="grid lg:grid-cols-2 gap-20 items-center">
+                        <!-- Old Way -->
+                        <div class="comparison-old animate-slide-in-left">
+                            <h2 class="text-2xl font-black text-red-600 mb-6 bg-red-100 rounded-2xl p-4 text-center">
+                                Old Calendar Way
+                            </h2>
+                            <ul class="space-y-3 text-red-700 text-base font-medium mb-6">
+                                <li class="flex items-center gap-3">
+                                    <span>🔔</span> Get notifications with no support
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>📅</span> Create schedules only to procrastinate
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>😩</span> No help for complex tasks
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>🚫</span> No AI assistance
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>🙅‍♂️</span> Just reminders, nothing more
+                                </li>
+                            </ul>
+                            <div class="text-center">
+                                 <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/googlecalendar.png" alt="Old Calendar Interface" class="mx-auto rounded-2xl shadow-lg" />
+                            </div>
+                        </div>
+
+                        <!-- New Way -->
+                        <div class="comparison-new animate-slide-in-right">
+                            <h2 class="text-2xl font-black text-white mb-6 bg-gradient-accent rounded-2xl p-4 text-center">
+                                Sparkstr
+                            </h2>
+                            <ul class="space-y-3 text-purple-200 text-base font-semibold mb-6">
+                                <li class="flex items-center gap-3">
+                                    <span>💬</span> Get responses for any task
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>🧩</span> Create complex events for complex tasks
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>🤝</span> Support every step of the way
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>✨</span> AI-powered planning & reminders
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span>🔔</span> Also supports simple tasks & reminders
+                                </li>
+                            </ul>
+                            <div class="text-center">
+                                 <img decoding="async" loading="lazy"src="img/Calendar.png" alt="New Calendar AI integrated approach" class="mx-auto rounded-2xl shadow-lg" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Impact Statement -->
+                    <div class="text-center space-y-8 animate-zoom-in">
+                        <div class="glass-card rounded-3xl p-12 shadow-mega max-w-4xl mx-auto">
+                            <p class="text-display font-bold text-foreground mb-6">
+                                Reminding you of 
+                                <span class="gradient-text">when to start</span>
+                            </p>
+                            <p class="text-title text-muted-foreground">
+                                and 
+                                <span class="bg-primary-20 px-4 py-2 rounded-full text-primary font-bold">
+                                    nothing else
+                                </span> 
+                                ✨
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wait Section -->
+        <section class="section-padding bg-gradient-dark relative overflow-hidden">
+            <!-- Animated background particles -->
+            <div class="absolute inset-0">
+                <div class="animate-wiggle absolute top-10 left-20 text-6xl">⚡</div>
+                <div class="animate-bounce-gentle absolute top-32 right-20 text-4xl animate-delay-100">🚀</div>
+                <div class="animate-pulse-scale absolute bottom-20 left-32 text-5xl animate-delay-200">✨</div>
+                <div class="animate-float absolute bottom-32 right-40 text-3xl animate-delay-300">🎯</div>
+            </div>
+            
+            <div class="container-content relative z-10">
+                <div class="space-y-20 animate-fade-in-up">
+                    <div class="space-y-8">
+                        <h2 class="text-6xl md:text-8xl font-bold text-white animate-bounce-gentle">
+                            Wait, no way! 🤯
+                        </h2>
+                        <h3 class="text-4xl md:text-6xl font-semibold gradient-text animate-slide-in-left">
+                            How does this work?
+                        </h3>
+                    </div>
+                    
+                    <div class="grid lg:grid-cols-2 gap-12 max-w-8xl mx-auto">
+                        <div class="group">
+    <div class="mb-8 animate-slide-in-left">
+        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left">🤖 Enable the AI</h3>
+        <p class="text-xl text-gray-300 text-left">Let intelligent automation handle your planning with precision</p>
+    </div>
+    <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/Ai assistance.png" alt="AI Enablement Interface" class="h-500 bg-gradient-to-br from-purple-400 to-pink-500 group-hover-shadow-glow transition-elastic" />
+</div>
+
+<div class="group">
+    <div class="mb-8 animate-slide-in-right">
+        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left">🎯 Create Complex Tasks</h3>
+        <p class="text-xl text-gray-300 text-left">Get a crystal-clear starting point for any challenge</p>
+    </div>
+    <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/complex event.png" alt="Complex Task Creation Interface" class="h-500 bg-gradient-to-br from-blue-400 to-purple-500 group-hover-shadow-glow transition-elastic" />
+</div>
+                    </div>
+                    
+                    <div class="max-w-6xl mx-auto space-y-12">
+                        <div class="glass-card rounded-3xl p-12 shadow-mega animate-zoom-in border border-white-20">
+                            <div class="space-y-8 text-center">
+                                <div class="space-y-6">
+                                    <div class="text-4xl md:text-5xl font-black text-white animate-fade-in-up drop-shadow-lg">
+                                        No more procrastination.
+                                    </div>
+                                    <div class="text-4xl md:text-5xl font-black text-white animate-fade-in-up animate-delay-300 drop-shadow-lg">
+                                        No more dreading notifications.
+                                    </div>
+                                </div>
+                                <div class="text-5xl md:text-6xl font-black gradient-text-vibrant animate-pulse-scale border-t border-white-20 pt-8 drop-shadow-2xl">
+                                    Fuel the start! 🔥
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-8">
+                            <div class="text-center">
+                                <h3 class="text-3xl md:text-4xl font-bold text-white mb-8">
+                                    Get quick responses for any of your tasks
+                                </h3>
+                            </div>
+                            
+                            <div class="max-w-5xl mx-auto">
+                                 <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/calendarresponse.png" alt="Calendar with AI Responses" class=" h-500 bg-gradient-to-br from-teal-400 to-cyan-500" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plan Section -->
+        <section class="section-padding bg-gradient-secondary">
+            <div class="container-content space-y-24 animate-fade-in-up">
+                <div class="text-center">
+                    <h2 class="text-hero font-bold text-foreground mb-8">
+                        But that's not all.
+                    </h2>
+                    <p class="text-display text-muted-foreground">
+                        Want 
+                        <span class="bg-primary-20 px-4 py-2 rounded-full text-primary font-bold">
+                            additional help?
+                        </span>
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-32 items-center">
+                    <div class="space-y-8 animate-slide-in-left text-center lg:text-left">
+                        <p class="text-title text-foreground leading-relaxed">
+                            Navigate to the 
+                            <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground font-semibold">
+                                response section
+                            </span> 
+                            and select your event
+                        </p>
+                    </div>
+                    <div class="animate-slide-in-right">
+                         <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/responsesview.png" alt="Response View for events" class=" h-150 bg-gradient-to-br from-orange-400 to-red-500" />
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-32 items-center">
+                    <div class="animate-slide-in-left">
+                         <img decoding="async" loading="lazy"src="img/generatesmartplan.png" alt="Generate Smart Plan" class=" w-500 h-150 bg-gradient-to-br from-green-400 to-teal-500" />
+                    </div>
+                    <div class="space-y-8 animate-slide-in-right text-center lg:text-left">
+                        <p class="text-title text-foreground leading-relaxed">
+                            <span class="bg-primary-20 px-3 py-1 rounded-full text-primary font-bold">
+                                Click "Generate a Plan"
+                            </span> 
+                            for a detailed, step-by-step personalized roadmap
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Focus Section -->
+        <section class="section-padding bg-background">
+            <div class="container-content space-y-24 animate-fade-in-up">
+                <div class="text-center">
+                    <h2 class="text-display font-bold text-foreground mb-12">
+                        In 
+                        <span class="bg-primary-20 px-4 py-2 rounded-full text-primary font-bold">
+                            Focus Mode
+                        </span>
+                        , you have the ability to work on your plan
+                    </h2>
+                </div>
+
+                <div class="grid lg:grid-cols-2 items-center gap-16">
+                    <div class="space-y-8 animate-slide-in-left text-center lg:text-left">
+                        <p class="text-title text-foreground leading-relaxed">
+                            Need help on a step?
+                        </p>
+                        <p class="text-display font-bold gradient-text">
+                            <span class="bg-accent-20 px-4 py-2 rounded-full text-accent-foreground">
+                                No Problem!
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="animate-slide-in-right">
+                         <img decoding="async" loading="lazy"src="img/focusmode.png" alt="Focus Mode Interface" class=" h-500 bg-gradient-to-br from-purple-400 to-pink-500" />
+                    </div>
+                </div>
+
+                <div class="text-center glass-card p-12 rounded-3xl shadow-elegant">
+    <a href="pricing.html" class="btn-hero mb-8 animate-pulse-scale">
+        🚀 Try Focus Mode Now
+    </a>
+                    <p class="text-xl font-semibold text-primary mb-6">
+                        ✨ Scroll to see what else there is!
+                    </p>
+                    <div class="w-8 h-8 mx-auto animate-bounce-gentle">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-primary">
+                            <path d="M7 13l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M7 6l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Just Chat Section -->
+        <section id="just-chat" class="section-padding bg-gradient-secondary relative overflow-hidden">
+            <!-- Decorative chat bubbles -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-20 left-10 w-20 h-12 bg-primary rounded-full animate-bounce-gentle"></div>
+                <div class="absolute top-40 right-20 w-16 h-10 bg-accent rounded-full animate-bounce-gentle animate-delay-100"></div>
+                <div class="absolute bottom-20 left-1/4 w-12 h-8 bg-secondary rounded-full animate-bounce-gentle animate-delay-200"></div>
+            </div>
+            
+            <div class="container-content relative z-10">
+                <div class="space-y-24 animate-fade-in-up">
+                    <div class="text-center">
+                        <h2 class="text-mega font-black gradient-text mb-12 animate-zoom-in">
+                            Just Chat 💬
+                        </h2>
+                        <p class="text-display text-muted-foreground animate-slide-in-left">
+                            Just like any normal chat... 
+                            <span class="text-xl">or is it? 🤔</span>
+                        </p>
+                    </div>
+                    
+<div class="grid lg:grid-cols-2 gap-16 max-w-8xl mx-auto">
+  <div class="group animate-slide-in-left">
+    <div class="text-center mb-8">
+      <h3 class="text-title font-bold text-foreground flex items-center justify-center gap-3">
+        Light Theme Chat
+      </h3>
+    </div>
+    <img decoding="async" loading="lazy"src="img/Lightmodechat.png" 
+         alt="Light Theme Chat Interface" 
+         class="chat-preview-img w-full max-w-[900px] h-auto mx-auto bg-gradient-to-br from-white to-gray-100 object-contain" />
+  </div>
+
+  <div class="group animate-slide-in-right">
+    <div class="text-center mb-8">
+      <h3 class="text-title font-bold text-foreground flex items-center justify-center gap-3">
+        Dark Theme Chat
+      </h3>
+    </div>
+    <img decoding="async" loading="lazy"src="img/Darkmodechat.png" 
+         alt="Dark Theme Chat Interface" 
+         class="chat-preview-img w-full max-w-[900px] h-auto mx-auto bg-gradient-to-br from-gray-800 to-gray-900 object-contain" />
+  </div>
+</div>
+
+
+                    <div class="max-w-7xl mx-auto space-y-20">
+                        <!-- Add Event Mode Feature -->
+                        <div class="glass-card rounded-3xl p-12 shadow-mega animate-fade-in-up">
+                            <div class="text-center space-y-8">
+                                <h3 class="text-4xl font-bold text-foreground">
+                                 Ever wished you could create events 
+                                    <span class="bg-primary-15 px-3 py-1 rounded-full text-primary">
+                                        straight from chat?
+                                    </span> 
+                                    
+                                </h3>
+                                
+                                <div class="space-y-8">
+                                    <div class="glass-card rounded-2xl p-8 shadow-elegant bg-blue-50-50">
+                                        <p class="text-lg text-foreground leading-relaxed">
+                                            💭 Ever chatted with <strong>ChatGPT</strong>, <strong>Copilot</strong>, or <strong>Gemini</strong> to create plans...
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="comparison-old">
+                                        <p class="text-lg text-red-700 leading-relaxed">
+                                            😤 ...only to realize they <strong>aren't added to your calendar</strong> and there's <strong>no way to be notified?</strong>
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="glass-card rounded-2xl p-8 shadow-elegant bg-green-50-50 border-l-4 border-green-400">
+                                        <p class="text-xl font-bold text-green-700 leading-relaxed mb-4">
+                                            🎉 <strong>Well, now you can!</strong>
+                                        </p>
+                                        <p class="text-base text-green-600">
+                                            With 
+                                            <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground font-semibold">
+                                                add event mode
+                                            </span>
+                                            , create events & multi-day plans 
+                                            <strong>straight from chat</strong> with AI assistance! 🤖✨
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-12">
+                            <div class="group text-center">
+                                <div class="mb-6">
+                                    
+                                    <h4 class="text-xl font-bold text-foreground">Describe your Plan/Event</h4>
+                                </div>
+                                 <img decoding="async" loading="lazy"src="img/addeventmode.png" alt="Add Event Mode, Event Creation Interface"  />
+                            </div>
+                            <div class="group text-center">
+                                <div class="mb-6">
+                                    
+                                    <h4 class="text-xl font-bold text-foreground"></h4>
+                                </div>
+                                <!-- Interactive Plan Demo -->
+                                <div id="interactive-plan-demo" class="relative bg-gradient-to-br from-green-100 to-teal-100 rounded-3xl p-12 shadow-elegant h-96 flex flex-col items-center justify-center">
+                                    <!-- Confetti Animation -->
+                                    <div id="confetti-container" class="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl hidden">
+                                        <!-- Confetti will be dynamically added here -->
+                                    </div>
+
+                                    <!-- Initial State -->
+                                    <div id="initial-state" class="space-y-6 text-center animate-fade-in-up">
+                                        <p class="text-lg text-gray-600 font-medium">
+                                            Simply just click:
+                                        </p>
+                                        
+                                        <!-- Animated Arrow -->
+                                        <div class="animate-bounce-gentle">
+                                            <svg class="w-8 h-8 mx-auto text-green-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                            </svg>
+                                        </div>
+
+                                        <button id="add-to-calendar-btn" class="bg-gradient-to-r from-green-500 to-teal-500 text-white px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                            📅 Add to Calendar
+                                        </button>
+                                    </div>
+
+                                    <!-- Loading State -->
+                                    <div id="loading-state" class="animate-fade-in-up hidden">
+                                        <div class="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                        <p class="text-green-700 font-semibold">Adding to calendar...</p>
+                                    </div>
+
+                                    <!-- Success State -->
+                                    <div id="success-state" class="text-center animate-zoom-in hidden">
+                                        <div class="text-6xl mb-4">🎉</div>
+                                        <p class="text-2xl font-bold text-green-700 mb-2">BOOM!</p>
+                                        <p class="text-lg text-green-600">It's in your plan!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group text-center relative">
+    <div class="mb-6">
+        <h4 class="text-xl font-bold text-foreground">Automatically added to Calendar</h4>
+    </div>
+    <div class="relative carousel-container">
+        <div id="planning-overlay" class="disabled-overlay">
+            <span>Complete calendar addition first ✨</span>
+        </div>
+        
+        <!-- Image Carousel -->
+        <div class="carousel-wrapper relative">
+            <div class="carousel-slides">
+                <img decoding="async" loading="lazy"src="img/addeventmodecalendar2.png" alt="Event Automatically Added to Calendar" class="carousel-slide active" />
+                <img decoding="async" loading="lazy"src="img/addeventmodedescription.png" alt="Event Automatically Added to Calendar description" class="carousel-slide" />
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <button class="carousel-arrow prev" aria-label="Previous image">
+                <span class="arrow-icon">←</span>
+            </button>
+            <button class="carousel-arrow next" aria-label="Next image">
+                <span class="arrow-icon">→</span>
+            </button>
+            
+            <!-- Dots Indicator -->
+            <div class="carousel-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+            </div>
+        </div>
+    </div>
+</div>
+                        </div>
+                        
+                        <div class="space-y-12 animate-fade-in-up">
+                            <div class="glass-card rounded-3xl p-12 shadow-elegant bg-yellow-50-50">
+                                <p class="text-5xl text-center text-foreground leading-relaxed font-semibold">
+                                    📸 Not to mention: just add a picture of a <strong>memo</strong> or <strong>invitation</strong>,<br />
+                                    and it'll be added to your calendar 
+                                    <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground">
+                                        straight from chat!
+                                    </span> 
+                                    🎯
+                                </p>
+                            </div>
+                            
+                            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                                <div class="group text-center">
+                                    <h4 class="text-xl font-bold text-foreground mb-6"> Auto Calendar Entry</h4>
+                                     <img decoding="async" loading="lazy"src="gifs/AddeventmodeImage.gif" alt="Auto Calendar Entry from Image"  />
+                                </div>
+                                <div class="group text-center">
+                                    <h4 class="text-xl font-bold text-foreground mb-6">Image Recognition</h4>
+                                     <img decoding="async" loading="lazy"src="img/eventinfo.png" alt="Event Added to Calendar from Image"  />
+                                </div>
+                            </div>
+                            
+                            <div class="text-center glass-card rounded-3xl p-12 shadow-elegant">
+    <a href="pricing.html" class="btn-hero mb-6 animate-pulse-scale">
+        🚀 Get Started with Just Chat
+    </a>
+                                <p class="text-primary text-lg font-semibold animate-bounce-gentle">
+                                    Keep scrolling to see what else there is! ⬇️✨
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DocLive Section -->
+        <section id="doclive" class="section-padding bg-gradient-to-br from-background via-purple-50 to-pink-50 relative overflow-hidden">
+            <!-- Floating document icons -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-20 left-10 text-6xl animate-bounce-gentle">📄</div>
+                <div class="absolute top-40 right-20 text-4xl animate-float animate-delay-100">✏️</div>
+                <div class="absolute bottom-20 left-1/4 text-5xl animate-wiggle animate-delay-200">📝</div>
+                <div class="absolute bottom-40 right-1/3 text-3xl animate-pulse-scale animate-delay-300">🔗</div>
+            </div>
+            
+            <div class="container-content relative z-10">
+                <div class="space-y-24 animate-fade-in-up">
+                    <div class="text-center">
+                        <h2 class="text-mega font-black gradient-text mb-12 animate-zoom-in">
+                            DocLive ✨
+                        </h2>
+                        <div class="space-y-6">
+                            <p class="text-xl md:text-2xl text-foreground font-bold">
+                                <span class="text-primary underline decoration-2 underline-offset-4">
+                                    No more copy and pasting
+                                </span> 
+                                into ChatGPT 🙅‍♂️
+                            </p>
+                            <p class="text-lg md:text-xl text-muted-foreground animate-slide-in-left">
+                                It's all 
+                                <span class="text-accent-foreground font-bold underline decoration-2 underline-offset-4">
+                                    integrated
+                                </span>
+                                . 🔗⚡
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- DocLive Comparison -->
+<div class="max-w-8xl mx-auto">
+  <div class="grid lg:grid-cols-3 gap-8 items-start mb-16"><!-- 👈 changed items-center → items-start -->
+    
+    <!-- ChatGPT Side -->
+    <div class="group animate-slide-in-left" id="chatgpt-side">
+      <div class="bg-red-50-80 backdrop-blur-sm rounded-2xl p-6 border-4 border-red-200 shadow-elegant transition-all duration-300 hover-scale-105 hover-shadow-xl">
+        <h3 class="text-2xl font-bold text-red-600 mb-4 text-center flex items-center justify-center gap-2">
+          😩 Traditional Way
+        </h3>
+        <div class="space-y-3 text-sm text-red-700">
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>1️⃣</span> <span>Copy text from document</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>2️⃣</span> <span>Switch to ChatGPT</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>3️⃣</span> <span>Paste and ask question</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>4️⃣</span> <span>Copy response back</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>5️⃣</span> <span>Switch back to document</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 rounded bg-red-100">
+            <span>6️⃣</span> <span>Paste and format</span>
+          </div>
+        </div>
+      </div>
+      <!-- 👇 keep GIF directly under text block -->
+      <div class="mt-6">
+        <img decoding="async" loading="lazy"src="gifs/VSChatgpt.gif" alt="ChatGPT Copy Paste Workflow" class="mx-auto" />
+      </div>
+    </div>
+    
+    <!-- VS indicator -->
+    <div class="text-center animate-zoom-in">
+      <div id="vs-indicator" class="bg-gradient-to-r from-red-500 to-green-500 rounded-full w-24 h-24 mx-auto flex items-center justify-center shadow-mega animate-pulse-scale transition-all duration-300">
+        <span class="text-2xl font-black text-white">VS</span>
+      </div>
+      <p class="text-lg font-bold text-muted-foreground mt-4">Which would you choose?</p>
+    </div>
+    
+    <!-- DocLive Side -->
+<div class="group animate-slide-in-right" id="doclive-side">
+  <div class="bg-green-50-80 backdrop-blur-sm rounded-2xl p-6 border-4 border-green-200 shadow-elegant transition-all duration-300 hover-scale-105 hover-shadow-xl">
+    <h3 class="text-2xl font-bold text-green-600 mb-4 text-center flex items-center justify-center gap-2">
+      🚀 DocLive Way
+    </h3>
+    <div class="space-y-3 text-sm text-green-700">
+      <div class="flex items-center gap-2 p-2 rounded bg-green-100">
+        <span>1️⃣</span> <span><strong>Select text in document</strong></span>
+      </div>
+      <div class="flex items-center gap-2 p-2 rounded bg-green-100">
+        <span>2️⃣</span> <span><strong>Ask AI instantly</strong></span>
+      </div>
+      <div class="flex items-center gap-2 p-2 rounded bg-green-100">
+        <span>3️⃣</span> <span><strong>Get response right there</strong></span>
+      </div>
+      <div class="text-center text-green-800 font-bold text-lg mt-4 p-3 bg-green-200 rounded-lg">
+        ✨ That's it! ✨
+      </div>
+      <div class="text-center text-green-800 font-bold text-lg mt-4 p-3 bg-green-200 rounded-lg">
+        It really is that simple! 🎯
+      </div>
+    </div>
+  </div>
+  <!-- Increased top margin for better alignment -->
+  <div class="mt-40 lg:mt-48"> <!-- Increased from mt-24 lg:mt-32 to mt-40 lg:mt-48 -->
+    <img decoding="async" loading="lazy"src="gifs/documentWhtdoyouthink.gif" alt="DocLive Integrated Workflow" class="mx-auto" />
+  </div>
+</div>
+
+    
+  </div>
+</div>
+
+                    
+                    <div class="space-y-24 max-w-7xl mx-auto">
+                        <div class="grid lg:grid-cols-2 gap-20 items-center">
+                            
+                            <div class="space-y-6 animate-slide-in-left">
+                                <div class="glass-card rounded-2xl p-6 shadow-elegant bg-blue-50-50">
+                                    <h3 class="text-2xl font-bold text-foreground mb-3">
+                                        ✍️ Quick and easy 
+                                        <span class="text-primary underline decoration-2 underline-offset-4 font-bold">
+                                            grammar fixes
+                                        </span>
+                                    </h3>
+                                    <p class="text-lg text-muted-foreground">
+                                        while keeping the rest of your text <strong>perfectly intact</strong> 🎯
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="animate-slide-in-right">
+                                <img decoding="async" loading="lazy"src="gifs/grammervideo.gif" alt="Grammar Fixes Interface"  />
+                            </div>
+                        </div>
+                        
+                        <div class="grid lg:grid-cols-2 gap-20 items-center">
+                            <div class="order-2 lg:order-1 animate-slide-in-left">
+                                <img decoding="async" loading="lazy"src="img/doclivechat.png" alt="Chat interface DocLive"  />
+                            </div>
+                            <div class="order-1 lg:order-2 space-y-6 animate-slide-in-right">
+                                <div class="glass-card rounded-2xl p-6 shadow-elegant bg-purple-50-50">
+                                    <h3 class="text-2xl font-bold text-foreground mb-3">
+                                        🤔 Have questions? Want to clarify something?
+                                    </h3>
+                                    <p class="text-lg text-primary font-semibold">
+                                        <span class="text-accent-foreground underline decoration-2 underline-offset-4">
+                                            Engage with the built-in chat
+                                        </span> 
+                                        💬✨
+                                    </p>
+                                    <p class="text-base text-muted-foreground mt-3">
+                                        No more switching tabs or losing context!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event connection feature -->
+                        <div class="text-center space-y-16 animate-fade-in-up">
+                            <div class="glass-card rounded-3xl p-8 shadow-mega bg-yellow-50-50">
+                                <h3 class="text-2xl font-bold text-foreground mb-4">
+                                    🎯 For extra personalization and context
+                                </h3>
+                                <p class="text-lg text-primary font-semibold">
+                                    <span class="text-primary underline decoration-2 underline-offset-4">
+                                        Connect responses from events
+                                    </span> 
+                                    🔗📅
+                                </p>
+                                <p class="text-base text-muted-foreground mt-3">
+                                    Your AI assistance gets smarter with every interaction!
+                                </p>
+                            </div>
+                            
+                            <img decoding="async" loading="lazy"src="gifs/ConnectResponses.gif" alt="Connect Responses to DocLive"  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+<!-- Modal -->
+<div class="modal" id="imageModal">
+    <span class="close-modal">&times;</span>
+    <img decoding="async" loading="lazy"class="modal-content" id="modalImage">
+</div>
+    
+
+        <!-- Future Section -->
+        <section class="future-section">
+            <div class="future-container">
+                <div class="future-header">
+                    <h2 class="future-title">
+                        What's coming
+                        <span class="future-title-highlight">next</span>
+                    </h2>
+                    <p class="future-description">
+                        We're constantly evolving. Here's what's on the horizon and how you can help shape our roadmap.
+                    </p>
+                </div>
+                
+                <div class="future-grid">
+                    <div class="future-card" data-index="0">
+                        <div class="future-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 2v4"/>
+                                <path d="M16 2v4"/>
+                                <rect width="18" height="18" x="3" y="4" rx="2"/>
+                                <path d="M3 10h18"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="future-header-content">
+                            <h3 class="future-card-title">Google Calendar Sync</h3>
+                            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        
+                        <p class="future-card-description">Seamlessly connect with your existing calendar</p>
+                        
+                        <div class="future-expanded-content">
+                            <img decoding="async" loading="lazy"src="img/google.png" alt="Google icon" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+                            <p class="future-detailed-description">Import your existing events, sync new ones automatically, and maintain your workflow across platforms. Full two-way synchronization with smart conflict resolution.</p>
+                        </div>
+                    </div>
+
+                    <div class="future-card" data-index="1">
+                        <div class="future-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="future-header-content">
+                            <h3 class="future-card-title">Web Search Integration</h3>
+                            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        
+                        <p class="future-card-description">AI that can research and fact-check in real-time</p>
+                        
+                        <div class="future-expanded-content">
+                            <img decoding="async" loading="lazy"src="img/www.png" alt="Web Search icon" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+                            <p class="future-detailed-description">Your AI assistant will be able to browse the web, fact-check information, and provide up-to-date research for your projects and decisions.</p>
+                        </div>
+                    </div>
+
+                    <div class="future-card" data-index="2">
+                        <div class="future-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                                <path d="M14.5 6A2.5 2.5 0 0 1 17 8.5c0 1.11-.35 2.13-.94 2.97a2.5 2.5 0 0 1-2.22 4.94A2.5 2.5 0 0 1 9.5 14"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="future-header-content">
+                            <h3 class="future-card-title">Advanced Reasoning Models</h3>
+                            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        
+                        <p class="future-card-description">More sophisticated AI for complex problem-solving</p>
+                        
+                        <div class="future-expanded-content">
+                            <img decoding="async" loading="lazy"src="img/gans.png" alt="Reasoning model" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+                            <p class="future-detailed-description">Next-generation AI models that can handle complex multi-step reasoning, strategic planning, and nuanced decision-making for your most challenging tasks.</p>
+                        </div>
+                    </div>
+
+                    <div class="future-card" data-index="3">
+                        <div class="future-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                <line x1="12" x2="12" y1="19" y2="22"/>
+                                <line x1="8" x2="16" y1="22" y2="22"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="future-header-content">
+                            <h3 class="future-card-title">Voice Conversations</h3>
+                            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        
+                        <p class="future-card-description">Talk naturally with your AI assistant</p>
+                        
+                        <div class="future-expanded-content">
+                            <img decoding="async" loading="lazy"src="img/voice-recognition.png" alt="Voice Conversation icon" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+                            <p class="future-detailed-description">Have natural voice conversations with your AI. Dictate ideas, ask questions, and get verbal responses while you work, drive, or exercise.</p>
+                        </div>
+                    </div>
+
+                    <div class="future-card" data-index="4">
+                        <div class="future-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+                                <path d="M9 18h6"/>
+                                <path d="M10 22h4"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="future-header-content">
+                            <h3 class="future-card-title">Thought Capture</h3>
+                            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </div>
+                        
+                        <p class="future-card-description">Voice notes and ideas automatically organized</p>
+                        
+                        <div class="future-expanded-content">
+                            <img decoding="async" loading="lazy"src="img/writing.png" alt="Thought Capture icon" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+                            <p class="future-detailed-description">Capture random thoughts throughout the day via voice or text. AI automatically categorizes, improves readability, and connects related ideas across your knowledge base.</p>
+                        </div>
+                    </div>
+
+                    <!-- Add new Personalities card in position 5 -->
+    <div class="future-card" data-index="4">
+        <div class="future-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+        </div>
+        
+        <div class="future-header-content">
+            <h3 class="future-card-title">AI Personalities</h3>
+            <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </div>
+        
+        <p class="future-card-description">Choose different AI personalities for different tasks</p>
+        
+        <div class="future-expanded-content">
+            <img decoding="async" loading="lazy"src="img/happy.png" alt="AI Personalities icon" style="width: 64px; height: 64px; margin-bottom: 1rem;"/>
+            <p class="future-detailed-description">Switch between different AI personalities optimized for specific tasks - from creative brainstorming to structured planning to technical analysis.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Move and update Ideas card to full width -->
+<div class="future-card future-card-special full-width" data-index="5" style="margin-top: 2.5rem; text-align: center; max-width: none;">
+    
+    
+    <div class="future-header-content justify-center">
+        <h3 class="future-card-title">Your Ideas Here</h3>
+        <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+        </svg>
+    </div>
+    
+    <p class="future-card-description">Help shape what we build next</p>
+    
+    <div class="future-expanded-content">
+        <div class="community-preview" style="margin: 2rem 0; background: white; padding: 2rem; border-radius: 1rem;">
+    <img decoding="async" loading="lazy"src="img/reddit (1).png" alt="Reddit Community" style="width: 64px; height: 64px; margin-bottom: 1rem;" />
+    <p style="margin: 1rem 0; font-size: 1.1rem; color: #1a1a1a;">Join our Reddit community to discuss features, share ideas, and help shape the future of Sparkstr!</p>
+    <a href="https://www.reddit.com/r/Sparkstr/" target="_blank" rel="noopener noreferrer" class="btn-hero" style="display: inline-block; margin-top: 1rem;">
+        Join Our Community
+    </a>
+</div>
+        <p class="future-detailed-description">Be part of our growing community. Vote on ideas, suggest new capabilities, and directly influence our development roadmap.</p>
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section" id="cta-section">
+            <!-- Enhanced parallax background effects -->
+            <div class="cta-background">
+                <div class="cta-orb cta-orb-1"></div>
+                <div class="cta-orb cta-orb-2"></div>
+                <div class="cta-orb cta-orb-3"></div>
+                
+                <!-- Moving particles -->
+                <div class="cta-particle cta-particle-1"></div>
+                <div class="cta-particle cta-particle-2"></div>
+                <div class="cta-particle cta-particle-3"></div>
+            </div>
+            
+            <div class="cta-content" id="cta-content">
+                <div class="cta-inner">
+                    <div class="cta-badge">
+                        <svg class="sparkles-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l0 0a2 2 0 0 0-1.437 1.437l0 0a2 2 0 0 0 1.437 1.437l0 0a2 2 0 0 0 1.437-1.437Z"/>
+                            <path d="M14.063 8.5A2 2 0 0 0 12.626 7.063l0 0a2 2 0 0 0-1.437 1.437l0 0a2 2 0 0 0 1.437 1.437l0 0a2 2 0 0 0 1.437-1.437Z"/>
+                            <path d="M19.5 12a2 2 0 0 0-1.437-1.437l0 0A2 2 0 0 0 16.626 12l0 0a2 2 0 0 0 1.437 1.437l0 0A2 2 0 0 0 19.5 12Z"/>
+                            <path d="M4.5 12a2 2 0 0 0-1.437-1.437l0 0A2 2 0 0 0 1.626 12l0 0a2 2 0 0 0 1.437 1.437l0 0A2 2 0 0 0 4.5 12Z"/>
+                        </svg>
+                        <span class="cta-badge-text">Ready to transform your productivity?</span>
+                    </div>
+                    
+                    <h2 class="cta-title">
+                        Start your
+                        <span class="cta-title-highlight">Sparkstr journey</span>
+                    </h2>
+                    
+                    <div class="cta-buttons">
+                        <button class="btn btn-hero btn-glow">
+                            Get Started Now
+                            <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14"/>
+                                <path d="M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <h3 class="footer-title">Sparkstr</h3>
+                <p class="footer-slogan">Fuel the start, not the schedule</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 class="footer-heading">Links</h4>
+                    <ul class="footer-list">
+                        <li><a href="pricing.html" class="footer-link">Pricing</a></li>
+                        <li><a href="./Login/signup.html" class="footer-link">Login</a></li>
+                        <li><a href="#" class="footer-link" data-modal="privacy">Privacy Policy</a></li>
+                        <li><span style="color: #8150ca; font-weight: 500;">Contact Us:</span> contact@sparkstr.com</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Sparkstr. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Add this modal HTML before closing body tag -->
+<div class="policy-modal" id="privacyModal">
+  <div class="modal-content">
+    <button class="modal-close">&times;</button>
+    <h2 class="text-2xl font-bold mb-4">Privacy Policy</h2>
+    <div class="space-y-4">
+      <p><strong>Effective Date:</strong> September 2, 2025</p>
+
+      <p>
+        Calendar Project (“we”, “our”, “us”) values your privacy and is committed
+        to protecting your personal information. This Privacy Policy explains how
+        we collect, use, store, and share your data when you use our Calendar
+        Project tool and related features, including event management,
+        AI-assisted responses, Focus Mode, Just Chat, and Doc Live.
+      </p>
+
+      <p>
+        By using our services, you acknowledge and agree to the practices
+        described in this policy.
+      </p>
+
+      <h3 class="text-xl font-semibold mt-6">1. Information We Collect</h3>
+      <p>We collect the following categories of information when you use our app:</p>
+      <ul class="list-disc pl-6 mt-2">
+        <li>
+          <strong>Account Information</strong><br />
+          When you sign up, we collect your email address and any account
+          credentials you provide.
+        </li>
+        <li>
+          <strong>Event & Calendar Data</strong><br />
+          Events, notes, and schedules you create are stored securely in our
+          database (Firebase). If you delete an event or document, it is
+          permanently deleted and not recoverable.
+        </li>
+        <li>
+          <strong>AI-Generated Data</strong><br />
+          To provide AI responses, Smart Plans, document feedback, or chat
+          suggestions, we send your content data to the OpenAI API. This includes:
+          <ul class="list-disc pl-6 mt-2">
+            <li>Event details and descriptions</li>
+            <li>Document text</li>
+            <li>Chat messages</li>
+            <li>Uploaded context such as files, URLs, or images</li>
+          </ul>
+          We do not send your email address or other personal account data to
+          OpenAI.<br />
+          This data is retained as needed to generate AI responses, maintain
+          context, and provide continuity across interactions (for example,
+          linked Smart Plans or multi-step responses).
+        </li>
+        <li>
+          <strong>Payment Information</strong><br />
+          Payments are processed securely through Stripe. We do not store your
+          credit card details. Stripe may collect and process billing data in
+          accordance with their own Privacy Policy.
+        </li>
+        <li>
+          <strong>Analytics Data</strong><br />
+          We collect limited, privacy-focused analytics (e.g., page visits,
+          feature usage) to understand how our app is used and to improve
+          functionality. We do not use advertising or marketing trackers.
+        </li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mt-6">2. How We Use Your Information</h3>
+      <ul class="list-disc pl-6 mt-2">
+        <li>To operate and provide the calendar, event, and AI-assisted features</li>
+        <li>To generate AI responses, Smart Plans, and document assistance</li>
+        <li>To process payments via Stripe</li>
+        <li>To provide notifications and reminders for your scheduled events</li>
+        <li>
+          To improve and maintain our services, including troubleshooting and
+          analytics
+        </li>
+        <li>To ensure security and compliance with legal obligations</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mt-6">3. Sharing Your Information</h3>
+      <p>
+        We only share your information with trusted third parties necessary to
+        deliver our services:
+      </p>
+      <ul class="list-disc pl-6 mt-2">
+        <li>
+          <strong>Firebase (Google Cloud):</strong> For secure storage of account
+          data, events, and documents.
+        </li>
+        <li>
+          <strong>OpenAI API:</strong> To generate AI-powered responses and
+          suggestions based on your content.
+        </li>
+        <li>
+          <strong>Stripe:</strong> To process payments securely.
+        </li>
+      </ul>
+      <p>
+        We do not sell, rent, or share your data with advertisers or third-party
+        marketers.
+      </p>
+
+      <h3 class="text-xl font-semibold mt-6">4. Data Retention & Deletion</h3>
+      <ul class="list-disc pl-6 mt-2">
+        <li>
+          Your account and event data are stored securely while you maintain an
+          account with us.
+        </li>
+        <li>
+          If you delete an event, plan, or document, it is permanently deleted
+          from our systems.
+        </li>
+        <li>
+          AI-related content sent to OpenAI is retained as needed to provide
+          responses, maintain context, and enable features like linked Smart
+          Plans or Focus Mode continuity.
+        </li>
+        <li>
+          Your account data (including email) is stored until you choose to
+          delete your account, at which point all account-related data is
+          permanently removed.
+        </li>
+      </ul>
+
+      <h3 class="text-xl font-semibold mt-6">5. Your Rights</h3>
+      <p>As a UK/EU user, you have the following rights under GDPR:</p>
+      <ul class="list-disc pl-6 mt-2">
+        <li><strong>Right to Access –</strong> Request a copy of the personal data we hold about you.</li>
+        <li><strong>Right to Rectification –</strong> Correct inaccurate or incomplete data.</li>
+        <li><strong>Right to Erasure –</strong> (“Right to be Forgotten”) Request deletion of your account data at any time.</li>
+        <li><strong>Right to Restrict Processing –</strong> Limit how your data is used.</li>
+        <li><strong>Right to Data Portability –</strong> Request to transfer your data to another service.</li>
+        <li><strong>Right to Object –</strong> Object to how your data is processed.</li>
+      </ul>
+      
+
+      <h3 class="text-xl font-semibold mt-6">6. Data Security</h3>
+      <p>
+        We take appropriate technical and organizational measures to protect your
+        data, including encryption, secure hosting, and controlled access.
+        However, no system is 100% secure, and we cannot guarantee absolute
+        security.
+      </p>
+
+      <h3 class="text-xl font-semibold mt-6">7. Changes to This Policy</h3>
+      <p>
+        We may update this Privacy Policy from time to time. Updates will be
+        posted on this page with a new effective date.
+      </p>
+
+      
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <script src="landingpage.js" type="module">
+    </script>
+</body>
+</html>

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Mode</title>
+    <link rel="icon" href="../img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/Logo.png">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+    <style>
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+body.transition-to-chat {
+  transition: background 0.5s ease-in-out;
+  background: white; /* Optional style for effect */
+}
+
+/* Utility classes - Tailwind-like */
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.z-0 {
+    z-index: 0;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+.z-50 {
+    z-index: 50;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-3 {
+    gap: 0.75rem;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.gap-6 {
+    gap: 1.5rem;
+}
+
+.w-1 {
+    width: 0.25rem;
+}
+
+.w-1\.5 {
+    width: 0.375rem;
+}
+
+.w-2 {
+    width: 0.5rem;
+}
+
+.w-2\.5 {
+    width: 0.625rem;
+}
+
+.w-3 {
+    width: 0.75rem;
+}
+
+.w-4 {
+    width: 1rem;
+}
+
+.w-5 {
+    width: 1.25rem;
+}
+
+.w-6 {
+    width: 1.5rem;
+}
+
+.w-8 {
+    width: 2rem;
+}
+
+.w-12 {
+    width: 3rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-1 {
+    height: 0.25rem;
+}
+
+.h-1\.5 {
+    height: 0.375rem;
+}
+
+.h-2 {
+    height: 0.5rem;
+}
+
+.h-2\.5 {
+    height: 0.625rem;
+}
+
+.h-3 {
+    height: 0.75rem;
+}
+
+.h-4 {
+    height: 1rem;
+}
+
+.h-5 {
+    height: 1.25rem;
+}
+
+.h-6 {
+    height: 1.5rem;
+}
+
+.h-8 {
+    height: 2rem;
+}
+
+.h-12 {
+    height: 3rem;
+}
+
+.h-0\.5 {
+    height: 0.125rem;
+}
+
+.max-w-md {
+    max-width: 28rem;
+}
+
+.max-w-4xl {
+    max-width: 56rem;
+}
+
+.max-w-40 {
+    max-width: 10rem;
+}
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        max-width: 640px;
+    }
+    .sm\:flex-row {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+    margin-bottom: 2rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-8 {
+    margin-top: 2rem;
+}
+
+.px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.p-8 {
+    padding: 2rem;
+}
+
+.top-20 {
+    top: 5rem;
+}
+
+.top-40 {
+    top: 10rem;
+}
+
+.top-60 {
+    top: 15rem;
+}
+
+.top-1\/2 {
+    top: 50%;
+}
+
+.top-1\/4 {
+    top: 25%;
+}
+
+.top-3\/4 {
+    top: 75%;
+}
+
+.top-1\/3 {
+    top: 33.333333%;
+}
+
+.top-1\/6 {
+    top: 16.666667%;
+}
+
+.top-14 {
+    top: 3.5rem;
+}
+
+.bottom-20 {
+    bottom: 5rem;
+}
+
+.bottom-40 {
+    bottom: 10rem;
+}
+
+.bottom-60 {
+    bottom: 15rem;
+}
+
+.bottom-1\/3 {
+    bottom: 33.333333%;
+}
+
+.left-10 {
+    left: 2.5rem;
+}
+
+.left-20 {
+    left: 5rem;
+}
+
+.left-0 {
+    left: 0;
+}
+
+.left-1\/4 {
+    left: 25%;
+}
+
+.left-1\/3 {
+    left: 33.333333%;
+}
+
+.left-1\/6 {
+    left: 16.666667%;
+}
+
+.left-1\/2 {
+    left: 50%;
+}
+
+.right-0 {
+    right: 0;
+}
+
+.right-20 {
+    right: 5rem;
+}
+
+.right-40 {
+    right: 10rem;
+}
+
+.right-1\/4 {
+    right: 25%;
+}
+
+.right-1\/3 {
+    right: 33.333333%;
+}
+
+.right-1\/6 {
+    right: 16.666667%;
+}
+
+.right-1\/2 {
+    right: 50%;
+}
+
+.transform {
+    transform: var(--tw-transform);
+}
+
+.-translate-y-1\/2 {
+    --tw-translate-y: -50%;
+    transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1));
+}
+
+.-translate-x-1\/2 {
+    --tw-translate-x: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1));
+}
+
+.scale-110 {
+    --tw-scale-x: 1.1;
+    --tw-scale-y: 1.1;
+    transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+
+.rounded-2xl {
+    border-radius: 1rem;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.border {
+    border-width: 1px;
+}
+
+.border-2 {
+    border-width: 2px;
+}
+
+.space-y-2 > * + * {
+    margin-top: 0.5rem;
+}
+
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+
+/* Color classes */
+.bg-yellow-400 {
+    background-color: #facc15;
+}
+
+.bg-yellow-300 {
+    background-color: #fde047;
+}
+
+.bg-yellow-200 {
+    background-color: #fef08a;
+}
+
+.bg-purple-300 {
+    background-color: #d8b4fe;
+}
+
+.bg-purple-400 {
+    background-color: #c084fc;
+}
+
+.bg-purple-200 {
+    background-color: #e9d5ff;
+}
+
+.bg-green-500 {
+    background-color: #22c55e;
+}
+
+.bg-purple-600 {
+    background-color: #9333ea;
+}
+
+.bg-purple-900\/40 {
+    background-color: rgba(88, 28, 135, 0.4);
+}
+
+.bg-purple-800\/40 {
+    background-color: rgba(107, 33, 168, 0.4);
+}
+
+.bg-purple-800\/50 {
+    background-color: rgba(107, 33, 168, 0.5);
+}
+
+.bg-purple-700\/50 {
+    background-color: rgba(126, 34, 206, 0.5);
+}
+
+.bg-purple-500\/20 {
+    background-color: rgba(168, 85, 247, 0.2);
+}
+
+.text-yellow-400 {
+    color: #facc15;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-purple-200 {
+    color: #e9d5ff;
+}
+
+.text-purple-300 {
+    color: #d8b4fe;
+}
+
+.text-purple-900 {
+    color: #581c87;
+}
+
+.text-purple-100 {
+    color: #f3e8ff;
+}
+
+.text-green-400 {
+    color: #4ade80;
+}
+
+.border-yellow-300 {
+    border-color: #fde047;
+}
+
+.border-green-400 {
+    border-color: #4ade80;
+}
+
+.border-purple-500 {
+    border-color: #a855f7;
+}
+
+.border-purple-600 {
+    border-color: #9333ea;
+}
+
+.border-purple-700\/50 {
+    border-color: rgba(126, 34, 206, 0.5);
+}
+
+.border-purple-600\/30 {
+    border-color: rgba(147, 51, 234, 0.3);
+}
+
+.border-purple-600\/50 {
+    border-color: rgba(147, 51, 234, 0.5);
+}
+
+/* Typography */
+.text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.leading-tight {
+    line-height: 1.25;
+}
+
+.leading-relaxed {
+    line-height: 1.625;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Background gradients */
+.bg-gradient-to-br {
+    background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.from-slate-900 {
+    --tw-gradient-from: #0f172a;
+    --tw-gradient-to: rgba(15, 23, 42, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.via-purple-900 {
+    --tw-gradient-to: rgba(88, 28, 135, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), #581c87, var(--tw-gradient-to);
+}
+
+.to-slate-800 {
+    --tw-gradient-to: #1e293b;
+}
+
+.from-yellow-400 {
+    --tw-gradient-from: #facc15;
+    --tw-gradient-to: rgba(250, 204, 21, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-yellow-500 {
+    --tw-gradient-to: #eab308;
+}
+
+.from-yellow-500 {
+    --tw-gradient-from: #eab308;
+    --tw-gradient-to: rgba(234, 179, 8, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-yellow-600 {
+    --tw-gradient-to: #ca8a04;
+}
+
+.from-yellow-300 {
+    --tw-gradient-from: #fde047;
+    --tw-gradient-to: rgba(253, 224, 71, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-orange-400 {
+    --tw-gradient-to: #fb923c;
+}
+
+.to-orange-500 {
+    --tw-gradient-to: #f97316;
+}
+
+.from-orange-400 {
+    --tw-gradient-from: #fb923c;
+    --tw-gradient-to: rgba(251, 146, 60, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-red-500 {
+    --tw-gradient-to: #ef4444;
+}
+
+.from-yellow-500 {
+    --tw-gradient-from: #eab308;
+    --tw-gradient-to: rgba(234, 179, 8, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-red-400 {
+    --tw-gradient-to: #f87171;
+}
+
+.from-orange-300 {
+    --tw-gradient-from: #fdba74;
+    --tw-gradient-to: rgba(253, 186, 116, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-purple-400 {
+    --tw-gradient-to: #c084fc;
+}
+
+/* Opacity */
+.opacity-30 {
+    opacity: 0.3;
+}
+
+.opacity-40 {
+    opacity: 0.4;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
+.opacity-60 {
+    opacity: 0.6;
+}
+
+.opacity-70 {
+    opacity: 0.7;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+/* Button styles */
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+}
+
+button:hover {
+    transition: all 0.3s ease;
+}
+
+.hover\:scale-105:hover {
+    --tw-scale-x: 1.05;
+    --tw-scale-y: 1.05;
+    transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.hover\:from-yellow-500:hover {
+    --tw-gradient-from: #eab308;
+    --tw-gradient-to: rgba(234, 179, 8, 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.hover\:to-yellow-600:hover {
+    --tw-gradient-to: #ca8a04;
+}
+
+.hover\:bg-purple-600\/60:hover {
+    background-color: rgba(147, 51, 234, 0.6);
+}
+
+.hover\:text-white:hover {
+    color: #ffffff;
+}
+
+.hover\:text-yellow-400:hover {
+    color: #facc15;
+}
+
+.hover\:border-purple-500:hover {
+    border-color: #a855f7;
+}
+
+.hover\:bg-purple-800\/30:hover {
+    background-color: rgba(107, 33, 168, 0.3);
+}
+
+.group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+}
+
+/* Backdrop blur */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+/* Shadow */
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-yellow-400\/30 {
+    box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.3), 0 4px 6px -2px rgba(250, 204, 21, 0.3);
+}
+
+.shadow-green-500\/30 {
+    box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3), 0 4px 6px -2px rgba(34, 197, 94, 0.3);
+}
+
+.shadow-yellow-400\/40 {
+    box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.4), 0 4px 6px -2px rgba(250, 204, 21, 0.4);
+}
+
+/* Transitions */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-colors {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-opacity {
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.duration-200 {
+    transition-duration: 200ms;
+}
+
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+.duration-700 {
+    transition-duration: 700ms;
+}
+
+.ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Animations */
+@keyframes pulse {
+    50% {
+        opacity: .5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px);
+        opacity: 0.4;
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-10px) translateX(-15px);
+        opacity: 0.6;
+    }
+    75% {
+        transform: translateY(-30px) translateX(5px);
+        opacity: 0.9;
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 8s ease-in-out infinite 2s;
+}
+
+.animate-float-slow {
+    animation: float 7s ease-in-out infinite 1s;
+}
+
+.animate-float-extra {
+    animation: float 9s ease-in-out infinite 3s;
+}
+
+.animate-float-quick {
+    animation: float 5s ease-in-out infinite 1.5s;
+}
+
+.animate-float-longest {
+    animation: float 10s ease-in-out infinite 4s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+/* Custom min-width */
+.min-w-\[160px\] {
+    min-width: 160px;
+}
+
+/* Background colors with transparency */
+.bg-black\/60 {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+/* Toggle Switch Styles */
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  background: #2d2d2d;
+  transition: background 0.2s;
+  margin-left: 1rem;
+}
+.toggle-switch[data-mode="light"] {
+  background: #facc15;
+}
+.toggle-switch .toggle-slider {
+  width: 36px;
+  height: 20px;
+  background: #444;
+  border-radius: 9999px;
+  position: relative;
+  margin-right: 0.5rem;
+  transition: background 0.2s;
+}
+.toggle-switch[data-mode="light"] .toggle-slider {
+  background: #fffbe6;
+}
+.toggle-switch .toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s, background 0.2s;
+}
+.toggle-switch[data-mode="dark"] .toggle-knob {
+  left: 2px;
+  background: #fff;
+}
+.toggle-switch[data-mode="light"] .toggle-knob {
+  left: 18px;
+  background: #facc15;
+}
+.toggle-switch span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 0.25rem;
+}
+.toggle-switch[data-mode="light"] span {
+  color: #a78bfa;
+}
+.theme-toggle-btn.theme-toggle-animate {
+    transform: scale(1.2) rotate(-15deg);
+    transition: transform 0.3s;
+    box-shadow: 0 0 12px #facc15;
+  }
+
+#focus-help-loader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  backdrop-filter: blur(2px);
+  background: rgba(255,255,255,0.55);
+  align-items: center;
+  justify-content: center;
+}
+.loader-bounce {
+  display: flex;
+  gap: 12px;
+}
+.loader-bounce .dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #a78bfa;
+  opacity: 0.7;
+  animation: bounce 1.2s infinite alternate;
+}
+.loader-bounce .dot:nth-child(2) { animation-delay: 0.2s; background: #fbbf24; }
+.loader-bounce .dot:nth-child(3) { animation-delay: 0.4s; background: #f59e42; }
+@keyframes bounce {
+  to { transform: translateY(-18px); opacity: 1; }
+}
+    </style>
+    <script>
+        // 👉 Tell PDF.js where to find its worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
+  </script>
+
+
+<!-- JSZip for reading .docx (ZIP) in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+<script> window.md = window.markdownit(); </script>
+<link rel="manifest" href="../manifest.webmanifest">
+<script src="../pwa.js" defer></script>
+</script>
+
+</head>
+<body>
+    <div id="focus-mode-section">
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 relative overflow-hidden">
+        <!-- Decorative background elements -->
+        <div class="absolute inset-0 pointer-events-none">
+            <!-- Static elements -->
+            <div class="absolute top-20 left-10 w-2 h-2 bg-yellow-400 rounded-full opacity-60 animate-pulse"></div>
+            <div class="absolute top-40 right-20 w-1 h-1 bg-purple-300 rounded-full opacity-40"></div>
+            <div class="absolute bottom-40 left-20 w-1.5 h-1.5 bg-yellow-300 rounded-full opacity-50"></div>
+            <div class="absolute bottom-20 right-40 w-1 h-1 bg-purple-400 rounded-full opacity-30"></div>
+            <div class="absolute top-60 left-1/3 w-1 h-1 bg-yellow-200 rounded-full opacity-40 animate-pulse"></div>
+            <div class="absolute bottom-60 right-1/3 w-2 h-2 bg-purple-200 rounded-full opacity-30"></div>
+            
+            <!-- Floating embers -->
+            <div class="absolute top-1/4 left-1/4 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full opacity-70 animate-float"></div>
+            <div class="absolute top-3/4 right-1/4 w-2 h-2 bg-gradient-to-r from-yellow-300 to-orange-400 rounded-full opacity-60 animate-float-delayed"></div>
+            <div class="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-gradient-to-r from-yellow-500 to-red-400 rounded-full opacity-50 animate-float-slow"></div>
+            <div class="absolute top-1/3 right-1/6 w-2.5 h-2.5 bg-gradient-to-r from-orange-400 to-red-500 rounded-full opacity-40 animate-float-extra"></div>
+            <div class="absolute bottom-1/3 left-1/2 w-1 h-1 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-60 animate-float-quick"></div>
+            <div class="absolute top-1/6 right-1/2 w-2 h-2 bg-gradient-to-r from-orange-300 to-yellow-500 rounded-full opacity-50 animate-float-longest"></div>
+        </div>
+
+        <!-- Main content -->
+        <div class="relative z-10 container mx-auto px-6 py-8 max-w-4xl">
+            
+            <!-- Focus Header -->
+            <div class="text-center mb-8 animate-fade-in">
+                <div class="inline-flex items-center gap-2 bg-purple-500/20 px-4 py-2 rounded-full mb-4">
+                    <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="6"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                    </svg>
+                    <span class="text-yellow-400 font-medium text-sm">Today's Focus</span>
+                </div>
+                
+                <h1 id="event-title" class="text-4xl font-bold text-white mb-3"></h1>
+                
+                <div class="flex items-center justify-center gap-6 text-purple-200">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <span class="text-sm"></span>
+                    </div>
+                    <div class="text-sm">
+                        <span id="completed-steps"></span> of <span id="total-steps"></span> steps completed
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress Tracker -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between relative">
+                    <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-purple-800/50 -translate-y-1/2 z-0"></div>
+                    <div id="progress-line" class="absolute top-1/2 left-0 h-0.5 bg-gradient-to-r from-yellow-400 to-purple-400 -translate-y-1/2 z-0 transition-all duration-700 ease-out" style="width: 0%"></div>
+                    
+                    <div id="progress-steps" class="flex items-center justify-between w-full relative z-10">
+                        <!-- Steps will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step Card -->
+            <div class="mt-8">
+                <div id="step-card" class="bg-purple-900/40 backdrop-blur-sm border border-purple-700/50 rounded-2xl p-8 animate-fade-in">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button id="done-btn" class="group relative bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-purple-900 font-semibold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-yellow-400/30 flex items-center gap-3 min-w-[160px] justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                    <span id="done-text">Done</span>
+                </button>
+
+                <button id="skip-btn" class="group relative bg-purple-700/50 hover:bg-purple-600/60 text-purple-200 hover:text-white font-medium px-8 py-4 rounded-xl transition-all duration-300 border border-purple-600/50 hover:border-purple-500 flex items-center gap-3 min-w-[160px] justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <polygon points="5,4 15,12 5,20"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                    <span>Skip</span>
+                </button>
+
+                <button id="help-btn" class="group relative text-purple-300 hover:text-yellow-400 font-medium px-6 py-4 rounded-xl transition-all duration-300 flex items-center gap-2 hover:bg-purple-800/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m9,9a3,3 0 1,1 6,0c0,2 -3,3 -3,3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span>I Need Help</span>
+                </button>
+            </div>
+        </div>
+        <!-- Completion Modal -->
+        <div id="completion-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 items-center justify-center p-4 hidden">
+            <div class="bg-gradient-to-br from-purple-900 to-slate-900 border border-purple-700/50 rounded-2xl p-8 max-w-md w-full animate-scale-in">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <polyline points="20,6 9,17 4,12"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Well Done!</h3>
+                            <p class="text-purple-200 text-sm">You've completed your focus session</p>
+                        </div>
+                    </div>
+                    <button id="close-modal" class="text-purple-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="text-center mb-6">
+                    <h1 id="event-title" class="text-4xl font-bold text-white mb-3"></h1>
+                    <div class="flex items-center justify-center gap-2 text-green-400 mb-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <polyline points="20,6 9,17 4,12"></polyline>
+                        </svg>
+                        <span class="font-medium"><span id="modal-completed">0</span> of <span id="modal-total">3</span> steps completed</span>
+                    </div>
+                    
+                    <div class="bg-purple-800/40 rounded-xl p-4">
+                        <div id="completion-rate" class="text-3xl font-bold text-yellow-400 mb-1">0%</div>
+                        <div class="text-purple-200 text-sm">Completion Rate</div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="continue-btn" class="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-purple-900 font-semibold py-3 rounded-xl transition-all duration-300">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Add this at the end of your body -->
+<div id="focus-help-loader" style="display:none;position:fixed;inset:0;z-index:99999;backdrop-filter:blur(2px);background:rgba(255,255,255,0.55);align-items:center;justify-content:center;">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:18px;">
+    <div class="loader-bounce">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div style="font-size:1.2rem;color:#a78bfa;font-weight:600;letter-spacing:1px;">Preparing Smart Chat...</div>
+  </div>
+</div>
+        
+
+    <script src="focus_Mode.js" type="module"></script>
+    <script src="SmartChat.js" type="module"></script>
+</body>
+</html>

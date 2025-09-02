@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Help Center - Sparkstr</title>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+  <link rel="icon" href="./img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/Logo.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+<script src="../pwa.js" defer></script>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f59e42;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --bg: #ffffff;
+      --bg-light: #f8fafc;
+      --border: #e2e8f0;
+    }
+    .dark {
+      --primary: #818cf8;
+      --primary-dark: #6366f1;
+      --secondary: #f59e42;
+      --text: #f8fafc;
+      --text-light: #cbd5e1;
+      --bg: #0f172a;
+      --bg-light: #1e293b;
+      --border: #334155;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+    .install-section {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+      margin: 4rem auto;
+      max-width: 600px;
+      border-radius: 2rem;
+      padding: 3rem;
+      text-align: center;
+      color: white;
+    }
+    .install-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .install-section p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    .install-btn {
+      background: white;
+      color: var(--primary);
+      padding: 1rem 2.5rem;
+      border-radius: 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .install-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .faq-section {
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 2rem;
+    }
+    .faq-section h2 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .faq-item {
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 1.5rem;
+      background: var(--bg-light);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+    .faq-question:hover {
+      background: rgba(99, 102, 241, 0.05);
+    }
+    .faq-answer {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background: var(--bg);
+    }
+    .faq-item.active .faq-answer {
+      padding: 1.5rem;
+      max-height: 1000px;
+    }
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .community-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 3rem auto;
+    }
+    .community-preview, .contact-preview {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .btn-hero {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-hero:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    .legal-links {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .legal-links a {
+      margin: 0 1rem;
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .legal-links a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      .community-section {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script type="module">
+    import { initializeFirebase } from './backend/firebase.js';
+    import { createSidebar } from './sidebar.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initializeFirebase();
+
+      const sidebarContainer = document.getElementById('sidebarContainer');
+      if (sidebarContainer) {
+        const sidebar = createSidebar();
+        sidebarContainer.appendChild(sidebar.getElement());
+      }
+
+      // FAQ toggle
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('.faq-question').addEventListener('click', () => {
+          item.classList.toggle('active');
+        });
+      });
+
+      // PWA install
+      const installButton = document.getElementById('installButton');
+      let deferredPrompt;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.style.display = 'inline-flex';
+      });
+
+      installButton.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+          alert('Installation not available. Please use a supported browser.');
+          return;
+        }
+        const result = await deferredPrompt.prompt();
+        console.log(`Install prompt was: ${result.outcome}`);
+        deferredPrompt = null;
+      });
+
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
+        if (evt.matches) {
+          installButton.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="sidebarContainer"></div>
+
+  <div class="container">
+    <div class="header">
+      <h1>Sparkstr Help Center</h1>
+      <p>Find answers to questions about subscriptions, cancellations, and account management.</p>
+    </div>
+
+    <div class="install-section">
+      <h2>Install Sparkstr Web App</h2>
+      <p>Get instant access to Sparkstr right from your home screen!</p>
+      <button id="installButton" class="install-btn">Install Now</button>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">Why is my response not appearing?</div>
+        <div class="faq-answer">
+          If you create an event that requires AI support and schedule it for the <strong>same day</strong>, please allow about <strong>one minute</strong> for the response to be generated. In most cases responses appear quickly, but same-day events may need a brief processing period.
+        </div>
+      </div>
+
+      <div class="faq-item">
+  <div class="faq-question">Why is there not a free trial?</div>
+  <div class="faq-answer">
+    Sparkstr does not offer a separate free trial because the <strong>Free plan</strong> already gives you access to almost all features available in the higher tiers. The main limitations are that you cannot add URLs, files, or images on the Free plan. While usage is more restricted compared to paid plans, you can still experience the core functionality and see how Sparkstr works for you before deciding to upgrade. This way, you get a real feel for the app—no credit card required!
+  </div>
+</div>
+
+      <div class="faq-item">
+        <div class="faq-question">Can I get a refund if I cancel my subscription?</div>
+        <div class="faq-answer">
+          At this time, Sparkstr does not offer refunds. Subscriptions are non-refundable once billed. However, we are actively reviewing this policy and may adjust it in the near future. Please stay tuned for updates on our <a href="https://reddit.com/r/sparkstr" target="_blank">Reddit community</a>, where we will share all policy changes.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">How do I cancel my plan?</div>
+        <div class="faq-answer">
+          You can cancel your subscription at any time by switching to the <strong>Free tier</strong> in your account settings. 
+          <br><br>
+          Please note: cancellations take effect immediately. If you cancel before the end of your billing cycle, you will not receive money back for unused days. For example, if you pay on the 1st of the month and cancel on the 20th, your account moves to Free instantly and no refund is given for the remaining days.  
+          <br><br>
+          We recommend waiting until just before your renewal date if you wish to maximize the value of your paid plan.
+        </div>
+      </div>
+
+<div class="faq-item">
+  <div class="faq-question">Can I switch between Basic and Pro plans?</div>
+  <div class="faq-answer">
+    Yes! You can upgrade or downgrade your plan at any time, and changes apply immediately. 
+    <br><br>
+    <strong>We use prorated billing:</strong> This means that if you’ve already paid for part of your current plan, you won’t lose that money — it’s credited toward your new plan.
+    <br><br>
+
+    <em>Example 1 (Upgrading Basic → Pro):</em><br>
+    - Basic Plan: £2.49 per month (≈ £0.08 per day).<br>
+    - You paid for Basic 5 days ago → about £0.40 used, leaving £2.09 unused.<br>
+    - Pro Plan: £4.99 per month (≈ £0.17 per day). With 25 days left, the Pro portion costs about £4.15.<br>
+    - Stripe applies your £2.09 unused Basic as credit toward that £4.15.<br>
+    - You only pay the difference: £4.15 – £2.09 = <strong>£2.06 today</strong>.<br>
+    - Next cycle: full £4.99/month.
+    <br><br>
+
+    <em>Example 2 (Downgrading Pro → Basic):</em><br>
+    - Pro Plan: £4.99 per month (≈ £0.17 per day).<br>
+    - You paid for Pro 5 days ago → about £0.85 used, leaving £4.14 unused.<br>
+    - Basic Plan: £2.49 per month (≈ £0.08 per day). With 25 days left, the Basic portion costs about £2.09.<br>
+    - Stripe uses your £4.14 unused Pro credit to cover the £2.09 Basic cost.<br>
+    - The extra credit (£2.05) will be applied to your next month’s invoice.<br>
+    - Next cycle: full £2.49/month.
+    <br><br>
+
+    <strong>Note:</strong> This does not apply when moving from a paid plan to the Free plan. In that case, your subscription is simply cancelled and no credit or refund is provided.
+
+    <p>For more details, see contact us at contact@sparkstr.com</p>
+  </div>
+</div>
+
+
+
+      <div class="faq-item">
+        <div class="faq-question">What happens if I delete my account?</div>
+        <div class="faq-answer">
+          Deleting your account from the settings will permanently remove all of your information, including events, Smart Plans, chat history, and documents. Once deleted, this data cannot be recovered. Please be certain before proceeding.
+        </div>
+      </div>
+    </div>
+
+    <div class="community-section">
+      <div class="community-preview">
+        <img src="./img/reddit (1).png" alt="Reddit Logo" style="width: 48px; height: 48px;" />
+        <p>Join our Reddit community to discuss features, share ideas, and help shape the future of Sparkstr!</p>
+        <a href="https://reddit.com/r/sparkstr" target="_blank" rel="noopener noreferrer" class="btn-hero">Join Our Community</a>
+      </div>
+
+      <div class="contact-preview">
+        <svg style="width: 48px; height: 48px; margin: 0 auto; color: var(--primary);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <p>Need direct assistance? Our support team is here to help!</p>
+        <a href="mailto:contact@sparkstr.com" class="btn-hero">Contact Support</a>
+      </div>
+    </div>
+
+    <div class="legal-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="Terms_of_service.html">Terms of Service</a>
+    </div>
+  </div>
+</body>
+</html>
