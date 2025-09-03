@@ -1,5 +1,8 @@
 {
   "rewrites": [
+   {
+  "cleanUrls": true,
+  "rewrites": [
     { "source": "/signup", "destination": "/Login/signup.html" },
     { "source": "/Just_Chat", "destination": "/Just_Chat/Just_Chat.html" },
     { "source": "/calendar", "destination": "/Calendar/Calendar.html" },
@@ -9,5 +12,19 @@
     { "source": "/terms", "destination": "/Terms_of_service.html" },
     { "source": "/pricing", "destination": "/pricing.html" },
     { "source": "/help", "destination": "/help.html" }
+  ],
+  "redirects": [
+    { "source": "/Login/signup.html", "destination": "/signup", "permanent": true },
+    { "source": "/Just_Chat/Just_Chat.html", "destination": "/Just_Chat", "permanent": true },
+    { "source": "/Calendar/Calendar.html", "destination": "/calendar", "permanent": true },
+    { "source": "/DocLive/documentHub.html", "destination": "/doclive", "permanent": true },
+    { "source": "/DocLive/editor.html", "destination": "/doclive/editor", "permanent": true },
+    { "source": "/privacy.html", "destination": "/privacy", "permanent": true },
+    { "source": "/Terms_of_service.html", "destination": "/terms", "permanent": true },
+    { "source": "/pricing.html", "destination": "/pricing", "permanent": true },
+    { "source": "/help.html", "destination": "/help", "permanent": true }
+  ]
+}
+
   ]
 }
