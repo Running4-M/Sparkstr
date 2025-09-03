@@ -192,8 +192,10 @@ function displayError(errorCode) {
 }
 
 
-  // --- All DOM code inside here! ---
-
+  
+// --- All DOM code inside here! ---
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM references
   const step1 = document.getElementById('step1');
   const step2 = document.getElementById('step2');
   const primaryBtn = document.getElementById('primaryBtn');
@@ -205,79 +207,56 @@ function displayError(errorCode) {
   const cardDescription = document.getElementById('cardDescription');
   const toggleText = document.getElementById('toggleText');
   const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+  const tosNotice = document.getElementById('tosNotice');
+  const tosLink = document.getElementById('tosLink');
+  const tosModal = document.getElementById('tosModal');
+  const closeTosModal = document.getElementById('closeTosModal');
+  const closeTosModal2 = document.getElementById('closeTosModal2');
+
   let isSignUp = true;
   let currentStep = 1;
   let userCredential = null;
 
   // --- UI State ---
   function updateUI() {
-  if (isSignUp) {
-    if (currentStep === 1) {
-      cardTitle.textContent = 'Hello, New Friend! 👋';
-      cardDescription.textContent = "Let's get you started on your journey";
-      primaryBtn.textContent = 'Continue';
-      googleBtnText.textContent = 'Sign up with Google';
-      toggleText.textContent = 'Already have an account?';
-      toggleBtn.textContent = 'Sign in';
+    if (isSignUp) {
+      if (currentStep === 1) {
+        cardTitle.textContent = 'Hello, New Friend! 👋';
+        cardDescription.textContent = "Let's get you started on your journey";
+        primaryBtn.textContent = 'Continue';
+        googleBtnText.textContent = 'Sign up with Google';
+        toggleText.textContent = 'Already have an account?';
+        toggleBtn.textContent = 'Sign in';
+        step1.classList.remove('hidden');
+        step2.classList.add('hidden');
+        backBtn.classList.add('hidden');
+        googleBtn.classList.remove('hidden');
+      } else {
+        cardTitle.textContent = 'Tell Us About You';
+        cardDescription.textContent = 'Just a few more details to complete your profile';
+        primaryBtn.textContent = 'Create Account';
+        googleBtn.classList.add('hidden');
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        backBtn.classList.remove('hidden');
+      }
+      forgotPasswordBtn.classList.add('hidden');
+    } else {
+      cardTitle.textContent = 'Welcome Back! 🎉';
+      cardDescription.textContent = 'Great to see you again!';
+      primaryBtn.textContent = 'Sign In';
+      googleBtnText.textContent = 'Sign in with Google';
+      toggleText.textContent = "Don't have an account?";
+      toggleBtn.textContent = 'Sign up';
       step1.classList.remove('hidden');
       step2.classList.add('hidden');
       backBtn.classList.add('hidden');
       googleBtn.classList.remove('hidden');
-    } else {
-      cardTitle.textContent = 'Tell Us About You';
-      cardDescription.textContent = 'Just a few more details to complete your profile';
-      primaryBtn.textContent = 'Create Account';
-      googleBtn.classList.add('hidden');
-      step1.classList.add('hidden');
-      step2.classList.remove('hidden');
-      backBtn.classList.remove('hidden');
+      forgotPasswordBtn.classList.remove('hidden');
     }
-    forgotPasswordBtn.classList.add('hidden');
-  } else {
-    cardTitle.textContent = 'Welcome Back! 🎉';
-    cardDescription.textContent = 'Great to see you again!';
-    primaryBtn.textContent = 'Sign In';
-    googleBtnText.textContent = 'Sign in with Google';
-    toggleText.textContent = "Don't have an account?";
-    toggleBtn.textContent = 'Sign up';
-    step1.classList.remove('hidden');
-    step2.classList.add('hidden');
-    backBtn.classList.add('hidden');
-    googleBtn.classList.remove('hidden');
-    forgotPasswordBtn.classList.remove('hidden');
+    validateForm();
+    updateTosNotice();
   }
-  validateForm();
-  updateTosNotice(); // <-- Add this line
-}
-// Add this new event listener for forgot password
-forgotPasswordBtn.onclick = async () => {
-    const email = document.getElementById('email').value.trim();
-    
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showPopup("Please enter a valid email address", "error");
-        return;
-    }
-
-    try {
-        forgotPasswordBtn.disabled = true;
-        document.getElementById('loaderOverlay').style.display = 'flex';
-        
-        await sendPasswordResetEmail(auth, email);
-        
-        showLoader("Sending reset email...");
-
-
-        showPopup("Password reset email sent! Please check your inbox.", "success");
-    } catch (error) {
-        showLoader("Sending reset email...");
-
-
-        showPopup(displayError(error.code) || "Failed to send reset email", "error");
-    } finally {
-        forgotPasswordBtn.disabled = false;
-    }
-};
-
 
   // --- Validation ---
   function validateForm() {
@@ -296,98 +275,96 @@ forgotPasswordBtn.onclick = async () => {
     return isValid;
   }
 
-  const selectedPlan = localStorage.getItem('selectedPlan') || "free";
+  // --- ToS Notice ---
+  function updateTosNotice() {
+    if (!tosNotice) return;
+    if (isSignUp && currentStep === 1) {
+      tosNotice.style.display = '';
+    } else {
+      tosNotice.style.display = 'none';
+    }
+  }
 
   // --- Auth Actions ---
-primaryBtn.onclick = async () => {
-  if (!validateForm()) return;
-  primaryBtn.disabled = true;
-  if (isSignUp) {
-    if (currentStep === 1) {
-      currentStep = 2;
-      updateUI();
-      primaryBtn.disabled = false;
-      return;
-    } else {
-      showLoader("Creating your account...");
-showPopup("Creating your account...", "success");
+  const selectedPlan = localStorage.getItem('selectedPlan') || "free";
 
+  primaryBtn.onclick = async () => {
+    if (!validateForm()) return;
+    primaryBtn.disabled = true;
+    if (isSignUp) {
+      if (currentStep === 1) {
+        currentStep = 2;
+        updateUI();
+        primaryBtn.disabled = false;
+        return;
+      } else {
+        showLoader("Creating your account...");
+        showPopup("Creating your account...", "success");
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const fullName = document.getElementById('fullName').value.trim();
+
+        try {
+          if (!userCredential) {
+            userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          }
+          const user = userCredential.user;
+
+          // --- Create Firestore user document (with pending_payment for paid plans) ---
+          const plan = selectedPlan || "free";
+          localStorage.setItem('signupInProgress', '1');
+          const storedPlan = plan === "free" ? "free" : "pending_payment";
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            createdAt: new Date().toISOString(),
+            plan: storedPlan,
+            requestedPlan: plan === "free" ? null : plan
+          });
+          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+            name: fullName,
+            plan: storedPlan,
+            requestedPlan: plan === "free" ? null : plan,
+            planStartedAt: plan === "free" ? new Date().toISOString() : null,
+            timezone,
+            tutorialSeen: false
+          });
+
+          if (plan === "free") {
+            hideLoader();
+            showGradientTransitionAndRedirect("../Calendar/Calendar.html");
+          } else {
+            const priceId = getPriceIdForPlan(plan);
+            if (!priceId) {
+              showPopup("No price configured for plan: " + plan, "error");
+              primaryBtn.disabled = false;
+              showLoader("Sending reset email...");
+              return;
+            }
+            await startCheckoutWithExtension(priceId);
+            return;
+          }
+        } catch (error) {
+          showLoader("Sending reset email...");
+          showPopup(displayError(error.code), "error");
+          primaryBtn.disabled = false;
+        }
+      }
+    } else {
+      // Login
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
-      const fullName = document.getElementById('fullName').value.trim();
-
       try {
-        if (!userCredential) {
-          userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        }
-        const user = userCredential.user;
-
-        // --- Create Firestore user document ---
-       // --- Create Firestore user document (with pending_payment for paid plans) ---
-const plan = selectedPlan || "free";
-
-// mark signup in progress so auth redirects won’t fire
-localStorage.setItem('signupInProgress', '1');
-
-// Save main user doc (plan = free or pending_payment)
-const storedPlan = plan === "free" ? "free" : "pending_payment";
-await setDoc(doc(db, "users", user.uid), {
-  uid: user.uid,
-  createdAt: new Date().toISOString(),
-  plan: storedPlan,
-  requestedPlan: plan === "free" ? null : plan
-});
-
-// Save profile info
-const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-  name: fullName,
-  plan: storedPlan,
-  requestedPlan: plan === "free" ? null : plan,
-  planStartedAt: plan === "free" ? new Date().toISOString() : null,
-  timezone,
-  tutorialSeen: false
-});
-
-        if (plan === "free") {
-          hideLoader();
-showGradientTransitionAndRedirect("../Calendar/Calendar.html");
-        } else {
-          // Stripe Checkout for paid plans
-          const priceId = getPriceIdForPlan(plan);
-if (!priceId) {
-  showPopup("No price configured for plan: " + plan, "error");
-  primaryBtn.disabled = false;
-  showLoader("Sending reset email...");
-
-
-  return;
-}
-await startCheckoutWithExtension(priceId);
-return; // prevent further redirect
-        }
+        await signInWithEmailAndPassword(auth, email, password);
+        hideLoader();
+        showGradientTransitionAndRedirect("../Calendar/Calendar.html");
       } catch (error) {
-        showLoader("Sending reset email...");
-
-
         showPopup(displayError(error.code), "error");
         primaryBtn.disabled = false;
       }
     }
-  } else {
-    // Login
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-hideLoader();
-showGradientTransitionAndRedirect("../Calendar/Calendar.html");
-    } catch (error) {
-      showPopup(displayError(error.code), "error");
-      primaryBtn.disabled = false;
-    }
-  }
-};
+  };
 
   backBtn.onclick = () => {
     currentStep = 1;
@@ -398,7 +375,6 @@ showGradientTransitionAndRedirect("../Calendar/Calendar.html");
     isSignUp = !isSignUp;
     currentStep = 1;
     userCredential = null;
-    // Clear all fields
     document.getElementById('email').value = '';
     document.getElementById('password').value = '';
     document.getElementById('fullName').value = '';
@@ -418,145 +394,126 @@ showGradientTransitionAndRedirect("../Calendar/Calendar.html");
 
   // --- Redirect if already logged in ---
   onAuthStateChanged(auth, (user) => {
-  if (!user) return;
-  const path = window.location.pathname.toLowerCase();
-  const isAuthPage = path.includes('/login') || path.includes('/signup');
-  if (isAuthPage || localStorage.getItem('signupInProgress')) {
-    console.log('Auth change ignored during signup.');
-    return;
-  }
-  showGradientTransitionAndRedirect("../Calendar/Calendar.html");
-});
-
-
-// Update your Google button click handler
-googleBtn.onclick = async () => {
-  try {
-    googleBtn.disabled = true;
-    showLoader("Connecting to Google...");
-showPopup("Connecting to Google...");
-
-    await signInWithGoogle();
-
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error("Google sign-in failed: no user returned.");
+    if (!user) return;
+    const path = window.location.pathname.toLowerCase();
+    const isAuthPage = path.includes('/login') || path.includes('/signup');
+    if (isAuthPage || localStorage.getItem('signupInProgress')) {
+      console.log('Auth change ignored during signup.');
+      return;
     }
+    showGradientTransitionAndRedirect("../Calendar/Calendar.html");
+  });
 
-    const plan = localStorage.getItem('selectedPlan') || "free";
+  // --- Google Auth ---
+  googleBtn.onclick = async () => {
+    try {
+      googleBtn.disabled = true;
+      showLoader("Connecting to Google...");
+      showPopup("Connecting to Google...");
 
-    if (plan === "free") {
-      // --- Free Google sign-in ---
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        createdAt: new Date().toISOString(),
-        plan: "free"
-      });
+      await signInWithGoogle();
 
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-        name: user.displayName || "",
-        plan: "free",
-        planStartedAt: new Date().toISOString(),
-        timezone,
-        tutorialSeen: false
-      });
-
-      localStorage.removeItem('selectedPlan');
-      localStorage.removeItem('signupInProgress');
-
-      showPopup("Successfully signed in with Google!");
-      showLoader("Sending reset email...");
-
-
-
-      const gradient = document.getElementById('gradientTransition');
-      const bar = document.getElementById('gradientBar');
-      gradient.style.display = 'block';
-      bar.style.width = '0';
-      setTimeout(() => { bar.style.width = '100vw'; }, 50);
-      setTimeout(() => { document.getElementById('transitionText').style.opacity = 1; }, 400);
-      setTimeout(() => { window.location.href = "../Calendar/Calendar.html"; }, 1800);
-
-    } else {
-      // --- Paid Google sign-in ---
-      localStorage.setItem('signupInProgress', '1');
-
-      const storedPlan = "pending_payment";
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        createdAt: new Date().toISOString(),
-        plan: storedPlan,
-        requestedPlan: plan
-      });
-
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-        name: user.displayName || "",
-        plan: storedPlan,
-        requestedPlan: plan,
-        planStartedAt: null,
-        timezone,
-        tutorialSeen: false
-      });
-
-      const priceId = getPriceIdForPlan(plan);
-
-      if (!priceId) {
-        showPopup("No price configured for plan: " + plan, "error");
-        showLoader("Sending reset email...");
-
-
-        googleBtn.disabled = false;
-        localStorage.removeItem('signupInProgress');
-        return;
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("Google sign-in failed: no user returned.");
       }
 
-      await startCheckoutWithExtension(priceId);
+      const plan = localStorage.getItem('selectedPlan') || "free";
 
-      // Stripe will handle redirect → success_url → billing/success.html
-      // Do not redirect here.
+      if (plan === "free") {
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          createdAt: new Date().toISOString(),
+          plan: "free"
+        });
+
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+          name: user.displayName || "",
+          plan: "free",
+          planStartedAt: new Date().toISOString(),
+          timezone,
+          tutorialSeen: false
+        });
+
+        localStorage.removeItem('selectedPlan');
+        localStorage.removeItem('signupInProgress');
+
+        showPopup("Successfully signed in with Google!");
+        showLoader("Sending reset email...");
+
+        const gradient = document.getElementById('gradientTransition');
+        const bar = document.getElementById('gradientBar');
+        gradient.style.display = 'block';
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = '100vw'; }, 50);
+        setTimeout(() => { document.getElementById('transitionText').style.opacity = 1; }, 400);
+        setTimeout(() => { window.location.href = "../Calendar/Calendar.html"; }, 1800);
+
+      } else {
+        localStorage.setItem('signupInProgress', '1');
+        const storedPlan = "pending_payment";
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          createdAt: new Date().toISOString(),
+          plan: storedPlan,
+          requestedPlan: plan
+        });
+
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+          name: user.displayName || "",
+          plan: storedPlan,
+          requestedPlan: plan,
+          planStartedAt: null,
+          timezone,
+          tutorialSeen: false
+        });
+
+        const priceId = getPriceIdForPlan(plan);
+
+        if (!priceId) {
+          showPopup("No price configured for plan: " + plan, "error");
+          showLoader("Sending reset email...");
+          googleBtn.disabled = false;
+          localStorage.removeItem('signupInProgress');
+          return;
+        }
+
+        await startCheckoutWithExtension(priceId);
+      }
+
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      showLoader("Sending reset email...");
+      showPopup(error.message || "Failed to sign in with Google", "error");
+      googleBtn.disabled = false;
+      localStorage.removeItem('signupInProgress');
     }
+  };
 
-  } catch (error) {
-    console.error("Google sign-in error:", error);
-    showLoader("Sending reset email...");
+  // --- Forgot Password ---
+  forgotPasswordBtn.onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showPopup("Please enter a valid email address", "error");
+      return;
+    }
+    try {
+      forgotPasswordBtn.disabled = true;
+      document.getElementById('loaderOverlay').style.display = 'flex';
+      await sendPasswordResetEmail(auth, email);
+      showLoader("Sending reset email...");
+      showPopup("Password reset email sent! Please check your inbox.", "success");
+    } catch (error) {
+      showLoader("Sending reset email...");
+      showPopup(displayError(error.code) || "Failed to send reset email", "error");
+    } finally {
+      forgotPasswordBtn.disabled = false;
+    }
+  };
 
-
-    showPopup(error.message || "Failed to sign in with Google", "error");
-    googleBtn.disabled = false;
-    localStorage.removeItem('signupInProgress');
-  }
-};
-
-  updateUI();
-  updateTosNotice();
   // --- Terms of Service Modal Logic ---
-  // --- Terms of Service Modal Logic ---
-const tosNotice = document.getElementById('tosNotice');
-const tosLink = document.getElementById('tosLink');
-const tosModal = document.getElementById('tosModal');
-const closeTosModal = document.getElementById('closeTosModal');
-const closeTosModal2 = document.getElementById('closeTosModal2');
-
-// Show/hide ToS notice based on form state
-function updateTosNotice() {
-  const tosNotice = document.getElementById('tosNotice');
-  if (!tosNotice) return;
-  // Only show on sign up, step 1
-  if (isSignUp && currentStep === 1) {
-    tosNotice.style.display = '';
-  } else {
-    tosNotice.style.display = 'none';
-  }
-}
-
-// Attach ToS modal handlers after DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  const tosLink = document.getElementById('tosLink');
-  const tosModal = document.getElementById('tosModal');
-  const closeTosModal = document.getElementById('closeTosModal');
-  const closeTosModal2 = document.getElementById('closeTosModal2');
   if (tosLink && tosModal) {
     tosLink.onclick = () => { tosModal.classList.remove('hidden'); };
     closeTosModal.onclick = () => { tosModal.classList.add('hidden'); };
@@ -565,4 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === tosModal) tosModal.classList.add('hidden');
     };
   }
+
+  // Initial UI
+  updateUI();
+  updateTosNotice();
 });
