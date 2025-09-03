@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (getStartedBtn) {
         getStartedBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            window.location.href = 'pricing.html';
+            window.location.href = 'pricing';
         });
     }
 });
@@ -510,4 +510,5 @@ const slides = document.querySelectorAll('.carousel-slide');
             });
         }
     });
+
 });
