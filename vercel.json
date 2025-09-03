@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    { "source": "/signup", "destination": "/Login/signup.html" },
+    { "source": "/Just_Chat", "destination": "/Just_Chat/Just_Chat.html" },
+    { "source": "/calendar", "destination": "/Calendar/Calendar.html" },
+    { "source": "/doclive", "destination": "/DocLive/documentHub.html" },
+    { "source": "/doclive/editor", "destination": "/DocLive/editor.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/terms", "destination": "/Terms_of_service.html" },
+    { "source": "/pricing", "destination": "/pricing.html" },
+    { "source": "/help", "destination": "/help.html" }
+  ]
+}
