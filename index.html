@@ -2735,7 +2735,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
 }
 
 .modal-content {
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 1rem;
     max-width: 1500px;
     width: 100%;
@@ -2767,6 +2767,28 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
 
 .modal-close:hover {
     background: hsl(var(--muted));
+}
+/* Make the "Not to mention..." text smaller on mobile */
+@media (max-width: 640px) {
+  .not-to-mention-text {
+    font-size: 1.2rem !important;
+    line-height: 1.5 !important;
+    padding: 0.5rem 0 !important;
+  }
+}
+/* Make privacy modal background white and text dark for readability */
+.policy-modal .modal-content {
+  background: #fff !important;
+  color: #222 !important;
+}
+.policy-modal .modal-content h2,
+.policy-modal .modal-content h3,
+.policy-modal .modal-content strong {
+  color: #222 !important;
+}
+.policy-modal .modal-content ul,
+.policy-modal .modal-content p {
+  color: #333 !important;
 }
     </style>
     <link rel="icon" href="./img/favicon.png" type="image/png">
@@ -3318,15 +3340,15 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
                         
                         <div class="space-y-12 animate-fade-in-up">
                             <div class="glass-card rounded-3xl p-12 shadow-elegant bg-yellow-50-50">
-                                <p class="text-5xl text-center text-foreground leading-relaxed font-semibold">
-                                    📸 Not to mention: just add a picture of a <strong>memo</strong> or <strong>invitation</strong>,<br />
-                                    and it'll be added to your calendar 
-                                    <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground">
-                                        straight from chat!
-                                    </span> 
-                                    🎯
-                                </p>
-                            </div>
+    <p class="text-5xl md:text-5xl sm:text-2xl text-center text-foreground leading-relaxed font-semibold not-to-mention-text">
+        📸 Not to mention: just add a picture of a <strong>memo</strong> or <strong>invitation</strong>,<br />
+        and it'll be added to your calendar 
+        <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground">
+            straight from chat!
+        </span> 
+        🎯
+    </p>
+</div>
                             
                             <div class="grid lg:grid-cols-2 gap-16 items-center">
                                 <div class="group text-center">
