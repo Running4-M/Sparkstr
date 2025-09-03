@@ -1,6 +1,4 @@
 {
-  "rewrites": [
-   {
   "cleanUrls": true,
   "rewrites": [
     { "source": "/signup", "destination": "/Login/signup.html" },
@@ -23,8 +21,5 @@
     { "source": "/Terms_of_service.html", "destination": "/terms", "permanent": true },
     { "source": "/pricing.html", "destination": "/pricing", "permanent": true },
     { "source": "/help.html", "destination": "/help", "permanent": true }
-  ]
-}
-
   ]
 }
