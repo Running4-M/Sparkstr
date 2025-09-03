@@ -291,7 +291,7 @@
 </head>
 <body>
 <header style="display:flex; align-items:center; justify-content:center; gap:1rem;">
-  <a href="index.html" class="back-btn">← Back to Home</a>
+  <a href="index" class="back-btn">← Back to Home</a>
   <h1 style="margin:0;">Choose Your Plan</h1>
 </header>
 <p style="text-align: center; font-size: 1.2rem; margin: 1rem 0;">
@@ -509,7 +509,7 @@ function savePlanSelectionAndRedirect(planKey, currency, source, amount) {
   // store numeric string for convenience (signup.js can parseFloat)
   localStorage.setItem(LS_KEYS.selectedPriceAmount, Number(amount).toFixed(2));
   // redirect to signup
-  window.location.href = './Login/signup.html';
+  window.location.href = './Login/signup';
 }
 
 /* Build the UI for each plan and attach event handlers.
@@ -691,3 +691,4 @@ function syncCurrencySelectorUI() {
 
 </body>
 </html>
+
