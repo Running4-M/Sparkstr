@@ -532,6 +532,7 @@ showPopup("Connecting to Google...");
   updateUI();
   updateTosNotice();
   // --- Terms of Service Modal Logic ---
+  // --- Terms of Service Modal Logic ---
 const tosNotice = document.getElementById('tosNotice');
 const tosLink = document.getElementById('tosLink');
 const tosModal = document.getElementById('tosModal');
@@ -550,12 +551,18 @@ function updateTosNotice() {
   }
 }
 
-// Attach ToS modal handlers
-if (tosLink && tosModal) {
-  tosLink.onclick = () => { tosModal.classList.remove('hidden'); };
-  closeTosModal.onclick = () => { tosModal.classList.add('hidden'); };
-  closeTosModal2.onclick = () => { tosModal.classList.add('hidden'); };
-  tosModal.onclick = (e) => {
-    if (e.target === tosModal) tosModal.classList.add('hidden');
-  };
-}
+// Attach ToS modal handlers after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const tosLink = document.getElementById('tosLink');
+  const tosModal = document.getElementById('tosModal');
+  const closeTosModal = document.getElementById('closeTosModal');
+  const closeTosModal2 = document.getElementById('closeTosModal2');
+  if (tosLink && tosModal) {
+    tosLink.onclick = () => { tosModal.classList.remove('hidden'); };
+    closeTosModal.onclick = () => { tosModal.classList.add('hidden'); };
+    closeTosModal2.onclick = () => { tosModal.classList.add('hidden'); };
+    tosModal.onclick = (e) => {
+      if (e.target === tosModal) tosModal.classList.add('hidden');
+    };
+  }
+});
