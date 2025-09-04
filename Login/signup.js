@@ -70,7 +70,7 @@ async function startCheckoutWithExtension(priceId) {
   try {
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
       price: priceId,
-      success_url: window.location.origin + ".../Calendar/Calendar.html",
+      success_url: window.location.origin + ".../Calendar/Calendar",
       cancel_url: window.location.origin + "/signup?canceled=true",
       mode: "subscription",
       createdAt: serverTimestamp()
@@ -280,7 +280,7 @@ function displayError(errorCode) {
           });
           if (plan === "free") {
             hideLoader();
-            showGradientTransitionAndRedirect("../Calendar/Calendar.html");
+            showGradientTransitionAndRedirect("../Calendar/Calendar");
           } else {
             const priceId = getPriceIdForPlan(plan);
             if (!priceId) {
@@ -305,7 +305,7 @@ function displayError(errorCode) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
         hideLoader();
-        showGradientTransitionAndRedirect("../Calendar/Calendar.html");
+        showGradientTransitionAndRedirect("../Calendar/Calendar");
       } catch (error) {
         showPopup(displayError(error.code), "error");
         primaryBtn.disabled = false;
@@ -345,7 +345,7 @@ function displayError(errorCode) {
     if (isAuthPage || localStorage.getItem('signupInProgress')) {
       return;
     }
-    showGradientTransitionAndRedirect("../Calendar/Calendar.html");
+    showGradientTransitionAndRedirect("../Calendar/Calendar");
   });
 
   googleBtn.onclick = async () => {
@@ -381,7 +381,7 @@ function displayError(errorCode) {
         bar.style.width = '0';
         setTimeout(() => { bar.style.width = '100vw'; }, 50);
         setTimeout(() => { document.getElementById('transitionText').style.opacity = 1; }, 400);
-        setTimeout(() => { window.location.href = "../Calendar/Calendar.html"; }, 1800);
+        setTimeout(() => { window.location.href = "../Calendar/Calendar"; }, 1800);
       } else {
         localStorage.setItem('signupInProgress', '1');
         const storedPlan = "pending_payment";
@@ -480,4 +480,5 @@ const pwaInstallBtn = document.getElementById('pwa-install-btn');
       pwaLoadingOverlay.style.opacity = '1';
       pwaLoadingOverlay.style.pointerEvents = 'auto';
     });
+
   }
