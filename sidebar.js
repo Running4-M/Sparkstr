@@ -413,138 +413,137 @@ async function fetchBillingInfoOnce() {
     if (!auth.currentUser) return;
     const uid = auth.currentUser.uid;
 
-    // Plan / next billing display element (already exists in your modal)
-    const nextBillingEl = document.getElementById('nextBillingText');
-    // Plan card container where you show plan info
-    const planCardContainer = document.getElementById('planCardContainer');
-
-    // Ensure we have those elements — if not, exit quietly
+    const nextBillingEl = document.getElementById("nextBillingText");
+    const planCardContainer = document.getElementById("planCardContainer");
     if (!nextBillingEl || !planCardContainer) return;
 
-    // 1) Subscriptions: look for active/trialing subscription
-    const subsCol = collection(db, 'customers', uid, 'subscriptions');
+    // Reset displays
+    nextBillingEl.textContent = "";
+    let lastPaymentEl = document.getElementById("lastPaymentText");
+    if (!lastPaymentEl) {
+      lastPaymentEl = document.createElement("p");
+      lastPaymentEl.id = "lastPaymentText";
+      lastPaymentEl.style.color = "#9fb0db";
+      lastPaymentEl.style.fontSize = "13px";
+      lastPaymentEl.style.marginTop = "6px";
+      nextBillingEl.insertAdjacentElement("afterend", lastPaymentEl);
+    }
+    lastPaymentEl.textContent = "";
+
+    // 1) Find active/trialing subscription
+    const subsCol = collection(db, "customers", uid, "subscriptions");
     const subsSnap = await getDocs(subsCol);
 
     let activeSub = null;
-    subsSnap.forEach(snap => {
+    subsSnap.forEach((snap) => {
       const data = snap.data();
-      if (!data) return;
-      if (data.status === 'active' || data.status === 'trialing') {
+      if (data && (data.status === "active" || data.status === "trialing")) {
         activeSub = data;
       }
     });
 
-    // Reset displays
-    nextBillingEl.textContent = '';
-    // If you want a small "last payment" text, create element if missing
-    let lastPaymentEl = document.getElementById('lastPaymentText');
-    if (!lastPaymentEl) {
-      lastPaymentEl = document.createElement('p');
-      lastPaymentEl.id = 'lastPaymentText';
-      lastPaymentEl.style.color = '#9fb0db';
-      lastPaymentEl.style.fontSize = '13px';
-      lastPaymentEl.style.marginTop = '6px';
-      // Insert it right after nextBillingText if available
-      nextBillingEl.insertAdjacentElement('afterend', lastPaymentEl);
-    }
-    lastPaymentEl.textContent = '';
-
-    // If there's an active subscription, show next billing
     if (activeSub) {
-      // current_period_end is sometimes a timestamp object with .seconds
-      let nextBillingText = 'Billing info available';
-      if (activeSub.current_period_end && activeSub.current_period_end.seconds) {
-        nextBillingText = 'Next billing date: ' + new Date(activeSub.current_period_end.seconds * 1000).toLocaleDateString();
-      } else if (activeSub.current_period_end) {
-        nextBillingText = 'Next billing date: ' + new Date(activeSub.current_period_end).toLocaleDateString();
+      // Next billing date
+      let nextBillingText = "";
+      if (activeSub.current_period_end) {
+        const ts =
+          activeSub.current_period_end.seconds != null
+            ? activeSub.current_period_end.seconds * 1000
+            : activeSub.current_period_end * 1000;
+        nextBillingText = "Next billing date: " + new Date(ts).toLocaleDateString();
       }
       nextBillingEl.textContent = nextBillingText;
 
-      // Derive friendly plan label from item price id or nickname when possible
+      // Extract priceId safely
       let priceId = null;
-      if (Array.isArray(activeSub.items) && activeSub.items.length) {
-        const item = activeSub.items[0];
-        priceId = item?.price?.id || item?.price || null;
-      } else if (activeSub.price) {
-        priceId = activeSub.price?.id || activeSub.price;
+      const item = activeSub.items?.[0];
+      if (item) {
+        if (typeof item.price === "string") {
+          priceId = item.price;
+        } else if (item.price?.id) {
+          priceId = item.price.id;
+        } else if (item.plan?.id) {
+          priceId = item.plan.id;
+        }
+      } else if (typeof activeSub.price === "string") {
+        priceId = activeSub.price;
+      } else if (activeSub.price?.id) {
+        priceId = activeSub.price.id;
       }
 
-      // Map priceId to plan key using your PRICE_MAP from same file
-      let friendlyPlan = 'Paid';
-      if (priceId) {
-        // try to find by comparing IDs in PRICE_MAP
-        for (const planKey of Object.keys(PRICE_MAP)) {
-          for (const cur of Object.values(PRICE_MAP[planKey])) {
-            if (cur && cur.id === priceId) {
-              friendlyPlan = planKey.charAt(0).toUpperCase() + planKey.slice(1);
-            }
-          }
-        }
-      } else if (activeSub.items && activeSub.items[0] && activeSub.items[0].plan && activeSub.items[0].plan.nickname) {
-        friendlyPlan = activeSub.items[0].plan.nickname;
-      }
+      // Map to your plan keys
+      let planKey = null;
+      if (priceId === "price_1S2DTJDUfadEcuo7FB6ihgCE") planKey = "basic";
+      if (priceId === "price_1S2DW7DUfadEcuo7yw2Gnqov") planKey = "pro";
 
-      // Update the visible plan card header (keep your existing planCard structure)
-      const planName = (PLAN_LIMITS[friendlyPlan?.toLowerCase()]?.planName) || friendlyPlan;
-      if (planCardContainer) {
-        const currentHtml = planCardContainer.innerHTML || '';
-        // Try to be non-destructive: replace or insert a small status line
-        const statusLine = `<div id="billingStatusLine" style="color:#cbd5e1;margin-top:6px;font-size:13px;">${planName} • ${activeSub.status}</div>`;
-        // If billingStatusLine exists — replace it, else append
-        if (planCardContainer.querySelector('#billingStatusLine')) {
-          planCardContainer.querySelector('#billingStatusLine').outerHTML = statusLine;
-        } else {
-          planCardContainer.insertAdjacentHTML('beforeend', statusLine);
-        }
+      // Friendly name fallback
+      let friendlyPlan = planKey
+        ? planKey.charAt(0).toUpperCase() + planKey.slice(1)
+        : item?.plan?.nickname || "Paid";
+
+      const planName =
+        PLAN_LIMITS[friendlyPlan?.toLowerCase()]?.planName || friendlyPlan;
+
+      const statusLine = `<div id="billingStatusLine" style="color:#cbd5e1;margin-top:6px;font-size:13px;">${planName} • ${activeSub.status}</div>`;
+      const existing = planCardContainer.querySelector("#billingStatusLine");
+      if (existing) {
+        existing.outerHTML = statusLine;
+      } else {
+        planCardContainer.insertAdjacentHTML("beforeend", statusLine);
       }
     } else {
       // No active subscription
-      if (nextBillingEl) nextBillingEl.textContent = '';
-      if (planCardContainer) {
-        // remove billingStatusLine if present
-        const existing = planCardContainer.querySelector('#billingStatusLine');
-        if (existing) existing.remove();
-      }
+      nextBillingEl.textContent = "";
+      const existing = planCardContainer.querySelector("#billingStatusLine");
+      if (existing) existing.remove();
     }
 
-    // 2) Payments: find the latest successful payment for this customer (one-off)
-    // Note: the Stripe extension often writes payments under customers/{uid}/payments
-    const paymentsCol = collection(db, 'customers', uid, 'payments');
+    // 2) Find latest successful payment
+    const paymentsCol = collection(db, "customers", uid, "payments");
     const paymentsSnap = await getDocs(paymentsCol);
     let latestPayment = null;
-    paymentsSnap.forEach(snap => {
+    paymentsSnap.forEach((snap) => {
       const d = snap.data();
       if (!d) return;
-      // prefer succeeded payments (status === 'succeeded' or amount_received > 0)
-      if (d.status === 'succeeded' || d.amount_received > 0) {
-        // choose newest by created timestamp (numeric seconds or Date)
+      if (d.status === "succeeded" || d.amount_received > 0) {
         if (!latestPayment) latestPayment = d;
         else {
-          const curCreated = (d.created && d.created.seconds) ? d.created.seconds : (d.created || 0);
-          const bestCreated = (latestPayment.created && latestPayment.created.seconds) ? latestPayment.created.seconds : (latestPayment.created || 0);
+          const curCreated =
+            d.created?.seconds != null ? d.created.seconds : d.created || 0;
+          const bestCreated =
+            latestPayment.created?.seconds != null
+              ? latestPayment.created.seconds
+              : latestPayment.created || 0;
           if (curCreated > bestCreated) latestPayment = d;
         }
       }
     });
 
     if (latestPayment) {
-      const amount = (latestPayment.amount_received != null) ? (latestPayment.amount_received/100).toFixed(2) : latestPayment.amount || '';
-      const currency = latestPayment.currency ? latestPayment.currency.toUpperCase() : '';
-      let dateText = '';
-      if (latestPayment.created && latestPayment.created.seconds) {
+      const amount =
+        latestPayment.amount_received != null
+          ? (latestPayment.amount_received / 100).toFixed(2)
+          : latestPayment.amount || "";
+      const currency = latestPayment.currency
+        ? latestPayment.currency.toUpperCase()
+        : "";
+      let dateText = "";
+      if (latestPayment.created?.seconds != null) {
         dateText = new Date(latestPayment.created.seconds * 1000).toLocaleDateString();
       } else if (latestPayment.created) {
         dateText = new Date(latestPayment.created).toLocaleDateString();
       }
-      lastPaymentEl.textContent = `Last payment: ${currency ? currency + ' ' : ''}${amount} — ${dateText}`;
+      lastPaymentEl.textContent = `Last payment: ${
+        currency ? currency + " " : ""
+      }${amount} — ${dateText}`;
     } else {
-      lastPaymentEl.textContent = '';
+      lastPaymentEl.textContent = "";
     }
-
   } catch (err) {
-    console.error('fetchBillingInfoOnce error', err);
+    console.error("fetchBillingInfoOnce error", err);
   }
 }
+
 // ----------------------------------------------------------------------------------------
 
 
@@ -2237,5 +2236,6 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
