@@ -73,8 +73,8 @@ async function startCheckoutWithExtension(priceId) {
   try {
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
       price: priceId,
-      success_url: window.location.origin + "https://sparkstr.com/Calendar/Calendar",
-      cancel_url: window.location.origin + "/signup?canceled=true",
+      success_url: window.location.origin + "/Calendar/Calendar",
+      cancel_url: window.location.origin + "/Login/signup",
       mode: "subscription",
       createdAt: serverTimestamp()
     });
@@ -253,55 +253,56 @@ function displayError(errorCode) {
         primaryBtn.disabled = false;
         return;
       } else {
-        showLoader("Creating your account...");
-        showPopup("Creating your account...", "success");
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const fullName = document.getElementById('fullName').value.trim();
-        try {
-          if (!userCredential) {
-            userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          }
-          const user = userCredential.user;
-          const plan = selectedPlan || "free";
-          localStorage.setItem('signupInProgress', '1');
-          const storedPlan = plan === "free" ? "free" : "pending_payment";
-          await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            createdAt: new Date().toISOString(),
-            plan: storedPlan,
-            requestedPlan: plan === "free" ? null : plan
-          });
-          const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-            name: fullName || "",
-            plan: storedPlan,
-            requestedPlan: plan === "free" ? null : plan,
-            planStartedAt: plan === "free" ? new Date().toISOString() : null,
-            timezone,
-            tutorialSeen: false
-          });
-          if (plan === "free") {
-            hideLoader();
-            showGradientTransitionAndRedirect("../Calendar/Calendar");
-          } else {
-            const priceId = getPriceIdForPlan(plan);
-            if (!priceId) {
-              showPopup("No price configured for plan: " + plan, "error");
-              primaryBtn.disabled = false;
-              showLoader("Sending reset email...");
-              return;
-            }
-            await startCheckoutWithExtension(priceId);
-            return;
-          }
-        } catch (error) {
-          showLoader("Sending reset email...");
-          showPopup(displayError(error.code), "error");
-          primaryBtn.disabled = false;
-        }
+    showLoader("Creating your account...");
+    showPopup("Creating your account...", "success");
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const fullName = document.getElementById('fullName').value.trim();
+    try {
+      localStorage.removeItem('selectedPlan');
+      if (!userCredential) {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
       }
-    } else {
+      const user = userCredential.user;
+      const plan = selectedPlan || "free";
+      localStorage.setItem('signupInProgress', '1');
+      const storedPlan = plan === "free" ? "free" : "pending_payment";
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        createdAt: new Date().toISOString(),
+        plan: storedPlan,
+        requestedPlan: plan === "free" ? null : plan
+      });
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+        name: fullName || "",
+        plan: storedPlan,
+        requestedPlan: plan === "free" ? null : plan,
+        planStartedAt: plan === "free" ? new Date().toISOString() : null,
+        timezone,
+        tutorialSeen: false
+      });
+      if (plan === "free") {
+        hideLoader();
+        showGradientTransitionAndRedirect("../Calendar/Calendar");
+      } else {
+        const priceId = getPriceIdForPlan(plan);
+        if (!priceId) {
+          showPopup("No price configured for plan: " + plan, "error");
+          primaryBtn.disabled = false;
+          showLoader("Sending reset email...");
+          return;
+        }
+        await startCheckoutWithExtension(priceId);
+        return;
+      }
+    } catch (error) {
+      showLoader("Sending reset email...");
+      showPopup(displayError(error.code), "error");
+      primaryBtn.disabled = false;
+    }
+  }
+} else {
       // Login
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
@@ -352,30 +353,31 @@ function displayError(errorCode) {
   });
 
   googleBtn.onclick = async () => {
-    try {
-      googleBtn.disabled = true;
-      showLoader("Connecting to Google...");
-      showPopup("Connecting to Google...");
-      await signInWithGoogle();
-      const user = auth.currentUser;
-      if (!user) throw new Error("Google sign-in failed: no user returned.");
-      const plan = localStorage.getItem('selectedPlan') || "free";
-      if (plan === "free") {
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          createdAt: new Date().toISOString(),
-          plan: "free"
-        });
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-          name: user.displayName || "",
-          plan: "free",
-          planStartedAt: new Date().toISOString(),
-          timezone,
-          tutorialSeen: false
-        });
-        localStorage.removeItem('selectedPlan');
-        localStorage.removeItem('signupInProgress');
+  try {
+    localStorage.removeItem('selectedPlan');
+    googleBtn.disabled = true;
+    showLoader("Connecting to Google...");
+    showPopup("Connecting to Google...");
+    await signInWithGoogle();
+    const user = auth.currentUser;
+    if (!user) throw new Error("Google sign-in failed: no user returned.");
+    const plan = localStorage.getItem('selectedPlan') || "free";
+    if (plan === "free") {
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        createdAt: new Date().toISOString(),
+        plan: "free"
+      });
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+        name: user.displayName || "",
+        plan: "free",
+        planStartedAt: new Date().toISOString(),
+        timezone,
+        tutorialSeen: false
+      });
+      localStorage.removeItem('selectedPlan');
+      localStorage.removeItem('signupInProgress');
         showPopup("Successfully signed in with Google!");
         showLoader("Sending reset email...");
         const gradient = document.getElementById('gradientTransition');
@@ -386,33 +388,33 @@ function displayError(errorCode) {
         setTimeout(() => { document.getElementById('transitionText').style.opacity = 1; }, 400);
         setTimeout(() => { window.location.href = "../Calendar/Calendar"; }, 1800);
       } else {
-        localStorage.setItem('signupInProgress', '1');
-        const storedPlan = "pending_payment";
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          createdAt: new Date().toISOString(),
-          plan: storedPlan,
-          requestedPlan: plan
-        });
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-          name: user.displayName || "",
-          plan: storedPlan,
-          requestedPlan: plan,
-          planStartedAt: null,
-          timezone,
-          tutorialSeen: false
-        });
-        const priceId = getPriceIdForPlan(plan);
-        if (!priceId) {
-          showPopup("No price configured for plan: " + plan, "error");
-          showLoader("Sending reset email...");
-          googleBtn.disabled = false;
-          localStorage.removeItem('signupInProgress');
-          return;
-        }
-        await startCheckoutWithExtension(priceId);
+      localStorage.setItem('signupInProgress', '1');
+      const storedPlan = "pending_payment";
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        createdAt: new Date().toISOString(),
+        plan: storedPlan,
+        requestedPlan: plan
+      });
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
+        name: user.displayName || "",
+        plan: storedPlan,
+        requestedPlan: plan,
+        planStartedAt: null,
+        timezone,
+        tutorialSeen: false
+      });
+      const priceId = getPriceIdForPlan(plan);
+      if (!priceId) {
+        showPopup("No price configured for plan: " + plan, "error");
+        showLoader("Sending reset email...");
+        googleBtn.disabled = false;
+        localStorage.removeItem('signupInProgress');
+        return;
       }
+      await startCheckoutWithExtension(priceId);
+    }
     } catch (error) {
       showLoader("Sending reset email...");
       showPopup(error.message || "Failed to sign in with Google", "error");
@@ -483,8 +485,4 @@ const pwaInstallBtn = document.getElementById('pwa-install-btn');
       pwaLoadingOverlay.style.opacity = '1';
       pwaLoadingOverlay.style.pointerEvents = 'auto';
     });
-
   }
-
-
-
