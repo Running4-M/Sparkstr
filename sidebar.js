@@ -285,7 +285,7 @@ async function changePlanFlow(planKey, settings = null) {
         // Optional: refresh Firestore / UI state. The Stripe extension should write updated subscription docs
         showPopup("Plan upgraded successfully. Proration applied.");
         // navigate / refresh as needed
-        window.location.href = window.location.origin + "/Calendar/Calendar";
+        window.location.href = window.location.origin + "/Calendar/Calendar.html";
         return;
       } catch (err) {
         console.error("Prorated upgrade failed:", err);
@@ -296,18 +296,18 @@ async function changePlanFlow(planKey, settings = null) {
 
     // Fallback: if no active subscription or preview failed, fall back to creating a Checkout session via the extension:
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
-      price: getPriceId(planKey),
-      success_url: window.location.origin + "/Calendar/Calendar",
-      cancel_url: window.location.origin + currentPath + "?canceled=true",
-      mode: "subscription",
-      metadata: {
-        requestedPlan: planKey,
-        originalPath: currentPath,
-        originalSection: currentSection,
-        currency: currentCurrency
-      },
-      createdAt: serverTimestamp()
-    });
+  price: getPriceId(planKey),
+  success_url: window.location.origin + "/Calendar/Calendar.html",
+  cancel_url: window.location.origin + "/Calendar/Calendar.html", // <-- updated
+  mode: "subscription",
+  metadata: {
+    requestedPlan: planKey,
+    originalPath: currentPath,
+    originalSection: currentSection,
+    currency: currentCurrency
+  },
+  createdAt: serverTimestamp()
+});
 
 
     // 4. Listen and redirect
@@ -406,17 +406,24 @@ async function cleanupStalePending(uid, maxAgeMinutes = 15) {
     console.error('cleanupStalePending error', err);
   }
 }
-
+console.log("fetchBillingInfoOnce called")
 // -------------------- Added: one-off billing fetch for Settings modal --------------------
 async function fetchBillingInfoOnce() {
   try {
-    if (!auth.currentUser) return;
+    console.log("fetchBillingInfoOnce called");
+    if (!auth.currentUser) {
+      console.warn("No currentUser");
+      return;
+    }
     const uid = auth.currentUser.uid;
 
     const nextBillingEl = document.getElementById("nextBillingText");
     const planCardContainer = document.getElementById("planCardContainer");
-    if (!nextBillingEl || !planCardContainer) return;
-
+    console.log("nextBillingEl:", !!nextBillingEl, "planCardContainer:", !!planCardContainer);
+    if (!nextBillingEl || !planCardContainer) {
+      console.warn("Missing DOM elements for billing info");
+      return;
+    }
     // Reset displays
     nextBillingEl.textContent = "";
     let lastPaymentEl = document.getElementById("lastPaymentText");
@@ -584,49 +591,8 @@ async function fetchBillingInfoOnce() {
   }
 }
 
+
 // ----------------------------------------------------------------------------------------
-
-
-// Show next billing date in settings modal
-async function loadBillingInfo() {
-  if (!auth.currentUser) return;
-  const uid = auth.currentUser.uid;
-  const nextBillingEl = document.getElementById('nextBillingText');
-  if (!nextBillingEl) return;
-
-  // listen for subscriptions under customers/{uid}/subscriptions written by the extension
-  const subsCol = collection(db, 'customers', uid, 'subscriptions');
-  const unsub = onSnapshot(subsCol, (snapshot) => {
-    let found = false;
-    snapshot.forEach(snap => {
-      const data = snap.data();
-      if (!data) return;
-      // prefer active or trialing
-      if (data.status === 'active' || data.status === 'trialing') {
-        found = true;
-        // extension usually writes current_period_end as a timestamp object with .seconds
-        if (data.current_period_end && data.current_period_end.seconds) {
-          const dt = new Date(data.current_period_end.seconds * 1000);
-          nextBillingEl.textContent = 'Next billing date: ' + dt.toLocaleDateString();
-        } else if (data.current_period_end) {
-          // sometimes it's stored as ISO string
-          nextBillingEl.textContent = 'Next billing date: ' + new Date(data.current_period_end).toLocaleDateString();
-        } else {
-          nextBillingEl.textContent = 'Billing info available';
-        }
-      }
-    });
-
-    if (!found) {
-      nextBillingEl.textContent = ''; // hide if no active subscription found
-    }
-  }, (err) => {
-    console.error('loadBillingInfo snapshot error', err);
-  });
-
-  // return unsub if caller wants to cancel (not used now)
-  return unsub;
-}
 
 // --- VAPID PUBLIC KEY (replace with your actual key) ---
 const VAPID_PUBLIC_KEY = 'BPpogVifRNIEOqgN3z4T3kqG_JUbS2-Ui9TiJDu84VtzvabIC2XI_XQHy0Yh3BueZ-LnSINZ9wEDT5Bdm0LvqyI';
@@ -858,10 +824,10 @@ function createSidebar() {
 
 
 const navigationItems = [
-  { name: 'Calendar', path: '/Calendar/Calendar', icon: 'calendar' },
-  { name: 'Just Chat', path: '/Just_Chat/Just_Chat', icon: 'message-circle' },
-  { name: 'Responses', path: '/responses_centre/Responses', icon: 'responses' },
-  { name: 'Doc Live', path: '/DocLive/documentHub', icon: 'doclive' },
+  { name: 'Calendar', path: '/Calendar/Calendar.html', icon: 'calendar' },
+  { name: 'Just Chat', path: '/Just_Chat/Just_Chat.html', icon: 'message-circle' },
+  { name: 'Responses', path: '/responses_centre/Responses.html', icon: 'responses' },
+  { name: 'Doc Live', path: '/DocLive/documentHub.html', icon: 'doclive' },
   { name: 'Help', path: './help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
@@ -1086,7 +1052,7 @@ button.addEventListener('click', () => {
   }
   render();
   // Actually navigate if path is an HTML file
-  if (item.path && item.path.endsWith('')) {
+  if (item.path && item.path.endsWith('.html')) {
     // Use window.location to go to the correct relative path
     window.location.href = item.path;
   } else {
@@ -1438,7 +1404,7 @@ if (confirmDeleteBtn) {
   confirmDeleteBtn.onclick = async () => {
     try {
       await deleteUserAccount();
-      window.location.href = './Login/signup';
+      window.location.href = './Login/signup.html';
     } catch (err) {
       console.error('Failed to delete account:', err);
       alert('Failed to delete account. Please try again.');
@@ -1562,7 +1528,7 @@ if (confirmDeleteBtn) {
     const sm = modalContent.querySelector('#modal-loading-overlay');
     if (sm) sm.innerHTML = `<span style="color:#f87171;">Failed to load settings.</span>`;
   });
-  fetchBillingInfoOnce().catch(err => console.warn('billing fetch failed', err));
+
   // Save / Cancel / Close handlers
   const closeBtn = modalContent.querySelector('#closeSettings');
   if (closeBtn) closeBtn.addEventListener('click', () => { settingsOpen = false; render(); });
@@ -1599,7 +1565,7 @@ if (confirmDeleteBtn) {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup';
+      window.location.href = 'signup.html';
     });
   }
 
@@ -1639,6 +1605,7 @@ if (confirmDeleteBtn) {
     const settingsModal = createSettingsModal();
     if (settingsModal) {
       container.appendChild(settingsModal);
+      fetchBillingInfoOnce().catch(err => console.warn('billing fetch failed', err));
     }
   }
 
@@ -2276,7 +2243,4 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
-
-
-
 
