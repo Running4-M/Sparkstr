@@ -430,17 +430,25 @@ async function fetchBillingInfoOnce() {
     }
     lastPaymentEl.textContent = "";
 
-    // 1) Find active/trialing subscription
+    // ------------------------------
+    // 1) Subscriptions
+    // ------------------------------
     const subsCol = collection(db, "customers", uid, "subscriptions");
     const subsSnap = await getDocs(subsCol);
 
     let activeSub = null;
     subsSnap.forEach((snap) => {
       const data = snap.data();
+      console.log("Subscription doc:", snap.id, data); // 👈 debug log
       if (data && (data.status === "active" || data.status === "trialing")) {
         activeSub = data;
       }
     });
+
+    let planKey = "free";
+    let friendlyPlan = "Free";
+    let planStartedAt = null;
+    let planEndsAt = null;
 
     if (activeSub) {
       // Next billing date
@@ -451,6 +459,7 @@ async function fetchBillingInfoOnce() {
             ? activeSub.current_period_end.seconds * 1000
             : activeSub.current_period_end * 1000;
         nextBillingText = "Next billing date: " + new Date(ts).toLocaleDateString();
+        planEndsAt = new Date(ts).toISOString();
       }
       nextBillingEl.textContent = nextBillingText;
 
@@ -471,19 +480,29 @@ async function fetchBillingInfoOnce() {
         priceId = activeSub.price.id;
       }
 
+      console.log("Resolved priceId:", priceId); // 👈 debug log
+
       // Map to your plan keys
-      let planKey = null;
       if (priceId === "price_1S2DTJDUfadEcuo7FB6ihgCE") planKey = "basic";
       if (priceId === "price_1S2DW7DUfadEcuo7yw2Gnqov") planKey = "pro";
 
       // Friendly name fallback
-      let friendlyPlan = planKey
+      friendlyPlan = planKey
         ? planKey.charAt(0).toUpperCase() + planKey.slice(1)
         : item?.plan?.nickname || "Paid";
 
+      // StartedAt
+      if (activeSub.current_period_start) {
+        const ts =
+          activeSub.current_period_start.seconds != null
+            ? activeSub.current_period_start.seconds * 1000
+            : activeSub.current_period_start * 1000;
+        planStartedAt = new Date(ts).toISOString();
+      }
+
+      // Update plan card UI
       const planName =
         PLAN_LIMITS[friendlyPlan?.toLowerCase()]?.planName || friendlyPlan;
-
       const statusLine = `<div id="billingStatusLine" style="color:#cbd5e1;margin-top:6px;font-size:13px;">${planName} • ${activeSub.status}</div>`;
       const existing = planCardContainer.querySelector("#billingStatusLine");
       if (existing) {
@@ -493,17 +512,38 @@ async function fetchBillingInfoOnce() {
       }
     } else {
       // No active subscription
-      nextBillingEl.textContent = "";
       const existing = planCardContainer.querySelector("#billingStatusLine");
       if (existing) existing.remove();
     }
 
-    // 2) Find latest successful payment
+    // ------------------------------
+    // 2) Update Firestore user profile
+    // ------------------------------
+    const updates = {
+      plan: planKey,
+      requestedPlan: null,
+      planStartedAt,
+      planEndsAt,
+      updatedAt: new Date().toISOString(),
+    };
+    console.log("Updating user docs with:", updates); // 👈 debug log
+
+    await updateDoc(doc(db, "users", uid), updates).catch((err) =>
+      console.warn("Failed to update users doc", err)
+    );
+    await updateDoc(doc(db, "users", uid, "settings", "profile"), updates).catch(
+      (err) => console.warn("Failed to update profile doc", err)
+    );
+
+    // ------------------------------
+    // 3) Payments
+    // ------------------------------
     const paymentsCol = collection(db, "customers", uid, "payments");
     const paymentsSnap = await getDocs(paymentsCol);
     let latestPayment = null;
     paymentsSnap.forEach((snap) => {
       const d = snap.data();
+      console.log("Payment doc:", snap.id, d); // 👈 debug log
       if (!d) return;
       if (d.status === "succeeded" || d.amount_received > 0) {
         if (!latestPayment) latestPayment = d;
@@ -2236,6 +2276,7 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
 
