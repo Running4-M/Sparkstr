@@ -3293,7 +3293,7 @@ const navigationItems = [
   { name: 'Just Chat', path: '/Just_Chat/Just_Chat.html', icon: 'message-circle' },
   { name: 'Responses', path: '/responses_centre/Responses.html', icon: 'responses' },
   { name: 'Doc Live', path: '/DocLive/documentHub.html', icon: 'doclive' },
-  { name: 'Help', path: '../help', icon: 'help' },
+  { name: 'Help', path: 'https://sparkstr.com/help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
 
@@ -4755,4 +4755,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeEventListeners();
   renderMessages();
   updateInputState();
+
 });
