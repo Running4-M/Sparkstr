@@ -24,7 +24,10 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-
+window.addEventListener('beforeunload', () => {
+  localStorage.removeItem('selectedPlan');
+  localStorage.removeItem('selectedPlanTimestamp');
+});
 
 // initialize firebase with defensive try/catch so we don't fail silently
 try {
@@ -482,3 +485,4 @@ const pwaInstallBtn = document.getElementById('pwa-install-btn');
     });
 
   }
+
