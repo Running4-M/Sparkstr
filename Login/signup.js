@@ -73,7 +73,7 @@ async function startCheckoutWithExtension(priceId) {
   try {
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
       price: priceId,
-      success_url: window.location.origin + "../Calendar/Calendar",
+      success_url: window.location.origin + "https://sparkstr.com/Calendar/Calendar",
       cancel_url: window.location.origin + "/signup?canceled=true",
       mode: "subscription",
       createdAt: serverTimestamp()
@@ -485,5 +485,6 @@ const pwaInstallBtn = document.getElementById('pwa-install-btn');
     });
 
   }
+
 
 
