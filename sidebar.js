@@ -18,19 +18,6 @@ import { auth } from './backend/firebase.js';
 import { getMessagingInstance} from './backend/firebase.js';
 import { submitFeedback, db } from './backend/firebase.js';
 
-function showPopup(message, type = "info") {
-  // Simple toast for demonstration
-  const toast = document.createElement('div');
-  toast.textContent = message;
-  toast.style.cssText = `
-    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
-    background: ${type === "error" ? "#ef4444" : "#2563eb"};
-    color: white; padding: 12px 24px; border-radius: 8px; z-index: 9999;
-    font-weight: 600; font-size: 15px; box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  `;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
 
 // ---------- Proration helper functions (call from changePlanFlow) ----------
 async function getActiveSubscriptionId(uid) {
@@ -650,6 +637,13 @@ toggleStyles.textContent = `
 `;
 document.head.appendChild(toggleStyles);
 // Attach to settings modal toggle
+document.addEventListener('change', async (e) => {
+  if (e.target && e.target.id === 'settingsPushNotif') {
+    if (e.target.checked) {
+      await requestPushPermissionAndSaveToken();
+    }
+  }
+});
 
 if (!document.getElementById('plan-modal-styles')) {
   const style = document.createElement('style');
@@ -1485,53 +1479,18 @@ if (confirmDeleteBtn) {
   // Wire toggles & special behaviors
   
   const pushToggle = wireToggle('labelPushNotif', {
-  onChange: async (checked) => {
-    // Only allow enabling if permission is granted and FCM token is available
-    if (checked) {
-      // Check browser permission first
-      if (Notification.permission !== 'granted') {
-        // Try to request permission
-        const permission = await Notification.requestPermission();
-        if (permission !== 'granted') {
-          // Show toast and revert toggle
+    onChange: (checked) => {
+      if (checked) {
+        requestPushPermissionAndSaveToken().catch(err => {
+          console.error('Push permission error', err);
           if (pushToggle && pushToggle.checkbox) {
             pushToggle.checkbox.checked = false;
             pushToggle.setVisual(false);
           }
-          showPopup("Please allow browser notifications to enable this feature.", "error");
-          return;
-        }
+        });
       }
-      // Now check if FCM token is present in user settings
-      const settings = await loadUserSettings();
-      if (!settings.pushToken) {
-        // Try to get token and save
-        try {
-          const messaging = getMessagingInstance();
-          const token = await getToken(messaging, { vapidKey: VAPID_PUBLIC_KEY });
-          if (token) {
-            await saveUserSettings({ ...settings, pushToken: token, pushNotifications: true });
-          } else {
-            throw new Error("No FCM token received");
-          }
-        } catch (err) {
-          // Show toast and revert toggle
-          if (pushToggle && pushToggle.checkbox) {
-            pushToggle.checkbox.checked = false;
-            pushToggle.setVisual(false);
-          }
-          showPopup("Unable to enable notifications. Please check your browser settings and try again.", "error");
-          return;
-        }
-      }
-      // All good, keep toggle enabled
-    } else {
-      // If disabling, just update settings
-      const settings = await loadUserSettings();
-      await saveUserSettings({ ...settings, pushNotifications: false });
     }
-  }
-});
+  });
 
   // LOAD user settings and initialize visuals
   loadUserSettings().then(async (settings) => {
@@ -2289,6 +2248,4 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
-
-
 
