@@ -369,7 +369,7 @@ async function getActiveSubscriptionId(uid) {
 }
 
 async function previewProration(subscriptionId, newPriceId) {
-  const resp = await fetch('/api/preview-upgrade', {
+  const resp = await fetch('https://my-backend-three-pi.vercel.app/api/preview-upgrade', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ subscriptionId, newPriceId })
@@ -382,7 +382,7 @@ async function previewProration(subscriptionId, newPriceId) {
 }
 
 async function performProratedUpgrade(subscriptionId, newPriceId) {
-  const resp = await fetch('/api/perform-upgrade', {
+  const resp = await fetch('https://my-backend-three-pi.vercel.app/api/perform-upgrade', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ subscriptionId, newPriceId })
@@ -4764,5 +4764,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateInputState();
 
 });
+
 
 
