@@ -1,3 +1,4 @@
+// vercel.json
 {
   "cleanUrls": true,
   "rewrites": [
@@ -9,7 +10,10 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/Terms_of_service.html" },
     { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/help", "destination": "/help.html" }
+    { "source": "/help", "destination": "/help.html" },
+
+    // 🔑 Add these two rewrites so Firebase Auth works
+    { "source": "/__/auth/:path*", "destination": "https://ai-calendar-5753a.firebaseapp.com/__/auth/:path*" }
   ],
   "redirects": [
     { "source": "/Login/signup.html", "destination": "/signup", "permanent": true },
@@ -23,3 +27,4 @@
     { "source": "/help.html", "destination": "/help", "permanent": true }
   ]
 }
+
