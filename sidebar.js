@@ -1564,7 +1564,7 @@ if (confirmDeleteBtn) {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup';
+      window.location.href = 'https://sparkstr.com/Login/signup';
     });
   }
 
@@ -2248,4 +2248,5 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
