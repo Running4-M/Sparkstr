@@ -311,8 +311,8 @@ async function changePlanFlow(planKey, settings = null) {
     // Fallback: if no active subscription or preview failed, fall back to creating a Checkout session via the extension:
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
   price: getPriceId(planKey),
-  success_url: window.location.origin + "/Calendar/Calendar",
-  cancel_url: window.location.origin + "/Calendar/Calendar", // <-- updated
+  success_url: window.location.origin + "https://sparkstr.com/Calendar/Calendar",
+  cancel_url: window.location.origin + "https://sparkstr.com/Calendar/Calendar", // <-- updated
   mode: "subscription",
   metadata: {
     requestedPlan: planKey,
@@ -2289,5 +2289,6 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
