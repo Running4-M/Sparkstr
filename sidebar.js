@@ -1504,7 +1504,7 @@ if (confirmDeleteBtn) {
   confirmDeleteBtn.onclick = async () => {
     try {
       await deleteUserAccount();
-      window.location.href = './Login/signup';
+      window.location.href = 'https://sparkstr.com/Login/signup';
     } catch (err) {
       console.error('Failed to delete account:', err);
       alert('Failed to delete account. Please try again.');
@@ -1624,7 +1624,7 @@ if (confirmDeleteBtn) {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup';
+      window.location.href = 'https://sparkstr.com/Login/signup';
     });
   }
 
@@ -2308,6 +2308,7 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
 
