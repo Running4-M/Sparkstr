@@ -21,10 +21,11 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.notification?.title || 'Background Message Title';
   const notificationOptions = {
     body: payload.notification?.body || 'Background Message body.',
-    icon: './img/Logo.png'
+    icon: 'https://sparkstr.com/img/Logo.png'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 
 });
+
 
