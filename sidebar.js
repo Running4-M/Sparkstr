@@ -303,7 +303,7 @@ showProrationModal({
         showPopup(`Successfully upgraded to ${planKey}. You were charged ${humanAmount} (prorated).`);
       }
 
-      window.location.href = window.location.origin + "/Calendar/Calendar.html";
+      window.location.href = window.location.origin + "/Calendar/Calendar";
     } catch (err) {
       console.error("Upgrade/downgrade failed", err);
       showPopup("Plan update failed: " + (err.message || err), "error");
@@ -884,10 +884,10 @@ function createSidebar() {
 
 
 const navigationItems = [
-  { name: 'Calendar', path: '/Calendar/Calendar.html', icon: 'calendar' },
-  { name: 'Just Chat', path: '/Just_Chat/Just_Chat.html', icon: 'message-circle' },
-  { name: 'Responses', path: '/responses_centre/Responses.html', icon: 'responses' },
-  { name: 'Doc Live', path: '/DocLive/documentHub.html', icon: 'doclive' },
+  { name: 'Calendar', path: '/Calendar/Calendar', icon: 'calendar' },
+  { name: 'Just Chat', path: '/Just_Chat/Just_Chat', icon: 'message-circle' },
+  { name: 'Responses', path: '/responses_centre/Responses', icon: 'responses' },
+  { name: 'Doc Live', path: '/DocLive/documentHub', icon: 'doclive' },
   { name: 'Help', path: './help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
@@ -1112,7 +1112,7 @@ button.addEventListener('click', () => {
   }
   render();
   // Actually navigate if path is an HTML file
-  if (item.path && item.path.endsWith('.html')) {
+  if (item.path && item.path.endsWith('')) {
     // Use window.location to go to the correct relative path
     window.location.href = item.path;
   } else {
@@ -1504,7 +1504,7 @@ if (confirmDeleteBtn) {
   confirmDeleteBtn.onclick = async () => {
     try {
       await deleteUserAccount();
-      window.location.href = './Login/signup.html';
+      window.location.href = './Login/signup';
     } catch (err) {
       console.error('Failed to delete account:', err);
       alert('Failed to delete account. Please try again.');
@@ -1624,7 +1624,7 @@ if (confirmDeleteBtn) {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup.html';
+      window.location.href = 'signup';
     });
   }
 
@@ -2308,4 +2308,5 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
