@@ -23,7 +23,7 @@ async function init() {
 }
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup.html";
+    window.location.href = "../Login/signup";
   }
 });
 document.addEventListener('DOMContentLoaded', init);
@@ -437,7 +437,7 @@ async handleCreateDocument(e) {
     this.renderDocuments();
 
     // Navigate to editor with documentId in URL
-    window.location.href = `editor.html?documentId=${docId}`;
+    window.location.href = `editor?documentId=${docId}`;
 }
 
     async showConnectModal() {
@@ -577,11 +577,11 @@ async handleConnectResponse() {
     const { createDocument } = await import('../backend/firebase.js');
     const docId = await createDocument(docMeta);
 
-    window.location.href = `editor.html?documentId=${docId}`;
+    window.location.href = `editor?documentId=${docId}`;
 }
 
 openDocument(docId) {
-    window.location.href = `editor.html?documentId=${docId}`;
+    window.location.href = `editor?documentId=${docId}`;
 }
     deleteDocument(docId) {
         this.documents = this.documents.filter(doc => doc.id !== docId);
@@ -792,4 +792,5 @@ window.addEventListener('resize', () => {
     if (app) {
         app.hideDocumentMenu();
     }
+
 });
