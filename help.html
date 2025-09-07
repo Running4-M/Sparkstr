@@ -262,7 +262,7 @@
     // Import getCurrentUserId from backend/firebase.js
     import('./backend/firebase.js').then(({ getCurrentUserId }) => {
       if (!getCurrentUserId()) {
-        window.location.href = "./Login/signup.html";
+        window.location.href = "./Login/signup";
       }
     });
   });
@@ -479,9 +479,10 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <div class="legal-links">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="Terms_of_service.html">Terms of Service</a>
+      <a href="privacy">Privacy Policy</a>
+      <a href="Terms_of_service">Terms of Service</a>
     </div>
   </div>
 </body>
 </html>
+
