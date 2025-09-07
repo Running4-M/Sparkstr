@@ -18,7 +18,35 @@ import { auth } from './backend/firebase.js';
 import { getMessagingInstance} from './backend/firebase.js';
 import { submitFeedback, db } from './backend/firebase.js';
 
+function showPopup(message, type = "info") {
+  // Remove any existing popup
+  const existing = document.getElementById('simple-popup');
+  if (existing) existing.remove();
 
+  const popup = document.createElement('div');
+  popup.id = 'simple-popup';
+  popup.textContent = message;
+  popup.style.position = 'fixed';
+  popup.style.top = '32px';
+  popup.style.left = '50%';
+  popup.style.transform = 'translateX(-50%)';
+  popup.style.background = type === "error" ? "#ef4444" : "#2563eb";
+  popup.style.color = "#fff";
+  popup.style.padding = "14px 32px";
+  popup.style.borderRadius = "10px";
+  popup.style.fontWeight = "600";
+  popup.style.fontSize = "16px";
+  popup.style.zIndex = "9999";
+  popup.style.boxShadow = "0 4px 24px rgba(30,41,59,0.18)";
+  popup.style.transition = "opacity 0.3s";
+  popup.style.opacity = "1";
+  document.body.appendChild(popup);
+
+  setTimeout(() => {
+    popup.style.opacity = "0";
+    setTimeout(() => popup.remove(), 400);
+  }, 2600);
+}
 
 // ---------- Proration helper functions (call from changePlanFlow) ----------
 async function getActiveSubscriptionId(uid) {
@@ -2249,6 +2277,7 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
 
