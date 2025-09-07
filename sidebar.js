@@ -888,7 +888,7 @@ const navigationItems = [
   { name: 'Just Chat', path: '/Just_Chat/Just_Chat', icon: 'message-circle' },
   { name: 'Responses', path: '/responses_centre/Responses', icon: 'responses' },
   { name: 'Doc Live', path: '/DocLive/documentHub', icon: 'doclive' },
-  { name: 'Help', path: './help', icon: 'help' },
+  { name: 'Help', path: 'https://sparkstr.com/help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
 
@@ -2308,5 +2308,6 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
