@@ -266,7 +266,7 @@ showProrationModal({
         showToast(`Successfully upgraded to ${planKey}. You were charged ${humanAmount} (prorated).`);
       }
 
-      window.location.href = window.location.origin + "/Calendar/Calendar.html";
+      window.location.href = window.location.origin + "/Calendar/Calendar";
     } catch (err) {
       console.error("Upgrade/downgrade failed", err);
       showToast("Plan update failed: " + (err.message || err), "error");
@@ -670,7 +670,7 @@ document.addEventListener('change', async (e) => {
 });
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup.html";
+    window.location.href = "../Login/signup";
   }
 });
 
@@ -770,7 +770,7 @@ async function init() {
   try {
     await firebaseInitPromise;
     if (!getCurrentUserId()) {
-      window.location.href = "../Login/login.html";
+      window.location.href = "../Login/login";
       return;
     }
     initializeTheme();
@@ -3303,11 +3303,11 @@ function renderNavSidebarContent() {
 
   // Navigation items
 const navigationItems = [
-  { name: 'Calendar', path: '/Calendar/Calendar.html', icon: 'calendar' },
-  { name: 'Just Chat', path: '/Just_Chat/Just_Chat.html', icon: 'message-circle' },
-  { name: 'Responses', path: '/responses_centre/Responses.html', icon: 'responses' },
-  { name: 'Doc Live', path: '/DocLive/documentHub.html', icon: 'doclive' },
-  { name: 'Help', path: '../help', icon: 'help' },
+  { name: 'Calendar', path: '/Calendar/Calendar', icon: 'calendar' },
+  { name: 'Just Chat', path: '/Just_Chat/Just_Chat', icon: 'message-circle' },
+  { name: 'Responses', path: '/responses_centre/Responses', icon: 'responses' },
+  { name: 'Doc Live', path: '/DocLive/documentHub', icon: 'doclive' },
+  { name: 'Help', path: 'https://sparkstr.com/help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
 
@@ -3679,7 +3679,7 @@ function renderSettingsModal() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup.html';
+      window.location.href = 'signup';
     });
   }
 
@@ -3704,7 +3704,7 @@ if (confirmDeleteBtn) {
   confirmDeleteBtn.onclick = async () => {
     try {
       await deleteUserAccount();
-      window.location.href = '../Login/signup.html';
+      window.location.href = '../Login/signup';
     } catch (err) {
       console.error('Failed to delete account:', err);
       alert('Failed to delete account. Please try again.');
@@ -4774,4 +4774,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeEventListeners();
   renderMessages();
   updateInputState();
+
 });
