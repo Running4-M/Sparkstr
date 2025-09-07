@@ -670,7 +670,7 @@ document.addEventListener('change', async (e) => {
 });
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup";
+    window.location.href = "https://sparkstr.com/Login/signup";
   }
 });
 
@@ -4776,4 +4776,5 @@ document.addEventListener('DOMContentLoaded', () => {
   updateInputState();
 
 });
+
 
