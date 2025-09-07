@@ -19,6 +19,7 @@ import { getMessagingInstance} from './backend/firebase.js';
 import { submitFeedback, db } from './backend/firebase.js';
 
 
+
 // ---------- Proration helper functions (call from changePlanFlow) ----------
 async function getActiveSubscriptionId(uid) {
   // Find the active subscription doc under customers/{uid}/subscriptions (extension writes these)
@@ -2248,6 +2249,7 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
 
