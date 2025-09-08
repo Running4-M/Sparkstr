@@ -49,9 +49,9 @@ export const PLAN_LIMITS = {
   },
   pro: {
     planName: "Pro",
-    responsesGeneratedPerDay: 5, // not specified, keep 0 or adjust if tracked
-    complexEventsPerDay: 10,
-    complexEventsWithAttachmentPerDay: 5,
+    responsesGeneratedPerDay: 10, // not specified, keep 0 or adjust if tracked
+    complexEventsPerDay: 5,
+    complexEventsWithAttachmentPerDay: 3,
     justChatNanoPerDay: 100,
     justChatMiniPerDay: 50,
     justChatFullPerDay: 20,
@@ -71,4 +71,5 @@ export const PLAN_LIMITS = {
     smartPlanGenPerDay: 5,
     smartPlanUpdatePerDay: 10
   }
+
 };
