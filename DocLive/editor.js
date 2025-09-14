@@ -59,7 +59,7 @@ async function init() {
 
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup.html";
+    window.location.href = "../Login/signup";
   }
 });
 
@@ -583,10 +583,10 @@ if (backBtn && desktopEditor) {
         if (unsaved) {
             e.preventDefault();
             showUnsavedModal(false, () => {
-                window.location.href = 'documentHub.html';
+                window.location.href = 'documentHub';
             });
         } else {
-            window.location.href = 'documentHub.html';
+            window.location.href = 'documentHub';
         }
     });
 }
@@ -602,10 +602,10 @@ if (mobileBackBtn && mobileEditor) {
         if (unsaved) {
             e.preventDefault();
             showUnsavedModal(true, () => {
-                window.location.href = 'documentHub.html';
+                window.location.href = 'documentHub';
             });
         } else {
-            window.location.href = 'documentHub.html';
+            window.location.href = 'documentHub';
         }
     });
 }
@@ -3924,7 +3924,7 @@ function downloadDocument() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'document.html';
+    a.download = 'document';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -4006,4 +4006,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePremiumBtn('premiumChatBtnMobile');
   }
 });
+
 
