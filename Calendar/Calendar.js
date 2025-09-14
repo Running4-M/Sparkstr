@@ -650,25 +650,23 @@ async function init() {
     renderCalendar();
 
 addDropZoneHandlers();
-processAIResponses()
     
-    // Add event listeners
-    if (window.tutorialTour) {
-      shouldShowTutorial().then(show => {
-        if (show) {
-          window.tutorialTour.start();
-        }
-      });
-    } else {
-      // Optionally, wait for tutorial.js to load and then check again
-      setTimeout(() => {
-        if (window.tutorialTour) {
-          shouldShowTutorial().then(show => {
-            if (show) window.tutorialTour.start();
-          });
-        }
-      }, 1000);
-    }
+    // ✅ Start tutorial only after both Firebase settings and tutorial.js are ready
+Promise.all([
+  shouldShowTutorial(),
+  new Promise(resolve => {
+    // Poll until tutorial.js has set window.tutorialTour
+    const waitForTour = () => {
+      if (window.tutorialTour) return resolve();
+      setTimeout(waitForTour, 100);
+    };
+    waitForTour();
+  })
+]).then(([show]) => {
+  if (show) {
+    window.tutorialTour.start();
+  }
+});
   window.addEventListener('resize', () => {
   if (state.view === 'month') normalizeRowHeights();
 });
@@ -5286,3 +5284,4 @@ document.getElementById('mobileSidebarHamburger').addEventListener('click', func
 
 
   
+
