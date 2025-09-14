@@ -1,0 +1,3132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Editor</title>
+    <link rel="icon" href="../img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/Logo.png">
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Change these lines in your <head> section -->
+<link rel="manifest" href="../manifest.webmanifest">
+<script src="../pwa.js" defer></script>
+</head>
+                <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+<script> window.md = window.markdownit(); </script>
+<style>
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+
+}
+
+/* Hide mobile layout on desktop */
+.mobile-layout {
+    display: none;
+}
+
+/* Desktop Layout */
+.desktop-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Left Sidebar */
+.ai-sidebar {
+    width: 300px;
+    background-color: #2d2d2d;
+    border-right: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.ai-sidebar.ai-sidebar-collapsed {
+    width: 60px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #444;
+    min-height: 60px;
+}
+
+.sidebar-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .sidebar-header h2 {
+    display: none;
+}
+
+.sidebar-toggle-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #444;
+    color: #ffffff;
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .sidebar-content {
+    padding: 8px;
+}
+
+/* Text Selection Info */
+.text-selection-info {
+    background-color: #3d4451;
+    border: 1px solid #5a6478;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+.selection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.selection-header h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.clear-selection-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.clear-selection-btn:hover {
+    background-color: #5a6478;
+    color: #ffffff;
+}
+
+.selection-preview {
+    font-size: 12px;
+    color: #ccc;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .text-selection-info {
+    display: none;
+}
+
+/* AI Actions */
+.ai-actions {
+    margin-bottom: 20px;
+}
+
+.ai-actions h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .ai-actions h3 {
+    display: none;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ai-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+}
+
+.ai-action-btn:hover {
+    background-color: #4a4a4a;
+    border-color: #666;
+}
+
+.ai-action-btn svg {
+    flex-shrink: 0;
+    color: #888;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn {
+    justify-content: center;
+    padding: 12px 8px;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn span {
+    display: none !important;
+}
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn svg {
+    display: block !important;
+}
+
+/* History Section */
+.history-section {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.history-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.history-btn:hover {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .history-btn {
+    justify-content: center;
+    padding: 12px 8px;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .history-btn span {
+    display: none;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #2d2d2d;
+    border-bottom: 1px solid #444;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toolbar-separator {
+    width: 1px;
+    height: 24px;
+    background-color: #444;
+    margin: 0 8px;
+}
+
+.toolbar-spacer {
+    flex: 1;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+    background-color: #3a3a3a;
+    color: #ffffff;
+    border-color: #555;
+}
+
+.toolbar-btn.active {
+    background-color: #4a90e2;
+    color: #ffffff;
+    border-color: #4a90e2;
+}
+
+.font-size-select {
+    padding: 6px 8px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 12px;
+    min-width: 70px;
+}
+
+.font-size-select:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.color-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-input-wrapper:hover {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.color-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.color-input-wrapper svg {
+    color: #ccc;
+    pointer-events: none;
+}
+
+.download-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+    background-color: #357abd;
+}
+.download-btn.unsaved {
+  background: #691f1f ;
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 2px 8px #b91c1c22;
+  transition: background 0.18s, color 0.18s;
+}
+/* Document Container */
+.document-container {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #1a1a1a;
+    padding: 20px;
+}
+
+.document-page {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    min-height: calc(100vh - 140px);
+}
+
+.document-editor, .mobile-document-editor {
+    user-select: text !important;
+    pointer-events: auto !important;
+    color: #000 !important;
+    background: #fff !important;
+    caret-color: #2563eb !important;
+}
+
+.document-editor {
+    padding: 40px;
+    min-height: calc(100vh - 140px);
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.6;
+    font-family: Georgia, 'Times New Roman', serif;
+    outline: none;
+    cursor: text;
+}
+
+.document-editor p {
+    margin-bottom: 16px;
+}
+
+.document-editor:empty::before {
+    content: "Start typing your document...";
+    color: #999;
+}
+
+/* Highlight tooltips */
+.highlight-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.highlight-tooltip:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.highlight-tooltip:hover::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    z-index: 1000;
+}
+
+/* Right Panel */
+.right-panel-container {
+    position: relative;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    transition: width 0.2s;
+}
+.right-panel-container.show {
+    width: 400px;
+    min-width: 200px;
+    max-width: 100vw;
+}
+
+.right-panel-container:not(.show) .right-panel {
+    width: 0 !important;
+    min-width: 0 !important;
+    display: none !important;
+}
+.right-panel-container.show .right-panel {
+    display: flex;
+    width: 100%;
+}
+
+/* Add after .right-panel-container and .right-panel */
+.right-panel-drag-handle {
+    position: absolute;
+    left: -6px;
+    top: 0;
+    width: 12px;
+    height: 100%;
+    cursor: ew-resize;
+    z-index: 10;
+    background: transparent;
+    transition: background 0.2s;
+}
+.right-panel-drag-handle:hover {
+    background: linear-gradient(to right, #a78bfa55 0%, #a78bfa 100%);
+}
+.right-panel {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+.main-content {
+    transition: width 0.2s;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #444;
+    background-color: #2d2d2d;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background-color: #4a90e2;
+}
+
+.action-icon svg {
+    color: #ffffff;
+}
+
+.panel-title h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.panel-close-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.panel-close-btn:hover {
+    background-color: #444;
+    color: #ffffff;
+}
+
+.panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.original-text-section h4,
+.ai-response-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.original-text {
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+.ai-suggestion {
+    background-color: #f8fafc;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    padding: 20px;
+    font-size: 16px;
+    color: #1e293b;
+    line-height: 1.7;
+    word-break: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+}
+.ai-suggestion h1, .ai-suggestion h2, .ai-suggestion h3, .ai-suggestion h4 {
+    color: #0f172a;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+.ai-suggestion ul, .ai-suggestion ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+.ai-suggestion li {
+    margin-bottom: 0.5em;
+}
+.ai-suggestion strong {
+    color: #2563eb;
+}
+
+.rewrite-adjustments {
+    margin-top: 12px;
+}
+
+.adjustment-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.adjustment-btn {
+    padding: 6px 12px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.adjustment-btn:hover {
+    background-color: #4a4a4a;
+    border-color: #666;
+}
+
+.panel-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.apply-btn {
+    padding: 12px 16px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.apply-btn:hover {
+    background-color: #357abd;
+}
+
+.chat-btn {
+    padding: 12px 16px;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.chat-btn:hover {
+    background-color: #4cae4c;
+}
+
+.secondary-btn {
+    padding: 10px 16px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    background-color: #4a4a4a;
+    border-color: #666;
+}
+
+/* History Content */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.history-item {
+    padding: 12px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.history-item:hover {
+    background-color: #4a4a4a;
+    border-color: #666;
+}
+
+.history-item.feedback {
+    border-left: 4px solid #4a90e2;
+}
+
+.history-item.grammar {
+    border-left: 4px solid #5cb85c;
+}
+
+/* Chat Content */
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: #3a3a3a;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    background-color: #888;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing {
+    0%, 80%, 100% { 
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px 12px;
+    background-color: #3a3a3a;
+    border: 1px solid #555;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.chat-input::placeholder {
+    color: #888;
+}
+
+.send-btn {
+    padding: 10px;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-btn:hover {
+    background-color: #357abd;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Mobile Layout */
+@media (max-width: 1023px) {
+    .desktop-layout {
+        display: none;
+    }
+
+    .mobile-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Mobile Header */
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background-color: #2d2d2d;
+        border-bottom: 1px solid #444;
+        min-height: 60px;
+    }
+
+    .mobile-header h1 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .mobile-menu-btn,
+    .mobile-download-btn {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-menu-btn:hover,
+    .mobile-download-btn:hover {
+        background-color: #444;
+    }
+
+    /* Mobile Toolbar */
+    .mobile-toolbar {
+        background-color: #2d2d2d;
+        border-bottom: 1px solid #444;
+        padding: 8px 12px;
+    }
+
+    .mobile-toolbar-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        overflow-x: auto;
+        padding: 4px 0;
+    }
+
+    .mobile-toolbar-row:first-child {
+        margin-bottom: 8px;
+    }
+
+    .mobile-toolbar .toolbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .mobile-toolbar .toolbar-btn:hover {
+        background-color: #3a3a3a;
+        border-color: #555;
+    }
+
+    .mobile-toolbar .toolbar-btn.active {
+        background-color: #4a90e2;
+        border-color: #4a90e2;
+    }
+
+    .mobile-font-size-select {
+        padding: 6px 8px;
+        background-color: #3a3a3a;
+        border: 1px solid #555;
+        border-radius: 4px;
+        color: #ffffff;
+        font-size: 12px;
+        min-width: 70px;
+        margin-right: 8px;
+    }
+
+    .mobile-color-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-right: 4px;
+    }
+
+    .mobile-color-input-wrapper:hover {
+        background-color: #3a3a3a;
+        border-color: #555;
+    }
+
+    .mobile-color-input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .mobile-color-input-wrapper svg {
+        color: #ffffff;
+        pointer-events: none;
+    }
+
+    /* Mobile Document Container */
+    .mobile-document-container {
+        flex: 1;
+        overflow-y: auto;
+        background-color: #1a1a1a;
+        padding: 16px;
+    }
+
+    .mobile-document-editor {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        min-height: calc(100vh - 200px);
+        color: #000000;
+        font-size: 16px;
+        line-height: 1.6;
+        font-family: Georgia, 'Times New Roman', serif;
+        outline: none;
+        cursor:text;
+    }
+
+    .mobile-document-editor p {
+        margin-bottom: 16px;
+    }
+
+    .mobile-document-editor:empty::before {
+        content: "Start typing your document...";
+        color: #999;
+    }
+
+    /* Mobile AI Sidebar */
+    .mobile-ai-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background-color: #2d2d2d;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+    }
+
+    .mobile-ai-sidebar:not(.hidden) {
+        transform: translateX(0);
+    }
+
+    .mobile-sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid #444;
+        background-color: #2d2d2d;
+    }
+
+    .mobile-sidebar-header h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .mobile-sidebar-close-btn {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-sidebar-close-btn:hover {
+        background-color: #444;
+    }
+
+    .mobile-sidebar-content {
+        padding: 16px;
+    }
+
+    .mobile-sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    /* Mobile Tab Navigation */
+    .mobile-tab-navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #2d2d2d;
+        z-index: 1001;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .mobile-tab-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid #444;
+        background-color: #2d2d2d;
+    }
+
+    .mobile-back-btn,
+    .mobile-tab-close-btn {
+        background: none;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-back-btn:hover,
+    .mobile-tab-close-btn:hover {
+        background-color: #444;
+    }
+
+    .mobile-tab-header h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .mobile-tab-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .mobile-panel-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+/* ...existing code... */
+.ai-sidebar.ai-sidebar-collapsed .sidebar-content {
+    padding: 8px 0;
+    align-items: center;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn {
+    justify-content: center;
+    padding: 12px 0;
+    width: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    margin: 6px auto;
+    background-color: #222;
+    border: none;
+    box-shadow: 0 2px 8px rgba(80,80,120,0.08);
+    transition: background 0.2s;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn svg {
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .history-btn {
+    justify-content: center;
+    padding: 12px 0;
+    width: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    margin: 12px auto;
+    background-color: #4a90e2;
+    border: none;
+    box-shadow: 0 2px 8px rgba(80,80,120,0.08);
+}
+
+.ai-sidebar.ai-sidebar-collapsed .history-btn svg {
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.ai-sidebar.ai-sidebar-collapsed .history-btn span {
+    display: none !important;
+}
+
+/* Colored backgrounds for AI buttons (expanded and collapsed) */
+.ai-action-btn[data-action="feedback"] { background-color: #2563eb; }
+.ai-action-btn[data-action="grammar"] { background-color: #10b981; }
+.ai-action-btn[data-action="rewrite"] { background-color: #a78bfa; }
+.ai-action-btn[data-action="expand"] { background-color: #f59e42; }
+.ai-action-btn[data-action="simplify"] { background-color: #14b8a6; }
+.ai-action-btn[data-action="tone"] { background-color: #ec4899; }
+.ai-action-btn svg { color: #fff; }
+.ai-action-btn:hover { filter: brightness(1.1); }
+
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn span {
+    display: none !important;
+}
+.ai-sidebar.ai-sidebar-collapsed .ai-action-btn svg {
+    display: block !important;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+/* Grammar suggestion card styling */
+.grammar-suggestion-card {
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.grammar-suggestion-card.bg-red-200 { background: #fee2e2; }
+.grammar-suggestion-card.bg-green-100 { background: #dcfce7; }
+.grammar-suggestion-card.bg-yellow-200 { background: #fef9c3; }
+
+.grammar-dropdown-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 8px;
+    color: #555;
+}
+.grammar-dropdown {
+    position: absolute;
+    right: 16px;
+    top: 36px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 10;
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+}
+.grammar-dropdown button {
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+.grammar-dropdown button:hover {
+    background: #f3f4f6;
+}
+
+
+/* Highlight backgrounds for types */
+.highlight.grammar { border-left: 4px solid #22c55e; background-color: #dcfce7; }
+.highlight.spelling { border-left: 4px solid #ef4444; background-color: #fee2e2; }
+.highlight.punctuation { border-left: 4px solid #3b82f6; background-color: #bfdbfe; }
+.highlight.style { border-left: 4px solid #facc15; background-color: #fef9c3; }
+.highlight.clarity { border-left: 4px solid #a855f7; background-color: #ede9fe; }
+
+/* Highlight card styling */
+.highlight {
+    margin-bottom: 28px;
+    padding: 22px 28px 18px 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    position: relative;
+    transition: box-shadow 0.2s, background 0.2s;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: none;
+}
+
+.highlight strong {
+    font-weight: 700;
+    font-size: 16px;
+    color: #22223b;
+    margin-right: 10px;
+    background: rgba(255,255,255,0.7);
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+
+.highlight .highlight-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.highlight .highlight-phrase {
+    color: #1e293b;
+    font-weight: 500;
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.highlight .highlight-correction {
+    color: #2563eb;
+    font-weight: 600;
+    background: #e0e7ff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #dbeafe;
+}
+
+.highlight .highlight-explanation {
+    color: #64748b;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+    font-style: italic;
+}
+
+.highlight .highlight-actions {
+    display: none;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    z-index: 10;
+    min-width: 140px;
+    flex-direction: column;
+    padding: 0;
+}
+
+.highlight.active .highlight-actions {
+    display: flex;
+}
+
+.highlight-actions button {
+    padding: 12px 22px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    color: #2563eb;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.15s;
+    font-weight: 500;
+}
+
+.highlight-actions button:last-child {
+    border-bottom: none;
+}
+
+.highlight-actions button:hover {
+    background: #f3f4f6;
+    color: #1e293b;
+}
+
+@media (max-width: 1023px) {
+    .highlight {
+        padding: 16px 12px 12px 10px;
+        font-size: 15px;
+    }
+    .highlight-actions {
+        right: 10px;
+        top: 10px;
+        min-width: 110px;
+    }
+}
+
+/* Fix main-content width when right panel closes */
+
+.chat-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .chat-sidebar {
+            width: 384px;
+            background: hsl(220 13% 18%);
+            color: hsl(220 14% 96%);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid hsl(217.2 32.6% 17.5%);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ai-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(262.1 83.3% 57.8%));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .ai-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .header-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .header-subtitle {
+            font-size: 0.875rem;
+            color: hsl(215 20.2% 65.1%);
+            margin-top: 0.25rem;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: hsl(215 20.2% 65.1%);
+            padding: 2rem 0;
+        }
+
+        .empty-avatar {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto 0.75rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(262.1 83.3% 57.8%));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.5;
+            color: white;
+        }
+
+        .empty-title {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 100%;
+            min-width: 0;
+            margin-top: 72px;
+        }
+
+        .message.user .message-content {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .user-avatar {
+            background: hsl(217.2 91.2% 59.8%);
+            color: white;
+        }
+
+        .assistant-avatar {
+            background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(262.1 83.3% 57.8%));
+            color: white;
+        }
+
+        .message-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .message.user .message-body {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .message.user .message-bubble {
+    background: #2563eb;
+    color: #fff;
+    border-radius: 12px 12px 0 12px;
+    max-width: 90%;
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+    margin-right: 0;
+    margin-left: auto;
+    box-shadow: 0 2px 8px rgba(80,80,120,0.08);
+}
+
+        .attachment-preview {
+            max-width: 200px;
+        }
+
+        .attachment-card {
+            padding: 0.5rem;
+            background: hsl(217.2 32.6% 25%);
+            border: 1px solid hsl(217.2 32.6% 30%);
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .attachment-url {
+            color: hsl(215 20.2% 70%);
+            word-break: break-all;
+        }
+
+        .attachment-title {
+            color: white;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .attachment-image {
+            max-width: 100%;
+            height: 5rem;
+            object-fit: cover;
+            border-radius: 0.375rem;
+            border: 1px solid hsl(217.2 32.6% 30%);
+        }
+
+        .message-bubble {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            max-width: 85%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .user-bubble {
+            background: hsl(217.2 91.2% 59.8%);
+            color: white;
+        }
+
+        .assistant-message {
+            width: 100%;
+            color: white;
+            line-height: 1.6;
+            padding-right: 1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: hsl(215 20.2% 65.1%);
+        }
+
+        .input-area {
+            padding: 1rem;
+            border-top: 1px solid hsl(217.2 32.6% 17.5%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .preview-card {
+            padding: 0.75rem;
+            background: hsl(217.2 32.6% 25%);
+            border: 1px solid hsl(217.2 32.6% 30%);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-text {
+            font-size: 0.875rem;
+            color: hsl(215 20.2% 70%);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .preview-close {
+            background: none;
+            border: none;
+            color: hsl(215 20.2% 60%);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-close:hover {
+            color: white;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 4rem;
+            object-fit: cover;
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            border: 1px solid hsl(217.2 32.6% 30%);
+        }
+
+        .url-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .url-input {
+            flex: 1;
+            background: hsl(217.2 32.6% 23%);
+            border: 1px solid hsl(217.2 32.6% 30%);
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .url-input::placeholder {
+            color: hsl(215 20.2% 65.1%);
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: hsl(217.2 91.2% 59.8%);
+        }
+
+        .textarea-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .message-textarea {
+            width: 100%;
+            min-height: 44px;
+            max-height: 120px;
+            resize: none;
+            background: hsl(217.2 32.6% 23%);
+            border: 1px solid hsl(217.2 32.6% 30%);
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            color: white;
+            font-size: 0.875rem;
+            font-family: inherit;
+            overflow-y: auto;
+        }
+
+        .message-textarea::placeholder {
+            color: hsl(215 20.2% 65.1%);
+        }
+
+        .message-textarea:focus {
+            outline: none;
+            border-color: hsl(217.2 91.2% 59.8%);
+        }
+
+        .action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.action-buttonss {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+        .left-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .send-button {
+    margin-left: auto;
+}
+
+        .action-button {
+            background: none;
+            border: none;
+            color: hsl(215 20.2% 65.1%);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .action-button:hover {
+            color: hsl(220 14% 96%);
+        }
+
+        .send-button {
+            background: hsl(217.2 91.2% 59.8%);
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: hsl(217.2 91.2% 55%);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        .main-avatar {
+            width: 4rem;
+            height: 4rem;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, hsl(217.2 91.2% 59.8%), hsl(262.1 83.3% 57.8%));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: hsl(222.2 84% 4.9%);
+        }
+
+        .main-description {
+            color: hsl(215 20.2% 65.1%);
+        }
+
+        .hidden {
+            display: none;
+        }
+        /* Add this to your CSS */
+.modern-chat-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.messages-container {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.input-area {
+    flex-shrink: 0;
+}
+@media (max-width: 1023px) {
+    .modern-mobile-chat {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        z-index: 1002;
+        background: #1a1a1a;
+    }
+    .messages-container {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding-bottom: 95px; /* Space for input area + margin */
+    }
+    .input-area {
+        position: fixed;
+        left: 0;
+        bottom: 5px; /* 5px margin from bottom */
+        width: 100vw;
+        background: #222;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        z-index: 1003;
+    }
+    .mobile-tab-header {
+        position: sticky;
+        top: 0;
+        z-index: 1004;
+        background: #2d2d2d;
+    }
+}
+@media (max-width: 1023px) {
+    .panel-actions .apply-btn,
+    .panel-actions .chat-btn,
+    .panel-actions .secondary-btn {
+        min-height: 48px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        padding: 14px 0;
+        width: 100%;
+        border-radius: 10px;
+    }
+    .panel-actions {
+        gap: 12px;
+        margin-top: 28px;
+    }
+    .action-buttons{
+        margin-bottom: 20px;
+    }
+}
+/* AI Chat Markdown Styling (scoped to .assistant-message) */
+.assistant-message h1, .assistant-message h2, .assistant-message h3, .assistant-message h4 {
+    color: #4a90e2;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+.assistant-message ul, .assistant-message ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+.assistant-message li {
+    margin-bottom: 0.5em;
+}
+.assistant-message strong {
+    color: #10b981;
+    font-weight: bold;
+}
+.assistant-message p {
+    margin-bottom: 1em;
+}
+.assistant-message table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    background: #222;
+    color: #fff;
+    font-size: 0.95em;
+}
+.assistant-message th, .assistant-message td {
+    border: 1px solid #4a90e2;
+    padding: 8px 12px;
+    text-align: left;
+}
+.assistant-message th {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+}
+.assistant-message tr:nth-child(even) {
+    background: #2d2d2d;
+}
+.assistant-message tr:nth-child(odd) {
+    background: #23272f;
+}/* Add to your CSS or <style> in HTML */
+.swipeable {
+  position: relative;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: #23272f;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  min-height: 72px;
+  overflow: visible;
+  touch-action: pan-y;
+  transition: height 0.2s, margin 0.2s;
+}
+.swipe-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #f87171;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 32px;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.swipe-content {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 1;
+  transition: transform 0.25s cubic-bezier(.4,1.4,.6,1);
+  background: #23272f;
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  min-height: 72px;
+  padding: 18px 16px 18px 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.editor-loader-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30,41,59,0.85);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.loader-spinner {
+    width: 48px;
+    height: 48px;
+    border: 6px solid #38bdf8;
+    border-top: 6px solid #a78bfa;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    box-shadow: 0 2px 12px rgba(56,189,248,0.15);
+    margin-bottom: 12px;
+}
+.loader-label {
+    color: #38bdf8;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+/* ...existing code... */
+.premium-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #23272f;
+  color: #fbbf24;
+  border: 1.5px solid #fbbf24;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+  box-shadow: 0 2px 8px rgba(251,191,36,0.05);
+}
+.premium-chat-btn.active,
+.premium-chat-btn.premium-active {
+  background: linear-gradient(90deg, #fbbf24 60%, #fde68a 100%);
+  color: #23272f;
+  border: 1.5px solid #fbbf24;
+  box-shadow: 0 2px 12px #fbbf2433;
+}
+.premium-chat-btn:hover {
+  filter: brightness(1.08);
+  background: #fde68a;
+  color: #23272f;
+}
+.context-btn-group .context-btn {
+  min-width: 0;
+}
+.context-btn-group {
+  gap: 8px;
+}
+.context-btn[aria-pressed="true"] {
+  background: #a7f3d0;
+  color: #065f46;
+  border: 1.5px solid #22c55e;
+}
+#context-attached-indicator,
+#context-attached-indicator-mobile {
+  display: none;
+}
+.context-btn.context-attached #context-attached-indicator,
+.context-btn.context-attached #context-attached-indicator-mobile {
+  display: inline-block !important;
+}
+/* Modern icon button for chat actions */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #b3b3b3;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  height: 32px;
+  width: 32px;
+}
+.context-btn-wide {
+  min-width: 110px !important;
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+  background: #23272f !important;
+  color: #fbbf24 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 2px 8px #23272f22;
+  border: 1.5px solid #fbbf24 !important;
+  transition: background 0.18s, color 0.18s;
+}
+.context-btn-wide .context-btn-label {
+  margin-left: 6px;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.context-btn-wide:hover,
+.context-btn-wide:focus {
+  background: #23272f !important;
+  color: #fbbf24 !important;
+  box-shadow: 0 2px 8px #23272f22;
+}
+.icon-btn svg {
+  display: block;
+  color: inherit;
+  transition: color 0.18s;
+}
+.icon-btn:focus,
+.icon-btn:hover {
+  background: #23272f;
+  color: #6366f1;
+}
+#premium-chat-btn.premium-active {
+  background: #fffbe6;
+  color: #fbbf24;
+  border: 1.5px solid #fbbf24;
+}
+#premium-chat-btn.premium-active svg {
+  color: #fbbf24;
+}
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* Context chips in attachment row */
+.context-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-right: 6px;
+  margin-bottom: 2px;
+  cursor: default;
+  user-select: none;
+  border: none;
+}
+.context-chip.doc {
+  background: #2563eb;
+  color: #fff;
+}
+.context-chip.smart {
+  background: linear-gradient(90deg, #fbbf24 60%, #fde68a 100%);
+  color: #23272f;
+}
+.context-chip .remove-chip {
+  background: none;
+  border: none;
+  color: inherit;
+  margin-left: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 0;
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.context-chip .remove-chip:hover {
+  background: #23272f22;
+}
+.premium-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6em 1.6em;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 12px #a78bfa33;
+  position: relative;
+  min-width: 160px;
+  min-height: 44px;
+  outline: none;
+  background: #e5e7eb;
+  color: #374151;
+}
+.premium-btn-small {
+  min-width: 80px !important;
+  min-height: 28px !important;
+  font-size: 0.85rem !important;
+  padding: 4px 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  background: #23272f !important;
+  color: #fbbf24 !important;
+  border: 1.5px solid #fbbf24 !important;
+}
+.premium-btn-small .premium-icon {
+  font-size: 1em !important;
+}
+.premium-btn-small .premium-desc,
+.premium-btn-small .premium-tooltip {
+  display: none !important;
+}
+.premium-btn-small:hover,
+.premium-btn-small:focus {
+  background: #23272f !important;
+  color: #fbbf24 !important;
+  border: 1.5px solid #fbbf24 !important;
+  box-shadow: none !important;
+}
+.premium-btn .premium-icon {
+  font-size: 1.3em;
+  transition: color 0.2s, filter 0.2s;
+}
+.premium-btn.nano {
+  background: #f3f4f6;
+  color: #374151;
+}
+.premium-btn.nano .premium-icon::before {
+  content: "🪶";
+}
+.premium-btn.mini {
+  background: linear-gradient(90deg, #a78bfa 0%, #6366f1 100%);
+  color: #fff;
+  box-shadow: 0 2px 16px #a78bfa44;
+}
+.premium-btn.mini .premium-icon::before {
+  content: "⚡";
+}
+.premium-btn.full {
+  background: linear-gradient(90deg, #b45309 0%, #f59e42 100%);
+  color: #fffbe6;
+  box-shadow: 0 2px 18px #b4530933, 0 0 10px 2px #b4530988;
+  animation: premium-glow 2s infinite alternate;
+}
+.premium-btn.full .premium-icon::before {
+  content: "⭐";
+  filter: drop-shadow(0 0 6px #fbbf24cc);
+}
+@keyframes premium-glow {
+  0% { box-shadow: 0 2px 24px #fbbf2433, 0 0 8px 2px #fbbf2444; }
+  100% { box-shadow: 0 2px 32px #fbbf2466, 0 0 16px 4px #fbbf24cc; }
+}
+.premium-btn .premium-desc {
+  font-size: 0.97em;
+  font-weight: 500;
+  opacity: 0.92;
+  margin-left: 0.5em;
+  color: #374151;
+}
+.premium-btn .premium-tooltip {
+  display: none;
+  position: absolute;
+  left: 0; top: 110%;
+  background: #23272f;
+  color: #fff;
+  font-size: 0.95em;
+  border-radius: 8px;
+  padding: 0.7em 1em;
+  box-shadow: 0 2px 12px #0004;
+  z-index: 9999;
+  min-width: 220px;
+  pointer-events: none;
+}
+.premium-btn.nano .premium-desc { color: #374151; }
+.premium-btn.mini .premium-desc { color: #f3f4f6; }
+.premium-btn.full .premium-desc { color: #fffbe6; text-shadow: 0 1px 4px #b45309cc; }
+.premium-btn:hover .premium-tooltip,
+.premium-btn:focus .premium-tooltip {
+  display: block;
+}
+@media (max-width: 600px) {
+  .add-options-buttons {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .add-option-btn,
+  #premiumChatBtn.premium-btn {
+    font-size: 0.85rem !important;
+    padding: 4px 8px !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    border-radius: 16px !important;
+    flex: 1 1 44%;
+    justify-content: center;
+    align-items: center;
+    max-width: 48vw;
+    margin-bottom: 2px;
+  }
+  .add-option-btn svg,
+  #premiumChatBtn .premium-icon {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    margin-right: 4px !important;
+  }
+  #premiumChatBtn .premium-label,
+  #premiumChatBtn .premium-desc {
+    font-size: 0.85em !important;
+    margin-left: 2px !important;
+  }
+  #premiumChatBtn .premium-tooltip {
+    min-width: 140px !important;
+    font-size: 0.9em !important;
+    left: 0;
+    right: auto;
+  }
+  #premiumChatBtn {
+    padding: 4px 8px !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    font-size: 0.85rem !important;
+    border-radius: 16px !important;
+    max-width: 48vw;
+    margin-bottom: 2px;
+  }
+}
+.add-option-btn svg,
+#premiumChatBtn .premium-icon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+/* Mobile chat improvements */
+.modern-mobile-chat .messages-container {
+  padding-bottom: calc(var(--mobile-input-height, 88px) + env(safe-area-inset-bottom, 0px) + 16px);
+}
+
+.modern-mobile-chat .input-area {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+  background: rgba(26, 26, 26, 0.9);
+  border-top: 1px solid #2e2e2e;
+}
+
+.modern-mobile-chat .input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.modern-mobile-chat .input-wrapper textarea {
+  flex: 1;
+  resize: none;
+  min-height: 44px;
+  max-height: 160px;
+  border-radius: 14px;
+  border: 1px solid #3a3a3a;
+  background: #1f1f1f;
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 15px;
+  line-height: 1.3;
+  outline: none;
+}
+
+.modern-mobile-chat .input-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modern-mobile-chat .input-actions button {
+  border: 1px solid #3a3a3a;
+  background: #242424;
+  color: #eaeaea;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+</style>
+                <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+<script> window.md = window.markdownit(); </script>
+ <!-- PDF.js -->
+  <script
+    src="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.min.js"
+    crossorigin="anonymous">
+  </script>
+  <script>
+    // 👉 Tell PDF.js where to find its worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js";
+  </script>
+
+
+<!-- JSZip for reading .docx (ZIP) in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<body>
+    <!-- Desktop Layout -->
+    <div id="desktop-layout" class="desktop-layout">
+        <!-- Left Sidebar -->
+        <div id="ai-sidebar" class="ai-sidebar">
+            <div class="sidebar-header">
+                <h2>AI Assistant</h2>
+                <button id="collapse-btn" class="sidebar-toggle-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="sidebar-content">
+                <!-- Text Selection Info -->
+                <div id="text-selection-indicator" class="text-selection-info hidden">
+                    <div class="selection-header">
+                        <h4>Selected Text</h4>
+                        <button id="clear-selection-btn" class="clear-selection-btn">×</button>
+                    </div>
+                    <p id="selection-preview" class="selection-preview"></p>
+                </div>
+
+                <!-- AI Actions -->
+                <div class="ai-actions">
+                    <h3>AI Actions</h3>
+                    <div class="action-buttonss">
+                        <button class="ai-action-btn" data-action="feedback">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                            </svg>
+                            <span>What do you think so far?</span>
+                        </button>
+                        <button class="ai-action-btn" data-action="grammar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Check Grammar</span>
+                        </button>
+                        <button class="ai-action-btn" data-action="rewrite">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            <span>Rewrite This</span>
+                        </button>
+                        <button class="ai-action-btn" data-action="expand">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                            </svg>
+                            <span>Expand Ideas</span>
+                        </button>
+                        <button class="ai-action-btn" data-action="simplify">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span>Simplify Language</span>
+                        </button>
+                        <button class="ai-action-btn" data-action="tone">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 8h10m-10 4h10"/>
+                            </svg>
+                            <span>Adjust Tone</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- History Button -->
+                <div class="history-section">
+                    <button id="toggle-history-btn" class="history-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1015-6.7L12 12"/>
+                        </svg>
+                        <span>View History</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <button id="backToDocumentsBtn" class="toolbar-btn" title="Back to Documents" style="background:#2563eb;color:#fff;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+        <span style="margin-left:6px;">Back</span>
+    </button>
+                    <button class="toolbar-btn" data-command="bold" title="Bold">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                            <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="italic" title="Italic">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 4h-9M14 20H5M15 4L9 20"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="underline" title="Underline">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="strikeThrough" title="Strikethrough">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6M4 12h16"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="toolbar-separator"></div>
+
+                <div class="toolbar-group">
+  <button id="undo-btn" class="toolbar-btn" title="Undo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+  <button id="redo-btn" class="toolbar-btn" title="Redo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+      <path d="M9 6l6 6-6 6"/>
+    </svg>
+  </button>
+</div>
+
+                <div class="toolbar-separator"></div>
+
+                <div class="toolbar-group">
+</div>
+
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" data-command="justifyLeft" title="Align Left">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 6H3M15 12H3M17 18H3"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="justifyCenter" title="Align Center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6H6M20 12H4M16 18H8"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="justifyRight" title="Align Right">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 6H9M21 12H7M21 18H3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="toolbar-separator"></div>
+
+                <div class="toolbar-group">
+                    <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                        </svg>
+                    </button>
+                    <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2m-2 4h1.6L6 16.4M5 19.5L7 17h-2"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="toolbar-separator"></div>
+
+                <div class="toolbar-group">
+                    <select id="font-size" class="font-size-select" title="Font Size">
+                        <option value="1">10pt</option>
+                        <option value="2">13pt</option>
+                        <option value="3" selected>16pt</option>
+                        <option value="4">18pt</option>
+                        <option value="5">24pt</option>
+                        <option value="6">32pt</option>
+                        <option value="7">48pt</option>
+                    </select>
+                </div>
+
+                <div class="toolbar-separator"></div>
+
+                <div class="toolbar-group">
+                    <label class="color-input-wrapper" title="Text Color">
+                        <input type="color" id="text-color" class="color-input" value="#000000">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <text x="4" y="16" font-size="14" font-family="Arial" fill="currentColor">A</text>
+        <rect x="3" y="18" width="18" height="2" fill="currentColor"/>
+    </svg>
+                    </label>
+                    <label class="color-input-wrapper" title="Background Color">
+                        <input type="color" id="background-color" class="color-input" value="#ffff00">
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 11V7a2 2 0 0 0-2-2h-4"/>
+        <path d="M5 11V7a2 2 0 0 1 2-2h4"/>
+        <rect x="3" y="11" width="18" height="7" rx="2"/>
+        <path d="M8 15h8"/>
+    </svg>
+                    </label>
+                </div>
+
+                <div class="toolbar-spacer"></div>
+
+                <div class="toolbar-group">
+                    <button id="save-btn" class="download-btn" disabled style="margin-left:8px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/>
+        <polyline points="17 3 17 8 7 8 7 3"/>
+        <line x1="12" y1="12" x2="12" y2="17"/>
+        <line x1="9" y1="15" x2="15" y2="15"/>
+    </svg>
+    Save
+</button>
+                    <button id="download-btn" class="download-btn" title="Download Document">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        Download
+                    </button>
+                </div>
+            </div>
+            <!-- Document Editor -->
+            <div class="document-container">
+                <div class="document-page">
+                    <div id="document-editor" class="document-editor" contenteditable="true">
+                        <p>Welcome to your AI-powered writing assistant! This document editor helps you create professional content with intelligent suggestions.</p>
+                        
+                        <p>Here's an example of <span class="highlight-tooltip" style="background-color: #fee2e2; padding: 2px 4px; border-radius: 4px;" title="Spelling error: 'writtne' should be 'written'">writtne</span> text that might need correction. The AI can help identify grammar issues and suggest improvements.</p>
+                        
+                        <p>You can also get feedback on your <span class="highlight-tooltip" style="background-color: #fef3c7; padding: 2px 4px; border-radius: 4px;" title="Consider using a stronger word like 'exceptional' or 'outstanding'">good</span> writing style. The system provides various <span class="highlight-tooltip" style="background-color: #dbeafe; padding: 2px 4px; border-radius: 4px;" title="Grammar suggestion: 'options' is correct, but context could be clearer">options</span> for enhancement.</p>
+                        
+                        <p>Try <span class="highlight-tooltip" style="background-color: #dcfce7; padding: 2px 4px; border-radius: 4px;" title="Verb form: 'click' is the correct spelling">clicking</span> on any of the AI assistant buttons in the sidebar to see how they work with your content.</p>
+                        
+                        <p>The AI can help you expand ideas, simplify complex language, adjust tone, check grammar, provide feedback, or completely rewrite sections as needed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div id="right-panel-container" class="right-panel-container">
+    <div id="right-panel-drag-handle" class="right-panel-drag-handle"></div>
+    <div class="right-panel">
+        <div id="right-panel-loading" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(30,41,59,0.85); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div class="loader-spinner" style="width:40px;height:40px;border:6px solid #4a90e2;border-top:6px solid #fff;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></div>
+    <div id="loading-text" style="margin-top:24px; color:#fff; font-size:20px; font-weight:600;">Analyzing text...</div>
+</div>
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <div id="response-action-icon" class="action-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                            </svg>
+                        </div>
+                        <h3 id="response-action-title">AI Response</h3>
+                    </div>
+                    <button id="close-right-panel-btn" class="panel-close-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="panel-content">
+                    <!-- Response Content -->
+                    <div id="response-content" class="panel-section">
+                        <div id="original-text-section" class="original-text-section hidden">
+                            <h4>Original Text</h4>
+                            <div id="original-text" class="original-text"></div>
+                        </div>
+
+                        <div class="ai-response-section">
+    <h4>AI Suggestion</h4>
+    <div id="ai-suggestion" class="ai-suggestion"></div>
+</div>
+<!-- Grammar Highlights (separate, not inside ai-suggestion) -->
+<div id="grammar-highlights">
+    <h4 class="text-sm font-medium text-muted-foreground mb-2">Issues Found</h4>
+    <div id="highlights-list" class="space-y-2"></div>
+</div>
+
+                        <div id="rewrite-adjustments" class="rewrite-adjustments hidden">
+                            <div class="adjustment-buttons">
+                                <button class="adjustment-btn">Make it shorter</button>
+                                <button class="adjustment-btn">Make it longer</button>
+                                <button class="adjustment-btn">More formal</button>
+                                <button class="adjustment-btn">More casual</button>
+                                <button class="adjustment-btn">Take a different approach</button>
+                            </div>
+                        </div>
+
+                        <div id="tone-adjustments" class="rewrite-adjustments hidden">
+    <div class="adjustment-buttons">
+        <button class="adjustment-btn" data-tone="formal">Formal</button>
+        <button class="adjustment-btn" data-tone="casual">Casual</button>
+        <button class="adjustment-btn" data-tone="persuasive">Persuasive</button>
+        <button class="adjustment-btn" data-tone="humorous">Humorous</button>
+    </div>
+</div>
+
+                        <div class="panel-actions">
+                            <button id="apply-changes-btn" class="apply-btn">Apply Changes</button>
+                            <button id="start-chat-btn" class="chat-btn">Discuss Further</button>
+
+                            <button id="dismiss-btn" class="secondary-btn">Dismiss</button>
+                        </div>
+                    </div>
+
+                    <!-- History Content -->
+                    <div id="history-content" class="panel-section hidden">
+                        <!-- Desktop -->
+<div id="historyLoader" style="display:none;justify-content:center;align-items:center;height:120px;">
+    <div class="loader-spinner" style="width:40px;height:40px;border:6px solid #4a90e2;border-top:6px solid #fff;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></div>
+</div>
+                        <div id="history-list" class="history-list">
+                            <!-- History items will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Chat Content -->
+                    <div id="modern-chat-sidebar" class="modern-chat-sidebar hidden">
+    <div class="messages-container" id="messagesContainer">
+        <div class="empty-state" id="emptyState">
+            <div class="empty-avatar">
+                <svg class="ai-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                    <path d="M2 17L12 22L22 17" />
+                    <path d="M2 12L12 17L22 12" />
+                </svg>
+            </div>
+            <p class="empty-title">Start a conversation with AI</p>
+            <p>Ask questions, share files, or add URLs</p>
+        </div>
+    </div>
+    <div class="input-area">
+        <div id="context-attachments-row" style="display:flex;align-items:center;gap:4px;margin-bottom:4px;"></div>
+        <div class="preview-card hidden" id="urlPreview">
+            <div class="preview-text" id="urlPreviewText">🔗 URL</div>
+            <button class="preview-close" onclick="removeUrlPreview()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6L18 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="preview-card hidden" id="filePreview">
+            <div class="preview-text" id="filePreviewText">📄 File</div>
+            <button class="preview-close" onclick="removeFilePreview()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6L18 18" />
+                </svg>
+            </button>
+            <img class="preview-image hidden" id="filePreviewImage" />
+        </div>
+        <div class="url-input-container hidden" id="urlInputContainer">
+            <input type="text" class="url-input" id="urlInput" placeholder="Enter URL..." />
+            <button class="send-button" onclick="addUrl()">Add</button>
+        </div>
+        <div class="textarea-container">
+            <textarea 
+                class="message-textarea" 
+                id="messageTextarea" 
+                placeholder="Type your message..." 
+                rows="1"
+            ></textarea>
+            <div class="action-buttons">
+                <div class="left-buttons">
+                    <button class="action-button" onclick="toggleUrlInput()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
+                    </button>
+                    <button class="action-button" onclick="document.getElementById('fileInput').click()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg>
+                    </button>
+                    <input type="file" id="fileInput" class="hidden" accept="*/*" onchange="handleFileUpload(event)" />
+                    <div class="context-btn-group" style="display:flex;align-items:center;gap:10px;">
+<button id="add-context-btn" class="icon-btn" type="button" title="Attach Context"
+  style="background:#a78bfa33;
+         color:#fff;
+         padding:6px 16px;
+         margin:0 8px;
+         min-width:90px;
+         border-radius:10px;
+         border:none;
+         display:inline-flex;
+         align-items:center;
+         justify-content:center;
+         font-weight:500;
+         font-size:0.8rem;">
+  <span class="context-btn-label">Attach Context</span>
+</button>
+
+  <button id="premiumChatBtn" class="premium-btn nano add-option-btn premium-btn-small" type="button" title="Toggle AI Model">
+  <span class="premium-icon"></span>
+  <span class="premium-label">Nano</span>
+</button>
+</div>
+                </div>
+                <button class="send-button" id="sendButton" onclick="sendMessage()" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Layout -->
+    <div id="mobile-layout" class="mobile-layout">
+
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </button>
+            <h1>Document Editor</h1>
+            <button id="mobile-download-btn" class="mobile-download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Toolbar -->
+        <div class="mobile-toolbar">
+            <div class="mobile-toolbar-row">
+                <button id="mobileBackToDocumentsBtn" class="toolbar-btn" title="Back to Documents" style="background:#2563eb;color:#fff;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+    </svg>
+    <span style="margin-left:6px;">Back</span>
+</button>
+                <button class="toolbar-btn" data-command="bold" title="Bold">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                        <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="italic" title="Italic">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 4h-9M14 20H5M15 4L9 20"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="underline" title="Underline">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="strikeThrough" title="Strikethrough">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6M4 12h16"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="justifyLeft" title="Align Left">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 6H3M15 12H3M17 18H3"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="justifyCenter" title="Align Center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6H6M20 12H4M16 18H8"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="justifyRight" title="Align Right">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 6H9M21 12H7M21 18H3"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2m-2 4h1.6L6 16.4M5 19.5L7 17h-2"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-toolbar-row">
+  <button id="mobile-undo-btn" class="toolbar-btn" title="Undo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+  <button id="mobile-redo-btn" class="toolbar-btn" title="Redo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+      <path d="M9 6l6 6-6 6"/>
+    </svg>
+  </button>
+</div>
+            <div class="mobile-toolbar-row">
+                <select id="mobile-font-size" class="mobile-font-size-select" title="Font Size">
+                    <option value="1">10pt</option>
+                    <option value="2">13pt</option>
+                    <option value="3" selected>16pt</option>
+                    <option value="4">18pt</option>
+                    <option value="5">24pt</option>
+                    <option value="6">32pt</option>
+                    <option value="7">48pt</option>
+                </select>
+                <label class="mobile-color-input-wrapper" title="Text Color">
+                    <input type="color" id="mobile-text-color" class="mobile-color-input" value="#000000">
+                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <text x="4" y="16" font-size="14" font-family="Arial" fill="currentColor">A</text>
+        <rect x="3" y="18" width="18" height="2" fill="currentColor"/>
+    </svg>
+                </label>
+                <label class="mobile-color-input-wrapper" title="Background Color">
+                    <input type="color" id="mobile-background-color" class="mobile-color-input" value="#ffff00">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 11V7a2 2 0 0 0-2-2h-4"/>
+        <path d="M5 11V7a2 2 0 0 1 2-2h4"/>
+        <rect x="3" y="11" width="18" height="7" rx="2"/>
+        <path d="M8 15h8"/>
+    </svg>
+                </label>
+                <button id="mobile-save-btn" class="download-btn" disabled style="margin-left:8px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/>
+        <polyline points="17 3 17 8 7 8 7 3"/>
+        <line x1="12" y1="12" x2="12" y2="17"/>
+        <line x1="9" y1="15" x2="15" y2="15"/>
+    </svg>
+    Save
+</button>
+            </div>
+        </div>
+        <!-- Mobile Document Editor -->
+        <div class="mobile-document-container">
+            <div id="mobile-document-editor" class="mobile-document-editor" contenteditable="true">
+                <p>Welcome to your AI-powered writing assistant! This document editor helps you create professional content with intelligent suggestions.</p>
+                
+                <p>Here's an example of <span class="highlight-tooltip" style="background-color: #fee2e2; padding: 2px 4px; border-radius: 4px;" title="Spelling error: 'writtne' should be 'written'">writtne</span> text that might need correction. The AI can help identify grammar issues and suggest improvements.</p>
+                
+                <p>You can also get feedback on your <span class="highlight-tooltip" style="background-color: #fef3c7; padding: 2px 4px; border-radius: 4px;" title="Consider using a stronger word like 'exceptional' or 'outstanding'">good</span> writing style. The system provides various <span class="highlight-tooltip" style="background-color: #dbeafe; padding: 2px 4px; border-radius: 4px;" title="Grammar suggestion: 'options' is correct, but context could be clearer">options</span> for enhancement.</p>
+                
+                <p>Try <span class="highlight-tooltip" style="background-color: #dcfce7; padding: 2px 4px; border-radius: 4px;" title="Verb form: 'click' is the correct spelling">clicking</span> on any of the AI assistant buttons in the sidebar to see how they work with your content.</p>
+                
+                <p>The AI can help you expand ideas, simplify complex language, adjust tone, check grammar, provide feedback, or completely rewrite sections as needed.</p>
+            </div>
+        </div>
+
+        <!-- Mobile AI Sidebar -->
+        <div id="mobile-ai-sidebar" class="mobile-ai-sidebar hidden">
+            <div class="mobile-sidebar-header">
+                <h2>AI Assistant</h2>
+                <button id="close-mobile-sidebar-btn" class="mobile-sidebar-close-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mobile-sidebar-content">
+                <!-- AI Actions -->
+                <div class="ai-actions">
+                    <h3>AI Actions</h3>
+                    <div class="action-buttonss">
+                        <button class="ai-action-btn" data-action="feedback">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                            </svg>
+                            What do you think so far?
+                        </button>
+                        <button class="ai-action-btn" data-action="grammar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Check Grammar
+                        </button>
+                        <button class="ai-action-btn" data-action="rewrite">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            Rewrite This
+                        </button>
+                        <button class="ai-action-btn" data-action="expand">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                            </svg>
+                            Expand Ideas
+                        </button>
+                        <button class="ai-action-btn" data-action="simplify">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            Simplify Language
+                        </button>
+                        <button class="ai-action-btn" data-action="tone">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 8h10m-10 4h10"/>
+                            </svg>
+                            Adjust Tone
+                        </button>
+                    </div>
+                </div>
+
+                <!-- History Button -->
+                <div class="history-section">
+                    <button id="mobile-toggle-history-btn" class="history-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1015-6.7L12 12"/>
+                        </svg>
+                        View History
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="mobile-sidebar-overlay" class="mobile-sidebar-overlay hidden"></div>
+
+        <!-- Mobile Tab Navigation -->
+        <div id="mobile-tab-navigation" class="mobile-tab-navigation hidden">
+            <div class="mobile-tab-header">
+                <button id="mobile-back-to-sidebar-btn" class="mobile-back-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <h2 id="mobile-tab-title">AI Response</h2>
+                <button id="close-mobile-tab-btn" class="mobile-tab-close-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-tab-content">
+                <!-- Mobile Response Content -->
+                <div id="mobile-response-content" class="mobile-panel-section">
+                    <div id="mobile-original-text-section" class="original-text-section hidden">
+                        <h4>Original Text</h4>
+                        <div id="mobile-original-text" class="original-text"></div>
+                    </div>
+
+<div class="ai-response-section">
+    <h4>AI Suggestion</h4>
+    <div id="mobile-ai-suggestion" class="ai-suggestion"></div>
+</div>
+<div id="mobile-grammar-highlights">
+    <h4 class="text-sm font-medium text-muted-foreground mb-2">Issues Found</h4>
+    <div id="mobile-highlights-list" class="space-y-2"></div>
+</div>
+<!-- Add mobile loading overlay just before closing </body> -->
+<div id="mobile-right-panel-loading" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(30,41,59,0.85); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div class="loader-spinner" style="width:40px;height:40px;border:6px solid #4a90e2;border-top:6px solid #fff;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></div>
+    <div id="mobile-loading-text" style="margin-top:24px; color:#fff; font-size:20px; font-weight:600;">Analyzing text...</div>
+</div>
+
+                    <div id="mobile-rewrite-adjustments" class="rewrite-adjustments hidden">
+    <div class="adjustment-buttons">
+        <button class="adjustment-btn">Make it shorter</button>
+        <button class="adjustment-btn">Make it longer</button>
+        <button class="adjustment-btn">More formal</button>
+        <button class="adjustment-btn">More casual</button>
+        <button class="adjustment-btn">Take a different approach</button>
+    </div>
+</div>
+
+<div id="mobile-tone-adjustments" class="rewrite-adjustments hidden">
+    <div class="adjustment-buttons">
+        <button class="adjustment-btn" data-tone="formal">Formal</button>
+        <button class="adjustment-btn" data-tone="casual">Casual</button>
+        <button class="adjustment-btn" data-tone="persuasive">Persuasive</button>
+        <button class="adjustment-btn" data-tone="humorous">Humorous</button>
+    </div>
+</div>
+
+                    <div class="panel-actions">
+                        <button id="mobile-apply-changes-btn" class="apply-btn">Apply Changes</button>
+                        <button id="mobile-start-chat-btn" class="chat-btn">Discuss Further</button>
+                        <button id="mobile-dismiss-btn" class="secondary-btn">Dismiss</button>
+                    </div>
+                </div>
+
+                <!-- Mobile History Content -->
+                <div id="mobile-history-content" class="mobile-panel-section hidden">
+                    <div id="mobileHistoryLoader" style="display:none;justify-content:center;align-items:center;height:120px;">
+    <div class="loader-spinner" style="width:40px;height:40px;border:6px solid #4a90e2;border-top:6px solid #fff;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></div>
+</div>
+                    <div id="mobile-history-list" class="history-list">
+                        <!-- History items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Mobile Chat Content -->
+                <div id="modern-mobile-chat" class="modern-mobile-chat hidden">
+    <div class="messages-container" id="messagesContainerMobile">
+        <div class="empty-state" id="emptyStateMobile">
+            <div class="empty-avatar">
+                <svg class="ai-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                    <path d="M2 17L12 22L22 17" />
+                    <path d="M2 12L12 17L22 12" />
+                </svg>
+            </div>
+            <p class="empty-title">Start a conversation with AI</p>
+            <p>Ask questions, share files, or add URLs</p>
+        </div>
+    </div>
+     <div class="input-area">
+        <div id="context-attachments-row-mobile" style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"></div>
+        <div class="preview-card hidden" id="urlPreviewMobile">
+            <div class="preview-text" id="urlPreviewTextMobile">🔗 URL</div>
+            <button class="preview-close" onclick="removeUrlPreviewMobile()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6L18 18" />
+                </svg>
+            </button>
+        </div>
+        <div class="preview-card hidden" id="filePreviewMobile">
+            <div class="preview-text" id="filePreviewTextMobile">📄 File</div>
+            <button class="preview-close" onclick="removeFilePreviewMobile()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6L18 18" />
+                </svg>
+            </button>
+             <img class="preview-image hidden" id="filePreviewImageMobile" />
+        </div>
+         <div class="url-input-container hidden" id="urlInputContainerMobile">
+            <input type="text" class="url-input" id="urlInputMobile" placeholder="Enter URL..." />
+            <button class="send-button" onclick="addMobileUrl()">Add</button>
+        </div>
+        <div class="textarea-container">
+            <textarea 
+                class="message-textarea" 
+                id="messageTextareaMobile" 
+                placeholder="Type your message..." 
+                rows="1"
+            ></textarea>
+            <div class="action-buttons">
+                <div class="left-buttons">
+                    <button class="action-button" onclick="toggleUrlInputMobile();">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
+                    </button>
+                    <button class="action-button" onclick="document.getElementById('fileInputMobile').click()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg>
+                    </button>
+                    <div class="context-btn-group" style="display:flex;align-items:center;gap:10px;">
+
+  <!-- Attach Context Button -->
+<button id="add-context-btn-mobile" class="icon-btn" type="button" title="Attach Context"
+  style="background:#a78bfa33;
+         color:#fff;
+         padding:6px 16px;
+         margin:0 8px;
+         min-width:90px;
+         border-radius:10px;
+         border:none;
+         display:inline-flex;
+         align-items:center;
+         justify-content:center;
+         font-weight:500;
+         font-size:0.8rem;">
+  <span class="context-btn-label">Attach Context</span>
+</button>
+
+  <button id="premiumChatBtnMobile" class="premium-btn nano add-option-btn premium-btn-small" type="button" title="Toggle AI Model">
+  <span class="premium-icon"></span>
+  <span class="premium-label">Nano</span>
+</button>
+</div>
+                </div>
+                <button class="send-button" id="sendButtonMobile" onclick="sendMobileMessage()" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="editor.js" type="module"></script>
+</body>
+</html>
