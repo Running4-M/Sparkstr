@@ -75,7 +75,7 @@ const PRICE_MAP = {
 };
 
 /* -------------------------
-   Helper utilities
+   er utilities
    ------------------------- */
 function getPriceInfo(planKey, currency) {
   if (planKey === 'free') return { amount: 'Free', id: null };
@@ -152,8 +152,8 @@ async function startCheckoutWithExtension(priceId) {
   try {
     const docRef = await addDoc(collection(db, "customers", uid, "checkout_sessions"), {
       price: priceId,
-      success_url: window.location.origin + "/Calendar/Calendar.html",
-      cancel_url: window.location.origin + "/settings.html",
+      success_url: window.location.origin + "https://sparkstr.com/Just_Chat/Just_Chat",
+      cancel_url: window.location.origin + "https://sparkstr.com/Just_Chat/Just_Chat",
       mode: "subscription",
       createdAt: serverTimestamp()
     });
@@ -232,7 +232,7 @@ async function changePlanFlow(planKey, settings = null) {
       showPopup('Subscription cancelled.');
     }
     // Reload to success URL (same as upgrade)
-    window.location.href = window.location.origin + "/Calendar/Calendar.html";
+    window.location.href = window.location.origin + "/Calendar/Calendar";
   },
   onCancel: async () => {
     await updateDoc(doc(db, "users", uid), { plan: settings?.plan || "free", requestedPlan: null });
@@ -295,7 +295,7 @@ async function changePlanFlow(planKey, settings = null) {
          showPopup('Subscription cancelled.');
        }
        // Reload to success URL (same as upgrade)
-       window.location.href = window.location.origin + "/Calendar/Calendar.html";
+       window.location.href = window.location.origin + "/Calendar/Calendar";
      },
      onCancel: async () => {
        await updateDoc(doc(db, "users", uid), { plan: settings?.plan || "free", requestedPlan: null });
@@ -757,7 +757,7 @@ document.addEventListener('change', async (e) => {
 });
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup.html";
+    window.location.href = "../Login/signup";
   }
 });
 
@@ -857,7 +857,7 @@ async function init() {
   try {
     await firebaseInitPromise;
     if (!getCurrentUserId()) {
-      window.location.href = "../Login/login.html";
+      window.location.href = "../Login/login";
       return;
     }
     initializeTheme();
@@ -3484,11 +3484,11 @@ function renderNavSidebarContent() {
 
   // Navigation items
 const navigationItems = [
-  { name: 'Calendar', path: '/Calendar/Calendar.html', icon: 'calendar' },
-  { name: 'Just Chat', path: '/Just_Chat/Just_Chat.html', icon: 'message-circle' },
-  { name: 'Responses', path: '/responses_centre/Responses.html', icon: 'responses' },
-  { name: 'Doc Live', path: '/DocLive/documentHub.html', icon: 'doclive' },
-  { name: 'Help', path: '../help', icon: 'help' },
+  { name: 'Calendar', path: '/Calendar/Calendar', icon: 'calendar' },
+  { name: 'Just Chat', path: '/Just_Chat/Just_Chat', icon: 'message-circle' },
+  { name: 'Responses', path: '/responses_centre/Responses', icon: 'responses' },
+  { name: 'Doc Live', path: '/DocLive/documentHub', icon: 'doclive' },
+  { name: 'Help', path: 'https://sparkstr.com/help', icon: 'help' },
   { name: 'Feedback', path: '#', icon: 'message-square' }
 ];
 
@@ -3877,7 +3877,7 @@ function renderSettingsModal() {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
       await auth.signOut();
-      window.location.href = 'signup.html';
+      window.location.href = 'signup';
     });
   }
 
@@ -3902,7 +3902,7 @@ if (confirmDeleteBtn) {
   confirmDeleteBtn.onclick = async () => {
     try {
       await deleteUserAccount();
-      window.location.href = '../Login/signup.html';
+      window.location.href = '../Login/signup';
     } catch (err) {
       console.error('Failed to delete account:', err);
       alert('Failed to delete account. Please try again.');
@@ -4963,4 +4963,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeEventListeners();
   renderMessages();
   updateInputState();
+
 });
