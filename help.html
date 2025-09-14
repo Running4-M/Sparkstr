@@ -7,8 +7,8 @@
   <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
   <link rel="icon" href="./img/favicon.png" type="image/png">
   <link rel="apple-touch-icon" sizes="180x180" href="./img/Logo.png">
-  <link rel="manifest" href="../manifest.webmanifest">
-<script src="../pwa.js" defer></script>
+  <link rel="manifest" href="./manifest.webmanifest">
+<script src="./pwa.js" defer></script>
   <style>
     :root {
       --primary: #6366f1;
@@ -262,7 +262,7 @@
     // Import getCurrentUserId from backend/firebase.js
     import('./backend/firebase.js').then(({ getCurrentUserId }) => {
       if (!getCurrentUserId()) {
-        window.location.href = "./Login/signup";
+        window.location.href = "./Login/signup.html";
       }
     });
   });
@@ -282,31 +282,7 @@
         });
       });
 
-      // PWA install
-      const installButton = document.getElementById('installButton');
-      let deferredPrompt;
-
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installButton.style.display = 'inline-flex';
-      });
-
-      installButton.addEventListener('click', async () => {
-        if (!deferredPrompt) {
-          alert('Installation not available. Please use a supported browser.');
-          return;
-        }
-        const result = await deferredPrompt.prompt();
-        console.log(`Install prompt was: ${result.outcome}`);
-        deferredPrompt = null;
-      });
-
-      window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
-        if (evt.matches) {
-          installButton.style.display = 'none';
-        }
-      });
+      
     });
 let sidebarAPI = null;
 let sidebarContainer = null;
@@ -382,11 +358,18 @@ document.addEventListener('DOMContentLoaded', () => {
       <p>Find answers to questions about subscriptions, cancellations, and account management.</p>
     </div>
 
-    <div class="install-section">
-      <h2>Install Sparkstr Web App</h2>
-      <p>Get instant access to Sparkstr right from your home screen!</p>
-      <button id="installButton" class="install-btn">Install Now</button>
-    </div>
+    <div class="install-section" id="pwa-install-section" style="display: flex; flex-direction: column; align-items: center;">
+  <h2>Install Sparkstr Web App</h2>
+  <p id="pwa-install-info">
+    Get instant access to Sparkstr right from your home screen!
+  </p>
+  <button id="pwa-install-btn" class="install-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m4-5l5 5 5-5m-5-8v13"/>
+    </svg>
+    Install Now
+  </button>
+</div>
 
     <div class="improvement-section" style="background: #f8fafc; color: #1e293b; border-radius: 1.5rem; padding: 2rem 2rem 1.5rem 2rem; margin: 2.5rem auto 2.5rem auto; max-width: 700px; text-align: center; box-shadow: 0 4px 16px rgba(99,102,241,0.10); font-size: 1.15rem;">
   <h2 style="margin-top:0; color: #1e293b;">We're Always Improving Sparkstr!</h2>
@@ -469,12 +452,24 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <div class="legal-links">
-      <a href="privacy">Privacy Policy</a>
-      <a href="Terms_of_service">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="Terms_of_service.html">Terms of Service</a>
     </div>
   </div>
+  <!-- Loader overlay for install animation -->
+<div id="pwa-loading-overlay" style="display:none;opacity:0;position:fixed;inset:0;z-index:99999;background:rgba(99,102,241,0.12);backdrop-filter:blur(2px);align-items:center;justify-content:center;transition:opacity 0.3s;">
+  <div style="background:white;padding:2rem 2.5rem;border-radius:1.5rem;box-shadow:0 8px 32px rgba(99,102,241,0.12);display:flex;flex-direction:column;align-items:center;">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" style="margin-bottom:1rem;">
+      <circle cx="12" cy="12" r="10" stroke-opacity="0.2"/>
+      <path d="M12 6v6l4 2" stroke-linecap="round"/>
+    </svg>
+    <div style="font-size:1.15rem;font-weight:600;color:#6366f1;">Installing...</div>
+  </div>
+</div>
 </body>
 </html>
+
+
 
 
 
