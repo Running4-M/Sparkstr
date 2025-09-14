@@ -15,7 +15,7 @@ import { getToken } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-mes
 
 import { PLAN_LIMITS } from './backend/planLimits.js';
 import { auth } from './backend/firebase.js';
-import { getMessagingInstance} from './backend/firebase.js';
+import { getMessagingInstance, deleteUserAccount} from './backend/firebase.js';
 import { submitFeedback, db } from './backend/firebase.js';
 
 function showPopup(message, type = "info") {
@@ -2603,6 +2603,7 @@ if (expanded === planKey && !showLimits[planKey] && planKey !== settings.plan) {
     planCardContainer.style.display = '';
   };
 }
+
 
 
 
