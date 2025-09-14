@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!getCurrentUserId()) {
       // Prevent any rendering before redirect
       document.body.innerHTML = '';
-      window.location.href = "../Login/signup.html";
+      window.location.href = "../Login/signup";
     } else {
       // Only initialize the app if authenticated!
       init();
@@ -2689,7 +2689,7 @@ startButton.addEventListener('click', async () => {
     const eventId = encodeURIComponent(state.selectedEvent.id);
     
     // Redirect to focus mode with event ID
-    window.location.href = `focusMode.html?eventId=${eventId}`;
+    window.location.href = `focusMode?eventId=${eventId}`;
 
   } catch (error) {
     console.error('Error starting focus mode:', error);
@@ -5255,7 +5255,7 @@ if (progressEl && progressEl._cleanup) progressEl._cleanup();
   if (initiateBtn) {
     initiateBtn.onclick = () => {
       const eventId = encodeURIComponent(state.selectedEvent.id);
-      window.location.href = `focusMode.html?eventId=${eventId}`;
+      window.location.href = `focusMode?eventId=${eventId}`;
     };
   }
 
@@ -5594,3 +5594,4 @@ function drawEmbers() {
 
   animate();
 }
+
