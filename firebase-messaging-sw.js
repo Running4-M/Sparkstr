@@ -1,3 +1,4 @@
+
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
@@ -14,6 +15,7 @@ firebase.initializeApp({
 
 
 // Get messaging instance
+// Get messaging instance
 const messaging = firebase.messaging();
 
 // Handle background messages
@@ -21,11 +23,29 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.notification?.title || 'Background Message Title';
   const notificationOptions = {
     body: payload.notification?.body || 'Background Message body.',
-    icon: 'https://sparkstr.com/img/Logo.png'
+    icon: './img/favicon.png',   // Use favicon as icon
+    badge: './img/favicon.png'   // Use favicon as badge
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
-
 });
+
+// Handle notification click to open Calendar.html
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+      for (const client of clientList) {
+        // If Calendar.html is already open, focus it
+        if (client.url.includes('https://sparkstr.com/Calendar/Calendar') && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise, open a new tab
+      return clients.openWindow('https://sparkstr.com/Calendar/Calendar');
+    })
+  );
+});
+
 
 
