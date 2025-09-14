@@ -20,7 +20,7 @@ import {
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup.html";
+    window.location.href = "../Login/signup";
   }
 });
 // ...existing code...
@@ -2184,9 +2184,9 @@ document.body.innerHTML = `
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('eventId');
     if (eventId) {
-      window.location.href = `focusMode.html?eventId=${eventId}`;
+      window.location.href = `focusMode?eventId=${eventId}`;
     } else {
-      window.location.href = 'focusMode.html';
+      window.location.href = 'focusMode';
     }
   });
 
@@ -2970,4 +2970,5 @@ export function showChatInterface() {
   if (!window.chatInterface) {
     window.chatInterface = new ChatInterface();
   }
+
 }
