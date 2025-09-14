@@ -89,7 +89,7 @@ function insertBackButton() {
     // Pass eventId as a query param so Responses can open the correct response
     const eventId = getEventIdFromUrl();
     backBtn.onclick = () => {
-        window.location.href = `/Responses?eventId=${encodeURIComponent(eventId)}`;
+        window.location.href = `https://sparkstr.com/responses_centre/Responses?eventId=${encodeURIComponent(eventId)}`;
     };
 
     container.prepend(backBtn);
@@ -1015,3 +1015,4 @@ if (continueBtn) {
 // Initialize the app when the DOM is loaded
 
 document.addEventListener('DOMContentLoaded', init);
+
