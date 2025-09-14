@@ -86,10 +86,10 @@ function insertBackButton() {
     backBtn.style.cursor = 'pointer';
     backBtn.style.marginBottom = '1.5rem';
 
-    // Pass eventId as a query param so Responses.html can open the correct response
+    // Pass eventId as a query param so Responses can open the correct response
     const eventId = getEventIdFromUrl();
     backBtn.onclick = () => {
-        window.location.href = `/Responses.html?eventId=${encodeURIComponent(eventId)}`;
+        window.location.href = `/Responses?eventId=${encodeURIComponent(eventId)}`;
     };
 
     container.prepend(backBtn);
@@ -212,7 +212,7 @@ currentStep = firstIncomplete !== -1 ? firstIncomplete : steps.length - 1;
     
     // Redirect to main page if authentication fails
     if (error.message === 'No user authenticated') {
-      window.location.href = '/index.html';
+      window.location.href = '/index';
     }
   }
 }
@@ -992,12 +992,12 @@ async function handleContinue() {
     completionModal.classList.add('hidden');
     // Mark as completed in Firestore
     await markSmartPlanCompleted();
-    // Redirect to Responses.html with eventId
+    // Redirect to Responses with eventId
     const eventId = getEventIdFromUrl();
     if (eventId) {
-      window.location.href = `/Responses.html?eventId=${encodeURIComponent(eventId)}`;
+      window.location.href = `/Responses?eventId=${encodeURIComponent(eventId)}`;
     } else {
-      window.location.href = '/Responses.html';
+      window.location.href = '/Responses';
     }
   }, 200);
 }
@@ -1013,4 +1013,5 @@ if (continueBtn) {
 }
 
 // Initialize the app when the DOM is loaded
+
 document.addEventListener('DOMContentLoaded', init);
