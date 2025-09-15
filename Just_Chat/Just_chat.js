@@ -4248,9 +4248,6 @@ function renderPlanChooserInModal(settings, chooserContainer, planCardContainer)
   cursor: pointer;
   transition: background 0.2s;
 }
-.pm-plan-chooser-card .pm-plan-limits-btn:hover {
-  background: rgba(255,255,255,0.28);
-}
 .pm-plan-chooser-card .pm-plan-action-btn {
   margin-top: 18px;
   width: 100%;
@@ -4965,4 +4962,5 @@ document.addEventListener('DOMContentLoaded', () => {
   updateInputState();
 
 });
+
 
