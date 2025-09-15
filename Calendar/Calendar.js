@@ -111,7 +111,7 @@ async function loadTemplates() {
 
   try {
     console.log("📥 Fetching templates...");
-    const response = await fetch('./templates.html');
+    const response = await fetch('./templates');
     if (!response.ok) throw new Error('Failed to load templates');
 
     const templatesHTML = await response.text();
@@ -5277,3 +5277,4 @@ document.getElementById('mobileSidebarHamburger').addEventListener('click', func
 
 
   
+
