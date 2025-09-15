@@ -5230,32 +5230,54 @@ function renderMobilePhase() {
   card.style.maxWidth = '340px';
   card.style.minWidth = '0';
   card.style.boxSizing = 'border-box';
-  card.style.boxShadow = isBreak
-    ? '0 2px 16px rgba(156,118,255,0.08)'
-    : '0 6px 32px rgba(24,24,36,0.25)';
   card.innerHTML = renderPhaseCardContent(step, currentStep, isBreak);
+
+  // Animation state
+  let startX = 0;
+  let deltaX = 0;
+  let isDragging = false;
+  let animating = false;
 
   // Touch events for swipe
   card.addEventListener('touchstart', (e) => {
+    if (animating) return;
     isDragging = true;
     startX = e.touches[0].clientX;
     card.style.transition = 'none';
   });
   card.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+    if (!isDragging || animating) return;
     deltaX = e.touches[0].clientX - startX;
-    card.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 18}deg) scale(1.02)`;
+    card.style.transform = `translateX(${deltaX}px) scale(1.02)`;
   });
   card.addEventListener('touchend', () => {
+    if (!isDragging || animating) return;
     isDragging = false;
     card.style.transition = 'transform 0.35s cubic-bezier(.4,1.4,.4,1)';
-    if (Math.abs(deltaX) > 60) {
-      if (deltaX < 0 && currentStep < plan.steps.length - 1) currentStep++;
-      else if (deltaX > 0 && currentStep > 0) currentStep--;
+    // Animate to next/prev or snap back
+    if (deltaX < -60 && currentStep < plan.steps.length - 1) {
+      // Animate left (next)
+      animating = true;
+      card.style.transform = 'translateX(-120%) scale(0.98)';
+      setTimeout(() => {
+        currentStep++;
+        animating = false;
+        renderMobilePhase();
+      }, 350);
+    } else if (deltaX > 60 && currentStep > 0) {
+      // Animate right (prev)
+      animating = true;
+      card.style.transform = 'translateX(120%) scale(0.98)';
+      setTimeout(() => {
+        currentStep--;
+        animating = false;
+        renderMobilePhase();
+      }, 350);
+    } else {
+      // Snap back
+      card.style.transform = 'translateX(0) scale(1)';
     }
     deltaX = 0;
-    card.style.transform = `translateX(0) scale(1)`;
-    setTimeout(renderMobilePhase, 250);
   });
 
   cardWrapper.appendChild(card);
@@ -5398,4 +5420,5 @@ function drawEmbers() {
 
   animate();
 }
+
 
