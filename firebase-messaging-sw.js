@@ -22,8 +22,8 @@ messaging.onBackgroundMessage(function(payload) {
   const notificationTitle = payload.data?.title || "Reminder";
   const notificationOptions = {
     body: payload.data?.body || "Event is starting soon!",
-    icon: "/img/favicon.png",   // ✅ absolute path
-    badge: "/img/favicon.png"   // ✅ absolute path
+    icon: "https://sparkstr.com/img/Logo.png",   // ✅ absolute path
+    badge: "https://sparkstr.com/img/Logo.png"   // ✅ absolute path
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
@@ -45,6 +45,7 @@ self.addEventListener("notificationclick", function(event) {
     })
   );
 });
+
 
 
 
