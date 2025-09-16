@@ -550,15 +550,7 @@ function renderPlans() {
 
     const details = card.querySelector('.details');
     const limits = card.querySelector('.limits');
-    if (isMobile) {
-      details.style.display = 'none';
-      card.addEventListener('click', e => {
-        if (e.target.tagName.toLowerCase() === 'button') return;
-        toggleExpand(card);
-      });
-    } else {
-      details.style.display = 'flex';
-    }
+    details.style.display = 'flex';
 
     card.querySelector('.view-limits').addEventListener('click', e => {
       e.stopPropagation();
@@ -691,4 +683,5 @@ function syncCurrencySelectorUI() {
 
 </body>
 </html>
+
 
