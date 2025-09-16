@@ -14,23 +14,8 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Handle background messages
-messaging.onBackgroundMessage(function (payload) {
-  console.log("[Service Worker] Received background message:", payload);
-
-  // Support both notification & data payloads
-  const title = payload.notification?.title || payload.data?.title || "Reminder";
-  const body = payload.notification?.body || payload.data?.body || "Event is starting soon!";
-
-  const notificationOptions = {
-    body,
-    icon: "https://sparkstr.com/img/Logo.png",   // small app logo
-    badge: "https://sparkstr.com/img/Logo.png",  // Android status bar
-    image: "https://sparkstr.com/img/Logo.png",  // big left/top image (Android + desktop only)
-  };
-
-  self.registration.showNotification(title, notificationOptions);
-});
+// ⚠️ IMPORTANT: Do not manually call showNotification() here,
+// otherwise you’ll get duplicates. Let FCM handle it automatically.
 
 // Handle notification click
 self.addEventListener("notificationclick", function (event) {
@@ -46,6 +31,8 @@ self.addEventListener("notificationclick", function (event) {
     })
   );
 });
+
+
 
 
 
