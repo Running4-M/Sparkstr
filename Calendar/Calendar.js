@@ -5272,9 +5272,29 @@ document.getElementById('mobileSidebarHamburger').addEventListener('click', func
 });
     
 
-
+// Allow clicking outside modals (on overlay) to close them
+['taskModal', 'eventDetailsModal'].forEach(modalId => {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    const overlay = modal.querySelector('.modal-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        modal.classList.remove('show');
+        modal.classList.add('hidden');
+        // Optionally reset state if needed
+        if (modalId === 'taskModal') {
+          state.selectedEvent = null;
+        }
+        if (modalId === 'eventDetailsModal') {
+          state.selectedEvent = null;
+        }
+      });
+    }
+  }
+});
 
 
 
   
+
 
