@@ -41,7 +41,7 @@ try {
 // Auto-redirect if already logged in
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    showGradientTransitionAndRedirect("../Calendar/Calendar");
+    showGradientTransitionAndRedirect("https://sparkstr.com//Calendar/Calendar");
   }
 });
 
@@ -423,11 +423,20 @@ function displayError(errorCode) {
       await startCheckoutWithExtension(priceId);
     }
     } catch (error) {
-      showLoader("Sending reset email...");
-      showPopup(error.message || "Failed to sign in with Google", "error");
+    // --- ADD THIS BLOCK ---
+    if (error.code === "auth/popup-closed-by-user") {
+      hideLoader();
+      showPopup("Google sign-in was cancelled.", "error");
       googleBtn.disabled = false;
       localStorage.removeItem('signupInProgress');
+      return;
     }
+    // --- END BLOCK ---
+    showLoader("Sending reset email...");
+    showPopup(error.message || "Failed to sign in with Google", "error");
+    googleBtn.disabled = false;
+    localStorage.removeItem('signupInProgress');
+  }
   };
 
   forgotPasswordBtn.onclick = async () => {
@@ -492,5 +501,29 @@ const pwaInstallBtn = document.getElementById('pwa-install-btn');
       pwaLoadingOverlay.style.opacity = '1';
       pwaLoadingOverlay.style.pointerEvents = 'auto';
     });
-
   }
+
+  // --- PWA Install Overlay Cancel Handling ---
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const pwaInstallBtn = document.getElementById('pwa-install-btn');
+  if (pwaInstallBtn) {
+    pwaInstallBtn.disabled = false;
+    pwaInstallBtn.onclick = async () => {
+      if (!deferredPrompt) return;
+      document.getElementById('pwa-loading-overlay').style.display = 'flex';
+      document.getElementById('pwa-loading-overlay').style.opacity = '1';
+      document.getElementById('pwa-loading-overlay').style.pointerEvents = 'auto';
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      // Hide overlay regardless of outcome
+      document.getElementById('pwa-loading-overlay').style.display = 'none';
+      document.getElementById('pwa-loading-overlay').style.opacity = '0';
+      document.getElementById('pwa-loading-overlay').style.pointerEvents = 'none';
+      deferredPrompt = null;
+    };
+  }
+});
+
