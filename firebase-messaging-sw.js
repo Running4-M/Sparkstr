@@ -9,42 +9,44 @@ firebase.initializeApp({
   storageBucket: "ai-calendar-5753a.appspot.com",
   messagingSenderId: "610949624500",
   appId: "1:610949624500:web:b63a91859c298bb0e7dde1",
-  measurementId: "G-8JTTER2Z6T"
+  measurementId: "G-8JTTER2Z6T",
 });
 
-// Get messaging instance
 const messaging = firebase.messaging();
 
-// Handle background messages (custom notification display)
-messaging.onBackgroundMessage(function(payload) {
+// Handle background messages
+messaging.onBackgroundMessage(function (payload) {
   console.log("[Service Worker] Received background message:", payload);
 
-  const notificationTitle = payload.data?.title || "Reminder";
+  // Support both notification & data payloads
+  const title = payload.notification?.title || payload.data?.title || "Reminder";
+  const body = payload.notification?.body || payload.data?.body || "Event is starting soon!";
+
   const notificationOptions = {
-    body: payload.data?.body || "Event is starting soon!",
-    icon: "https://sparkstr.com/img/Logo.png",   // ✅ absolute path
-    badge: "https://sparkstr.com/img/Logo.png"   // ✅ absolute path
+    body,
+    icon: "https://sparkstr.com/img/Logo.png",   // small app logo
+    badge: "https://sparkstr.com/img/Logo.png",  // Android status bar
+    image: "https://sparkstr.com/img/Logo.png",  // big left/top image (Android + desktop only)
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(title, notificationOptions);
 });
 
-// Handle notification click to open Calendar.html
-self.addEventListener("notificationclick", function(event) {
+// Handle notification click
+self.addEventListener("notificationclick", function (event) {
   event.notification.close();
   event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then(function(clientList) {
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (clientList) {
       for (const client of clientList) {
-        // If Calendar.html is already open, focus it
         if (client.url.includes("https://sparkstr.com/Calendar/Calendar") && "focus" in client) {
           return client.focus();
         }
       }
-      // Otherwise, open a new tab
-      return clients.openWindow("https://sparkstr.com/Calendar/Calendar")
+      return clients.openWindow("https://sparkstr.com/Calendar/Calendar");
     })
   );
 });
+
 
 
 
