@@ -370,19 +370,23 @@ function displayError(errorCode) {
     if (!user) throw new Error("Google sign-in failed: no user returned.");
     const plan = localStorage.getItem('selectedPlan') || "free";
     if (plan === "free") {
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        createdAt: new Date().toISOString(),
-        plan: "free"
-      });
+      await setDoc(
+  doc(db, "users", user.uid),
+  {
+    uid: user.uid,
+    createdAt: new Date().toISOString(),
+  },
+  { merge: true }
+);
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      await setDoc(doc(db, "users", user.uid, "settings", "profile"), {
-        name: user.displayName || "",
-        plan: "free",
-        planStartedAt: new Date().toISOString(),
-        timezone,
-        tutorialSeen: false
-      });
+      await setDoc(
+  doc(db, "users", user.uid, "settings", "profile"),
+  {
+    name: user.displayName || "",
+    timezone,
+  },
+  { merge: true }
+);
       localStorage.removeItem('selectedPlan');
       localStorage.removeItem('signupInProgress');
         showPopup("Successfully signed in with Google!");
@@ -393,7 +397,7 @@ function displayError(errorCode) {
         bar.style.width = '0';
         setTimeout(() => { bar.style.width = '100vw'; }, 50);
         setTimeout(() => { document.getElementById('transitionText').style.opacity = 1; }, 400);
-        setTimeout(() => { window.location.href = "../Calendar/Calendar"; }, 1800);
+        setTimeout(() => { window.location.href = "../Calendar/Calendar.html"; }, 1800);
       } else {
       localStorage.setItem('signupInProgress', '1');
       const storedPlan = "pending_payment";
@@ -438,7 +442,6 @@ function displayError(errorCode) {
     localStorage.removeItem('signupInProgress');
   }
   };
-
   forgotPasswordBtn.onclick = async () => {
     const email = document.getElementById('email').value.trim();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -526,4 +529,5 @@ window.addEventListener('beforeinstallprompt', (e) => {
     };
   }
 });
+
 
