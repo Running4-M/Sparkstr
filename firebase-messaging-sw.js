@@ -1,7 +1,6 @@
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js");
 
-// Initialize Firebase in the service worker
 firebase.initializeApp({
   apiKey: "AIzaSyC9MoRFgajbAt58_s2zuW6vW6QKzpzUIbc",
   authDomain: "sparkstr.com",
@@ -14,23 +13,45 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ⚠️ IMPORTANT: Do not manually call showNotification() here,
-// otherwise you’ll get duplicates. Let FCM handle it automatically.
+// Handle background messages
+messaging.onBackgroundMessage(function (payload) {
+  const notificationTitle = payload.data?.title || "Notification";
+  const notificationOptions = {
+    body: payload.data?.body || "",
+    icon: payload.data?.icon || "https://sparkstr.com/img/favicon.png",
+    badge: payload.data?.badge || "https://sparkstr.com/img/favicon.png",
+    data: {
+      click_action:
+        payload.data?.click_action || "https://sparkstr.com/Calendar/Calendar",
+    },
+  };
+
+  return self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+  );
+});
 
 // Handle notification click
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
+  const targetUrl =
+    event.notification.data?.click_action ||
+    "https://sparkstr.com/Calendar/Calendar";
+
   event.waitUntil(
     clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (clientList) {
       for (const client of clientList) {
-        if (client.url.includes("https://sparkstr.com/Calendar/Calendar") && "focus" in client) {
+        if (client.url.includes(targetUrl) && "focus" in client) {
           return client.focus();
         }
       }
-      return clients.openWindow("https://sparkstr.com/Calendar/Calendar");
+      return clients.openWindow(targetUrl);
     })
   );
 });
+
+
 
 
 
