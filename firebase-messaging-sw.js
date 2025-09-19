@@ -19,7 +19,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationOptions = {
     body: payload.data?.body || "",
     icon: payload.data?.icon || "https://sparkstr.com/img/favicon.png",
-    badge: payload.data?.badge || "https://sparkstr.com/img/favicon.png",
+    badge: "https://sparkstr.com/img/sparkstr_badge_mono.png",
     data: {
       click_action:
         payload.data?.click_action || "https://sparkstr.com/Calendar/Calendar",
@@ -50,6 +50,7 @@ self.addEventListener("notificationclick", function (event) {
     })
   );
 });
+
 
 
 
