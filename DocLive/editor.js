@@ -59,7 +59,7 @@ async function init() {
 
 firebaseInitPromise.then(() => {
   if (!getCurrentUserId()) {
-    window.location.href = "../Login/signup";
+    window.location.href = "../Login/signup.html";
   }
 });
 
@@ -583,10 +583,10 @@ if (backBtn && desktopEditor) {
         if (unsaved) {
             e.preventDefault();
             showUnsavedModal(false, () => {
-                window.location.href = 'documentHub';
+                window.location.href = 'documentHub.html';
             });
         } else {
-            window.location.href = 'documentHub';
+            window.location.href = 'documentHub.html';
         }
     });
 }
@@ -602,10 +602,10 @@ if (mobileBackBtn && mobileEditor) {
         if (unsaved) {
             e.preventDefault();
             showUnsavedModal(true, () => {
-                window.location.href = 'documentHub';
+                window.location.href = 'documentHub.html';
             });
         } else {
-            window.location.href = 'documentHub';
+            window.location.href = 'documentHub.html';
         }
     });
 }
@@ -631,7 +631,6 @@ if (mobileBackBtn && mobileEditor) {
 // Text selection functionality
 function initializeTextSelection() {
     const editor = document.getElementById('document-editor');
-    const mobileEditor = document.getElementById('mobile-document-editor');
     const selectionIndicator = document.getElementById('text-selection-indicator');
     const previewElement = document.getElementById('selection-preview');
     const clearBtn = document.getElementById('clear-selection-btn');
@@ -659,20 +658,17 @@ function initializeTextSelection() {
         window.getSelection().removeAllRanges();
     }
 
+    // Only enable selection for desktop editor
     if (editor) {
         editor.addEventListener('mouseup', handleSelection);
         editor.addEventListener('keyup', handleSelection);
     }
 
-    if (mobileEditor) {
-        mobileEditor.addEventListener('touchend', handleSelection);
-        mobileEditor.addEventListener('mouseup', handleSelection);
-    }
+    // Do NOT add any selection listeners for mobile editor
 
     if (clearBtn) {
         clearBtn.addEventListener('click', clearSelection);
     }
-    // Remove outside click handler!
 }
 
 // Toolbar functionality
@@ -3924,7 +3920,7 @@ function downloadDocument() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'document';
+    a.download = 'document.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -4006,5 +4002,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePremiumBtn('premiumChatBtnMobile');
   }
 });
-
+// --- Make Enter insert a single line break in editors ---
+function handleSingleLineBreak(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    document.execCommand("insertLineBreak");
+    // Optionally scroll caret into view
+    return false;
+  }
+}
+const desktopEditorEl = document.getElementById('document-editor');
+if (desktopEditorEl) {
+  desktopEditorEl.addEventListener('keydown', handleSingleLineBreak);
+}
+const mobileEditorEl = document.getElementById('mobile-document-editor');
+if (mobileEditorEl) {
+  mobileEditorEl.addEventListener('keydown', handleSingleLineBreak);
+}
 
