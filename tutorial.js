@@ -1,3 +1,5 @@
+console.log("✅ tutorial.js loaded in this page");
+
 // Add at the top of the file
 window.tutorialTour = null;
 
@@ -147,15 +149,18 @@ tour.addStep({
     Type something like: <span style="color:#a78bfa;">Welcome to Sparkstr</span>
   `,
   attachTo: { element: '#title', on: 'bottom' },
+  useModalOverlay: false, // 🔑 disable overlay so keyboard stays open
+  canClickTarget: true,
   buttons: [
     { text: 'Next', action: tour.next, classes: 'shepherd-button-primary', disabled: true }
   ],
   when: {
     show() {
       waitForElement('#title').then(input => {
-        const nextBtn = this.el.querySelector('.shepherd-button-primary');   // use the *current* step element
+        input.focus(); // force keyboard open
+        const nextBtn = this.el.querySelector('.shepherd-button-primary');
         const update = () => { nextBtn.disabled = input.value.trim().length === 0; };
-        update();                       // set initial state
+        update();
         input.addEventListener('input', update, { once: false });
       });
     }
@@ -170,12 +175,15 @@ tour.addStep({
     Suggestion: <span style="color:#a78bfa;">First time using Sparkstr — excited to get started!</span>
   `,
   attachTo: { element: '#description', on: 'bottom' },
+  useModalOverlay: false, // 🔑 disable overlay so keyboard stays open
+  canClickTarget: true,
   buttons: [
     { text: 'Next', action: tour.next, classes: 'shepherd-button-primary', disabled: true }
   ],
   when: {
     show() {
       waitForElement('#description').then(input => {
+        input.focus(); // force keyboard open
         const nextBtn = this.el.querySelector('.shepherd-button-primary');
         const update = () => { nextBtn.disabled = input.value.trim().length === 0; };
         update();
@@ -184,6 +192,7 @@ tour.addStep({
     }
   }
 });
+
 
 // Step 7: Toggle AI Assistance
 tour.addStep({
@@ -465,6 +474,7 @@ tour.addStep({
 }
   ]
 });
+
 
 
 
