@@ -109,9 +109,9 @@ html, body {
 }
 
 .btn-hero:hover {
-    background: linear-gradient(135deg, hsl(var(--primary-glow)), hsl(var(--primary)));
-    box-shadow: var(--shadow-glow);
-    transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.025);
+  box-shadow: var(--shadow-glow);
+  color: #fff !important; /* Always white text on hover */
 }
 
 .btn-glass {
@@ -921,7 +921,6 @@ html, body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 100vh;
 }
 .cta-inner {
     display: flex;
@@ -957,6 +956,14 @@ html, body {
     color: white;
     margin-bottom: 3rem;
     line-height: 1.2;
+}
+/* Make CTA title bigger on desktop */
+@media (min-width: 1024px) {
+  .cta-title {
+    font-size: 4.5rem !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+  }
 }
 
 .cta-title-highlight {
@@ -2517,13 +2524,20 @@ img:hover {
     background: white;
     transform: scale(1.2);
 }       
-/* Navigation Styles */
-nav {
-    height: 5rem;
-    background: rgba(20, 20, 25, 0.95); /* Luxurious dark background */
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+
+nav a {
+  color: white;   /* white links on black */
+  transition: color 0.3s ease;
+  font-weight: 500;
 }
+
+/* Transparent state (only inside hero) */
+nav.transparent {
+  background: transparent;
+  box-shadow: none;
+}
+
 
 /* Updated Navigation Links */
 nav a:not(.btn-hero):not(.btn-ghost) {
@@ -2545,46 +2559,13 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
 
 /* Logo text color */
 nav .gradient-text {
-    background: linear-gradient(135deg, #fff, #a855f7);
+    background: linear-gradient(135deg, #4c1d95, #a855f7 80%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* Mobile Menu Styles */
-.mobile-menu {
-    display: none;
-    position: fixed;
-    top: 5rem;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.98);
-    padding: 2rem;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-    z-index: 49;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
 
-.mobile-menu.show {
-    transform: translateY(0);
-}
-
-.mobile-menu-items {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.mobile-menu-items a {
-    padding: 1rem;
-    border-radius: 0.75rem;
-    background: rgba(0, 0, 0, 0.02);
-    color: hsl(var(--foreground));
-    text-align: center;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
 
 .mobile-menu-items a:hover {
     background: rgba(0, 0, 0, 0.05);
@@ -2592,58 +2573,13 @@ nav .gradient-text {
     color: hsl(var(--primary));
 }
 
-/* Mobile Menu Styles */
 @media (max-width: 768px) {
-    .mobile-menu {
-        display: none; /* Initially hidden */
-        position: fixed;
-        top: 5rem;
-        left: 0;
-        right: 0;
-        background: rgba(20, 20, 25, 0.98); /* Dark background */
-        padding: 1rem;
-        z-index: 49;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    .mobile-menu.show {
-        display: block; /* Show when active */
-    }
-
-    .mobile-menu-items {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .mobile-menu-items a {
-        color: white;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        background: rgba(255, 255, 255, 0.05);
-        font-weight: 600;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .mobile-menu-items a:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateX(5px);
-    }
-
-    .mobile-menu-items a.btn-hero {
-        background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-        color: white;
-        margin-top: 0.5rem;
-    }
-
-    .mobile-menu-button {
-        display: block !important;
-    }
-    
-    nav .container-content > div:nth-child(2) {
-        display: none;
-    }
+  .mobile-menu-button {
+    display: block;
+  }
+  .nav-links {
+    display: none !important;
+  }
 }
 
 /* Mobile Menu Button */
@@ -2713,12 +2649,7 @@ nav .gradient-text {
     color: white;
 }
 
-/* Login button */
-.mobile-menu-items a.btn-ghost {
-    background: transparent;
-    border: 2px solid hsl(var(--primary));
-    color: hsl(var(--primary));
-}
+
 
 /* Get Started button */
 .mobile-menu-items a.btn-hero {
@@ -2728,8 +2659,6 @@ nav .gradient-text {
 }
 
 nav .container-content {
-    padding-top: 1.25rem; /* Adjusted vertical centering */
-    padding-bottom: 1.25rem;
     height: 100%;
     display: flex;
     align-items: center;
@@ -3478,6 +3407,895 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
   color: #2d1152 !important; /* deep purple, readable on light backgrounds */
   text-shadow: 0 1px 4px #fff8, 0 0px 0px #fff; /* subtle white glow for extra contrast */
 }
+/* Design system variables */
+        :root {
+            --background: 240 10% 98%;
+            --foreground: 240 10% 15%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 10% 15%;
+            --primary: 280 100% 70%;
+            --primary-foreground: 0 0% 100%;
+            --secondary: 240 7% 96%;
+            --secondary-foreground: 240 10% 15%;
+            --muted: 240 7% 96%;
+            --muted-foreground: 240 6% 45%;
+            --accent: 280 100% 70%;
+            --accent-foreground: 0 0% 100%;
+            
+            /* Sparkstr Brand Colors */
+            --sparkstr-purple: 280 100% 70%;
+            --sparkstr-purple-dark: 270 80% 35%;
+            --sparkstr-purple-light: 290 100% 85%;
+            --sparkstr-pink: 320 100% 75%;
+            
+            /* Gradients */
+            --gradient-sparkstr: linear-gradient(135deg, hsl(270, 80%, 35%), hsl(280, 100%, 70%));
+            --gradient-sparkstr-light: linear-gradient(135deg, hsl(290, 100%, 95%), hsl(280, 100%, 90%));
+            --gradient-card: linear-gradient(135deg, hsl(0, 0%, 100%), hsl(240, 7%, 98%));
+            
+            /* Shadows */
+            --shadow-sparkstr: 0 20px 40px -10px hsl(280 100% 70% / 0.2);
+            --shadow-card: 0 10px 30px -5px hsl(240 10% 15% / 0.1);
+            --shadow-glow: 0 0 60px hsl(280 100% 70% / 0.3);
+            
+            /* Animation Variables */
+            --animation-duration: 0.6s;
+            --animation-delay: 0.1s;
+        }
+
+        /* Utility classes */
+        .gradient-sparkstr {
+            background: var(--gradient-sparkstr);
+        }
+        
+        .gradient-sparkstr-light {
+            background: var(--gradient-sparkstr-light);
+        }
+        
+        .gradient-card {
+            background: var(--gradient-card);
+        }
+        
+        .shadow-sparkstr {
+            box-shadow: var(--shadow-sparkstr);
+        }
+        
+        .shadow-card {
+            box-shadow: var(--shadow-card);
+        }
+        
+        .shadow-glow {
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .text-gradient {
+            background: var(--gradient-sparkstr);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* Main section styles */
+        .features-section {
+            position: relative;
+            padding: 8rem 1rem;
+            overflow: hidden;
+        }
+
+        .features-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-sparkstr-light);
+            opacity: 0.3;
+        }
+
+        .features-container {
+            position: relative;
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+        /* Header styles */
+        .features-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+        }
+
+        .features-header.visible {
+            opacity: 1;
+        }
+
+        .features-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+
+        .features-title .highlight {
+            background: var(--gradient-sparkstr);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: bounce-gentle 3s ease-in-out infinite;
+        }
+
+        /* Features timeline */
+        .features-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+        }
+
+        .feature-item {
+            position: relative;
+            opacity: 0;
+        }
+
+        .feature-item.visible {
+            opacity: 1;
+        }
+
+        /* Timeline connector */
+        .timeline-connector {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 1px;
+            height: 6rem;
+            background: linear-gradient(to bottom, hsl(280, 100%, 70%), transparent);
+            transform: translateX(-50%) translateY(100%);
+            z-index: 10;
+        }
+
+        .feature-grid {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        /* Content styles */
+        .feature-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            background: var(--gradient-sparkstr);
+            border-radius: 1rem;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-glow);
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+
+        .step-line {
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(to right, hsl(280, 100%, 70%), transparent);
+        }
+
+        .feature-main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .feature-title .highlight {
+            background: var(--gradient-sparkstr);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .feature-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 0.25rem;
+            background: var(--gradient-sparkstr);
+            border-radius: 9999px;
+            opacity: 0.3;
+        }
+
+        .feature-subtitle {
+            font-size: 1.875rem;
+            color: hsl(240, 6%, 45%);
+            margin-top: 0.5rem;
+        }
+
+        .feature-description {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-description p {
+            font-size: 1.25rem;
+            color: hsl(280, 100%, 70%);
+            font-weight: 600;
+        }
+
+        .feature-cta {
+            padding-top: 1rem;
+        }
+
+        .btn-sparkstr {
+            background: var(--gradient-sparkstr);
+            color: white;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-glow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sparkstr:hover {
+            transform: scale(1.05);
+        }
+
+        /* Visual card styles */
+        .feature-visual {
+            position: relative;
+        }
+
+        .feature-card {
+            position: relative;
+            background: var(--gradient-card);
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: all 0.7s ease;
+            transform: translateZ(0);
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-1rem) scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-sparkstr);
+            opacity: 0.05;
+            transition: opacity 0.5s ease;
+        }
+
+        .feature-card:hover .card-overlay {
+            opacity: 0.1;
+        }
+
+        .card-content {
+            position: relative;
+            aspect-ratio: 16/10;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-placeholder {
+            width: 100%;
+            max-width: 20rem;
+        }
+
+        .placeholder-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .placeholder-bar {
+            height: 2rem;
+            background: var(--gradient-sparkstr);
+            border-radius: 0.5rem;
+            opacity: 0.2;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .placeholder-main {
+            height: 8rem;
+            background: var(--gradient-sparkstr-light);
+            border-radius: 0.75rem;
+            opacity: 0.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .placeholder-icon {
+            width: 3rem;
+            height: 3rem;
+            background: var(--gradient-sparkstr);
+            border-radius: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .placeholder-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .placeholder-line {
+            height: 1rem;
+            background: var(--gradient-sparkstr);
+            border-radius: 0.25rem;
+            opacity: 0.15;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .placeholder-line:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+
+        .placeholder-line:nth-child(2) {
+            width: 75%;
+            animation-delay: 1s;
+        }
+
+        /* CTA section */
+        .final-cta {
+            margin-top: 8rem;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .final-cta.visible {
+            opacity: 1;
+        }
+
+        .cta-card {
+            background: var(--gradient-card);
+            border: none;
+            border-radius: 1rem;
+            padding: 3rem;
+            max-width: 32rem;
+            margin: 0 auto;
+            box-shadow: var(--shadow-card);
+        }
+
+        .cta-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .cta-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .btn-cta {
+            background: var(--gradient-sparkstr);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive design */
+        @media (min-width: 640px) {
+            .features-section {
+                padding: 8rem 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features-section {
+                padding: 8rem 2rem;
+            }
+
+            .features-title {
+                font-size: 4.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 5rem;
+            }
+
+            .feature-grid.reverse {
+                direction: rtl;
+            }
+
+            .feature-grid.reverse > * {
+                direction: ltr;
+            }
+
+            .feature-title {
+                font-size: 3rem;
+            }
+
+            .feature-subtitle {
+                font-size: 2.25rem;
+            }
+        }
+        /* Improved CTA Card Styles */
+.improved-cta-card {
+  background: white;
+  border-radius: 2rem;
+  box-shadow: 0 8px 40px 0 rgba(168,85,247,0.10), 0 2px 8px 0 rgba(30,41,59,0.08);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  padding: 2.25rem 3.5rem 2.25rem 3.5rem; /* Reduce vertical, increase horizontal padding */
+  max-width: 44rem; /* Increase width */
+  min-width: 28rem;
+  margin: 0 auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: unset; /* Remove any min-height if present */
+}
+.improved-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 2.2rem;
+  z-index: 0;
+  background: linear-gradient(120deg, #a855f7 0%, #38bdf8 100%);
+  opacity: 0.18;
+  filter: blur(6px);
+  pointer-events: none;
+}
+.improved-cta-title {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: #2d1152;
+  margin-bottom: 1.2rem;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+.improved-cta-highlight {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 0.5rem;
+}
+.improved-cta-desc {
+  color: #5b4e7a;
+  font-size: 1.15rem;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+.improved-cta-btn {
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.15rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -4px #a855f760;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.improved-cta-btn:hover {
+  background: linear-gradient(90deg, #38bdf8 0%, #a855f7 100%);
+  transform: scale(1.05);
+}
+@media (max-width: 900px) {
+  .improved-cta-card {
+    max-width: 95vw;
+    min-width: unset;
+    padding: 1.5rem 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .improved-cta-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 99vw;
+  }
+  .improved-cta-title { font-size: 1.5rem !important; }
+}
+/* ---------- NAV: glass when scrolled, transparent over hero ---------- */
+
+/* default: transparent (over hero) */
+.navbar {
+  height: 72px; /* slightly tall when at top — looks airy */
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: background 220ms ease, box-shadow 220ms ease, height 220ms ease, padding 220ms ease;
+}
+
+/* container inside the nav (keeps items aligned) */
+.navbar .container-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  gap: 1rem;
+}
+
+/* link defaults while over hero (light on top of hero) */
+.navbar .nav-links a,
+.navbar a:not(.btn-hero):not(.btn-ghost) {
+  color: rgba(255,255,255,0.95);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.5rem;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+/* desktop hidden helper (keeps your existing markup) */
+@media (min-width: 768px) {
+  .nav-links.hidden { display: flex; }
+}
+
+/* show glass and shrink when scrolled past hero */
+.navbar.scrolled {
+  background: rgba(255,255,255,0.92) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 30px rgba(20,20,30,0.07);
+}
+
+/* link colors when navbar is scrolled (dark text) */
+.navbar.scrolled .nav-links a,
+.navbar.scrolled a:not(.btn-hero):not(.btn-ghost) {
+  color: rgba(34,34,34,0.95);
+}
+
+/* ghost / hero buttons adapt */
+.navbar.scrolled .btn-ghost {
+  border: 1px solid hsl(var(--primary));
+  color: hsl(var(--primary));
+  background: transparent;
+}
+.navbar.scrolled .btn-hero {
+  color: #fff;
+}
+.navbar.scrolled .nav-upcoming-link,
+.navbar.scrolled .mobile-menu-items .nav-upcoming-link {
+  color: #222 !important;
+}
+/* mobile menu styling (keeps existing mobile UI working) */
+.mobile-menu {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 72px;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateY(-8px);
+  transition: transform 220ms ease, opacity 220ms ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+.mobile-menu.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-menu .mobile-menu-items a {
+  display: block;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  color: rgba(34,34,34,0.95);
+}
+
+/* small responsive tweak */
+@media (max-width: 640px) {
+  .navbar { height: 64px; }
+  .navbar.scrolled { top: 0; height: 56px; }
+}
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.6) !important; /* semi-transparent */
+  backdrop-filter: blur(20px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+  box-shadow: 0 8px 30px rgba(20,20,30,0.07);
+  height: 60px;
+}
+
+/* Frosted clear when at top over hero */
+.navbar {
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: background 220ms ease, box-shadow 220ms ease, height 220ms ease, padding 220ms ease;
+}
+/* Smaller nav buttons */
+.btn-nav {
+  padding: 0.4rem 1rem !important;
+  font-size: 0.95rem !important;
+  border-radius: 0.6rem !important;
+  min-width: unset !important;
+  height: 2.2rem !important;
+  line-height: 1.1 !important;
+}
+@media (max-width: 768px) {
+  .navbar .btn-nav {
+    display: none !important;
+  }
+}
+.navbar .mobile-menu-icon span {
+  background: white;
+  transition: background 0.3s;
+}
+.navbar.scrolled .mobile-menu-icon span {
+  background: #222 !important; /* black when scrolled */
+}
+
+.navbar .mobile-menu-items a.active {
+  position: relative;
+  color: hsl(var(--primary)) !important;
+}
+.navbar .nav-links a.active,
+.navbar .mobile-menu-items a.active {
+  color: hsl(var(--primary)) !important;
+  position: relative;
+}
+.navbar .nav-links a.active::after,
+.navbar .mobile-menu-items a.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  transition: all 0.3s;
+  width: 100%;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .navbar .mobile-menu-items a.active::after {
+    left: 20%;
+    right: 20%;
+    bottom: 0;
+    height: 2.5px;
+    width: 60%;
+  }
+}
+
+/* --- Improved Mobile Menu Dropdown --- */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  background: rgba(30, 20, 60, 0.28); /* transparent dark for hero */
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 8px 30px rgba(20,20,30,0.09);
+  z-index: 999;
+  padding: 1.5rem 1rem 2.5rem 1rem;
+  transition: transform 220ms ease, opacity 220ms ease, background 220ms;
+  transform: translateY(-16px);
+  opacity: 0;
+  pointer-events: none;
+}
+.mobile-menu.show {
+  display: block;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.navbar.scrolled .mobile-menu {
+  background: rgba(255,255,255,0.95); /* white glass when scrolled */
+  color: #222;
+}
+.mobile-menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mobile-menu-items a {
+  padding: 1rem 1.1rem;
+  border-radius: 0.7em;
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.07em;
+  background: rgba(255,255,255,0.13);
+  color: #fff;
+  border: none;
+  margin: 0.1em 0;
+  transition: background 0.18s, color 0.18s, transform 0.18s;
+}
+.mobile-menu-items a:hover,
+.mobile-menu-items a.active {
+  background: #a855f7;
+  color: #fff !important;
+  transform: scale(1.04);
+}
+.navbar.scrolled .mobile-menu-items a {
+  background: rgba(255,255,255,0.10);
+  color: #222 !important;
+}
+.navbar.scrolled .mobile-menu-items a:hover,
+.navbar.scrolled .mobile-menu-items a.active {
+  background: #a855f7;
+  color: #fff !important;
+}
+
+@media (max-width: 768px) {
+  /* --- Mobile Menu Login Button --- */
+  .mobile-menu-items a.btn-ghost {
+    background: rgba(168,85,247,0.10);
+    border: 2px solid #a855f7;
+    color: #a855f7 !important;
+    font-weight: 800;
+    border-radius: 1em;
+    margin-top: 0.3em;
+    font-size: 1.07em;
+    padding: 1em 1.5em;
+    box-shadow: 0 2px 12px #a855f720;
+    transition: background 0.18s, color 0.18s, border 0.18s, transform 0.18s;
+    display: block;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 4px #fff4;
+  }
+  .mobile-menu-items a.btn-ghost:hover {
+    background: #a855f7;
+    color: #fff !important;
+    border-color: #38bdf8;
+    transform: scale(1.06);
+    text-shadow: none;
+  }
+  .navbar.scrolled .mobile-menu-items a.btn-ghost {
+    background: rgba(168,85,247,0.07);
+    color: #a855f7 !important;
+    border-color: #a855f7;
+  }
+  .navbar.scrolled .mobile-menu-items a.btn-ghost:hover {
+    background: #a855f7;
+    color: #fff !important;
+    border-color: #38bdf8;
+  }
+
+  /* --- Mobile Menu Get Started Button --- */
+  .mobile-menu-items a.btn-hero {
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+    color: #fff !important;
+    font-weight: 900;
+    border-radius: 1em;
+    margin-top: 0.7em;
+    font-size: 1.09em;
+    box-shadow: 0 2px 12px #a855f740;
+    border: none;
+    padding: 1em 1.5em;
+    letter-spacing: 0.03em;
+    transition: background 0.18s, transform 0.18s;
+    text-shadow: 0 1px 4px #a855f7a0;
+  }
+  .mobile-menu-items a.btn-hero:hover {
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+    color: #fff !important;
+    transform: scale(1.06);
+    text-shadow: none;
+  }
+}
+/* Make mobile menu buttons look like desktop */
+.mobile-menu-items a.btn-hero {
+  /* Use the same as .btn-hero */
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  color: hsl(var(--primary-foreground));
+  font-weight: 700;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-elegant);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+.mobile-menu-items a.btn-hero:hover {
+  box-shadow: var(--shadow-glow);
+  color: #fff !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+.mobile-menu-items a.btn-ghost {
+  /* Use the same as .btn-ghost */
+  background: transparent;
+  border: 2px solid hsl(var(--primary));
+  color: hsl(var(--primary));
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 0.3em;
+}
+.mobile-menu-items a.btn-ghost:hover {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: translateY(-1px);
+}
+
+/* Make Upcoming link look like other nav links */
+.mobile-menu-items .nav-upcoming-link,
+.nav-upcoming-link {
+  background: rgba(255,255,255,0.05);
+  color: white !important;
+  font-weight: 600 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem !important;
+  transition: all 0.3s ease;
+}
+.mobile-menu-items .nav-upcoming-link:hover,
+.mobile-menu-items .nav-upcoming-link.active,
+.nav-upcoming-link:hover,
+.nav-upcoming-link.active {
+  background: rgba(255,255,255,0.1);
+  color: white !important;
+  transform: translateY(-1px);
+}
+@media (min-width: 769px) {
+  .mobile-menu-button {
+    display: none !important;
+  }
+}
+@media (max-width: 768px) {
+  .mobile-menu-button {
+    display: block !important;
+  }
+}
     </style>
     <link rel="icon" href="./img/favicon.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/Logo.png">
@@ -3510,46 +4328,49 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
         </section>
 
     <div class="min-h-screen overflow-x-hidden">
-        <!-- Navigation -->
-<nav class="fixed top-0 left-0 right-0 z-50">
-    <div class="container-content">
-        <div class="flex items-center gap-3">
-            <img src="img/Logo.png" alt="Logo" decoding="async" loading="eager" class="w-10 h-10 object-contain" />
-            <span class="text-2xl font-bold gradient-text">
-                Sparkstr
-            </span>
-        </div>
-        
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-8">
-            <a href="#calendar">Calendar</a>
-            <a href="#just-chat">Just Chat</a>
-            <a href="#doclive">DocLive</a>
-            <a href="./Login/signup.html" class="btn-ghost">Login</a>
-            <a href="pricing.html" class="btn-hero">Get Started</a>
-        </div>
-        
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-button md:hidden">
-            <div class="mobile-menu-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </button>
+<!-- Navigation -->
+<nav class="navbar fixed top-0 left-0 right-0 z-50" role="navigation" aria-label="Main navigation">
+  <div class="container-content">
+    <!-- left: logo -->
+    <div class="flex items-center gap-3">
+      <img src="img/logo.png" alt="Sparkstr logo" class="w-10 h-10 object-contain" />
+      <span class="text-2xl font-bold gradient-text">Sparkstr</span>
     </div>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <div class="mobile-menu-items">
-            <a href="#calendar">Calendar</a>
-            <a href="#just-chat">Just Chat</a>
-            <a href="#doclive">DocLive</a>
-            <a href="./Login/signup.html">Login</a>
-            <a href="pricing.html" class="btn-hero">Get Started</a>
-        </div>
+
+    <!-- center: links (desktop) -->
+    <div class="nav-links hidden md:flex items-center space-x-8">
+  <a href="#calendar">Calendar</a>
+  <a href="#just-chat">Just Chat</a>
+  <a href="#doclive">DocLive</a>
+  <a href="#upcoming" class="nav-upcoming-link">Upcoming</a>
+</div>
+
+    <!-- right: auth / CTA / mobile button -->
+    <div class="flex items-center gap-3">
+      <a href="./Login/signup.html" class="btn btn-ghost btn-nav">Login</a>
+<a href="pricing.html" class="btn btn-hero btn-nav">Get Started</a>
+
+      <!-- mobile menu toggle -->
+      <button class="mobile-menu-button md:hidden" aria-label="Open menu">
+        <div class="mobile-menu-icon"><span></span><span></span><span></span></div>
+      </button>
     </div>
+  </div>
+
+  <!-- mobile menu -->
+  <div class="mobile-menu" aria-hidden="true">
+<div class="mobile-menu-items">
+  <a href="#calendar">Calendar</a>
+  <a href="#just-chat">Just Chat</a>
+  <a href="#doclive">DocLive</a>
+  <a href="#upcoming" class="nav-upcoming-link">Upcoming</a>
+  <a href="./Login/signup.html" class="btn-ghost">Login</a>
+  <a href="pricing.html" class="btn-hero">Get Started</a>
+</div>
+  </div>
 </nav>
+
+
 
         
 
@@ -3640,7 +4461,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
                     <div class="grid lg:grid-cols-2 gap-12 max-w-8xl mx-auto">
                         <div class="group">
     <div class="mb-8 animate-slide-in-left">
-        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left">🤖 Enable the AI</h3>
+        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left"> Enable the AI</h3>
         <p class="text-xl text-gray-300 text-left">Let intelligent automation handle your planning with precision</p>
     </div>
     <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/Ai assistance.png" alt="AI Enablement Interface" class="h-500 bg-gradient-to-br from-purple-400 to-pink-500 group-hover-shadow-glow transition-elastic" />
@@ -3648,7 +4469,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
 
 <div class="group">
     <div class="mb-8 animate-slide-in-right">
-        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left">🎯 Create Complex Tasks</h3>
+        <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 text-left"> Create Complex Tasks</h3>
         <p class="text-xl text-gray-300 text-left">Get a crystal-clear starting point for any challenge</p>
     </div>
     <img decoding="async" loading="lazy"decoding="async" loading="lazy" src="img/complex event.png" alt="Complex Task Creation Interface" class="h-500 bg-gradient-to-br from-blue-400 to-purple-500 group-hover-shadow-glow transition-elastic" />
@@ -3689,107 +4510,152 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
             </div>
         </section>
 
-        <!-- Plan Section -->
-        <section class="section-padding bg-gradient-secondary">
-            <div class="container-content space-y-24 animate-fade-in-up">
-                <div class="text-center">
-                    <h2 class="text-hero font-bold text-foreground mb-8">
-                        But that's not all.
-                    </h2>
-                    <p class="text-display text-muted-foreground">
-                        Want 
-                        <span class="bg-primary-20 px-4 py-2 rounded-full text-primary font-bold">
-                            additional help?
-                        </span>
-                    </p>
-                </div>
+        <section class="features-section">
+        <!-- Simple background -->
+        <div class="features-background"></div>
+        
+        <div class="features-container">
+            <!-- Header Section -->
+            <div class="features-header visible animate-slide-up">
+                <h2 class="features-title">
+                    But that's <span class="highlight">not all.</span>
+                </h2>
+            </div>
 
-                <div class="grid lg:grid-cols-2 gap-32 items-center">
-  <!-- Text first on desktop, but stays above image on mobile -->
-  <div class="space-y-8 animate-slide-in-left text-center lg:text-left order-1 lg:order-1">
-    <p class="text-title text-foreground leading-relaxed">
-      Navigate to the 
-      <span class="bg-accent-20 px-3 py-1 rounded-full text-accent-foreground font-semibold">
-        response section
-      </span> 
-      and select your event
-    </p>
-  </div>
+            <!-- Features Timeline -->
+            <div class="features-timeline">
+                <!-- Feature 1 -->
+                <div class="feature-item visible animate-fade-in-up delay-0">
+                    <!-- Timeline connector -->
+                    <div class="timeline-connector"></div>
 
-  <!-- Image second on desktop, but below text on mobile -->
-  <div class="animate-slide-in-right order-2 lg:order-2">
-    <img src="img/responsesview.png" alt="Response View for events"
+                    <div class="feature-grid">
+                        <!-- Content Side -->
+                        <div class="feature-content">
+                            <!-- Step indicator -->
+                            <div class="step-indicator">
+                                <div class="step-number">01</div>
+                                <div class="step-line"></div>
+                            </div>
+
+                            <!-- Main content -->
+                            <div class="feature-main-content">
+                                <h3 class="feature-title">
+                                    Navigate to the <span class="highlight">response section</span>
+                                    <div class="feature-subtitle">and select your event</div>
+                                </h3>
+                                
+                                <div class="feature-description">
+                                    <p>Want additional help?</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Side -->
+                        <img src="img/responsesview.png" alt="Response View for events"
       class="h-150 bg-gradient-to-br from-orange-400 to-red-500" />
-  </div>
-</div>
+                    </div>
+                </div>
 
-<div class="grid lg:grid-cols-2 gap-32 items-center">
-  <!-- Image first on desktop, but BELOW text on mobile -->
-  <div class="animate-slide-in-left order-2 lg:order-1">
-    <img src="img/generatesmartplan.png" alt="Generate Smart Plan"
+                <!-- Feature 2 -->
+                <div class="feature-item visible animate-fade-in-up delay-200">
+                    <!-- Timeline connector -->
+                    <div class="timeline-connector"></div>
+
+                    <div class="feature-grid reverse">
+                        <!-- Content Side -->
+                        <div class="feature-content">
+                            <!-- Step indicator -->
+                            <div class="step-indicator">
+                                <div class="step-number">02</div>
+                                <div class="step-line"></div>
+                            </div>
+
+                            <!-- Main content -->
+                            <div class="feature-main-content">
+                                <h3 class="feature-title">
+                                    Click <span class="highlight">"Generate a Plan"</span>
+                                    <div class="feature-subtitle">for a detailed, step-by-step personalized roadmap</div>
+                                </h3>
+                                
+                                <div class="feature-description">
+                                    <p>Speech</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Side -->
+                        <img src="img/generatesmartplan.png" alt="Generate Smart Plan"
       class="w-500 h-150 bg-gradient-to-br from-green-400 to-teal-500" />
-  </div>
+                    </div>
+                </div>
 
-  <!-- Text second on desktop, but ABOVE image on mobile -->
-  <div class="space-y-8 animate-slide-in-right text-center lg:text-left order-1 lg:order-2">
-    <p class="text-title text-foreground leading-relaxed">
-      <span class="bg-primary-20 px-3 py-1 rounded-full text-primary font-bold">
-        Click "Generate a Plan"
-      </span> 
-      for a detailed, step-by-step personalized roadmap
-    </p>
+                <!-- Feature 3 -->
+                <div class="feature-item visible animate-fade-in-up delay-400">
+                    <div class="feature-grid">
+                        <!-- Content Side -->
+                        <div class="feature-content">
+                            <!-- Step indicator -->
+                            <div class="step-indicator">
+                                <div class="step-number">03</div>
+                                <div class="step-line"></div>
+                            </div>
+
+                            <!-- Main content -->
+                            <div class="feature-main-content">
+                                <h3 class="feature-title">
+                                    Enter <span class="highlight">Focus Mode</span>
+                                    <div class="feature-subtitle">to work step-by-step on your generated plan!</div>
+                                </h3>
+                                
+                                <div class="feature-description">
+                                    <p>Need help on a step?</p>
+                                </div>
+
+                                <div class="feature-cta">
+                                    <button class="btn-sparkstr">No Problem!</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual Side -->
+                        <img decoding="async" loading="lazy"src="img/focusmode.png" alt="Focus Mode Interface" class=" h-500 bg-gradient-to-br from-purple-400 to-pink-500" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final CTA Section -->
+             <!-- Final CTA Section -->
+        <div class="final-cta visible animate-scale-in delay-800">
+  <div class="cta-card improved-cta-card">
+    <div class="cta-content">
+      <h3 class="cta-title improved-cta-title">
+        Unlock Focus Mode<br>
+        <span class="improved-cta-highlight">Get a Head Start</span>
+      </h3>
+      <p class="improved-cta-desc">
+        Experience a smarter way to work—step into Focus Mode and turn your plans into action, distraction-free.
+      </p>
+      <a href="pricing.html" class="btn-cta improved-cta-btn">
+         Start Now
+      </a>
+    </div>
   </div>
 </div>
+<!-- "Keep Scrolling" Section -->
+<div class="text-center" style="margin-top:3rem;">
+  <p class="text-xl font-semibold text-primary mb-6" style="font-size:1.5rem;">
+     There’s even more – keep scrolling to discover how Sparkstr gives you the ultimate productivity advantage!
+  </p>
+  <div class="w-8 h-8 mx-auto animate-bounce-gentle">
+    <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-primary" style="width:2rem;height:2rem;">
+      <path d="M7 13l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+    </section>
 
-            </div>
-        </section>
-
-        <!-- Focus Section -->
-        <section class="section-padding bg-background">
-            <div class="container-content space-y-24 animate-fade-in-up">
-                <div class="text-center">
-                    <h2 class="text-display font-bold text-foreground mb-12" style="font-size: large;">
-                        Enter 
-                        <span class="bg-primary-20 px-4 py-2 rounded-full text-primary font-bold">
-                            Focus Mode
-                        </span>
-                        , to work step-by-step on your generated plan!
-                    </h2>
-                </div>
-
-                <div class="grid lg:grid-cols-2 items-center gap-16">
-                    <div class="space-y-8 animate-slide-in-left text-center lg:text-left">
-                        <p class="text-title text-foreground leading-relaxed">
-                            Need help on a step?
-                        </p>
-                        <p class="text-display font-bold gradient-text">
-                            <span class="bg-accent-20 px-4 py-2 rounded-full text-accent-foreground">
-                                No Problem!
-                            </span>
-                        </p>
-                    </div>
-
-                    <div class="animate-slide-in-right">
-                         <img decoding="async" loading="lazy"src="img/focusmode.png" alt="Focus Mode Interface" class=" h-500 bg-gradient-to-br from-purple-400 to-pink-500" />
-                    </div>
-                </div>
-
-                <div class="text-center glass-card p-12 rounded-3xl shadow-elegant">
-    <a href="pricing.html" class="btn-hero mb-8 animate-pulse-scale">
-        🚀 Try Focus Mode Now
-    </a>
-                    <p class="text-xl font-semibold text-primary mb-6">
-                        ✨ Scroll to see what else there is!
-                    </p>
-                    <div class="w-8 h-8 mx-auto animate-bounce-gentle">
-                        <svg viewBox="0 0 24 24" fill="none" class="w-full h-full text-primary">
-                            <path d="M7 13l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M7 6l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
         <div class="min-h-screen">
     <!-- Hero Section - Event Creation from Chat -->
@@ -3821,7 +4687,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
                                 🎉 <strong>Well, now you can!</strong>
                             </p>
                             <p class="text-lg text-foreground">
-                                Create events & multi-day plans <strong>straight from chat</strong> with AI assistance! 🤖✨
+                                Create events & multi-day plans <strong>straight from chat</strong> with AI assistance!
                             </p>
                         </div>
                     </div>
@@ -3939,8 +4805,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
                     Meet <span class="bg-gradient-text">Just Chat</span>
                 </h2>
                 <p class="text-xl text-muted-foreground leading-relaxed">
-                    All of this magic happens in our intuitive chat interface called <strong>Just Chat</strong>. 
-                    It looks like any normal chat, but with superpowers for your calendar! 💬✨
+                    This all takes place in <strong>Just Chat</strong>, our intuitive chat interface. It feels like a normal conversation but with powerful calendar features built in.
                 </p>
             </div>
         </div>
@@ -4031,7 +4896,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
       </div>
       <!-- 👇 keep GIF directly under text block -->
       <div class="mt-6">
-        <img decoding="async" loading="lazy"src="/VSChatgpt.gif" alt="ChatGPT Copy Paste Workflow" class="mx-auto" />
+        <img decoding="async" loading="lazy"src="gifs/VSChatgpt.gif" alt="ChatGPT Copy Paste Workflow" class="mx-auto" />
       </div>
     </div>
     
@@ -4125,13 +4990,13 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
                         <div class="text-center space-y-16 animate-fade-in-up">
                             <div class="glass-card rounded-3xl p-8 shadow-mega bg-yellow-50-50">
                                 <h3 class="text-2xl font-bold text-foreground mb-4">
-                                    🎯 For extra personalization and context
+                                     For extra personalization and context
                                 </h3>
                                 <p class="text-lg text-primary font-semibold">
                                     <span class="text-primary underline decoration-2 underline-offset-4">
                                         Connect responses from events
                                     </span> 
-                                    🔗📅
+                                    
                                 </p>
                                 <p class="text-base text-muted-foreground mt-3">
                                     Your AI assistance gets smarter with every interaction!
@@ -4153,7 +5018,7 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
     
 
         <!-- Future Section -->
-        <section class="future-section">
+        <section id="upcoming" class="future-section">
             <div class="future-container">
                 <div class="future-header">
                     <h2 class="future-title">
@@ -4573,4 +5438,3 @@ nav a:not(.btn-hero):not(.btn-ghost):hover {
     </script>
 </body>
 </html>
-
