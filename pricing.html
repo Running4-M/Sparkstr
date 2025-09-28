@@ -534,18 +534,22 @@ function renderPlans() {
     }
 
     card.innerHTML = `
-      <h2>${planKey === 'free' ? 'Starter' : plan.planName} ${planKey === 'basic' ? '<span class="badge">Recommended</span>' : ''}</h2>
-      <p class="price">${priceLabel}</p>
-      <p class="summary">${PLAN_DESCRIPTIONS[planKey].summary}</p>
-      <div class="details">
-        <div style="margin-bottom:1rem;">${PLAN_DESCRIPTIONS[planKey].details}</div>
-        <div class="details-buttons">
-          <button class="btn-secondary view-limits">View Limits</button>
-          <button class="btn-primary plan-action-btn">${planKey === 'free' ? 'Get Started' : 'Select'}</button>
-        </div>
-      </div>
-      <div class="limits"></div>
-    `;
+  <h2>${planKey === 'free' ? 'Starter' : plan.planName} ${planKey === 'basic' ? '<span class="badge">Recommended</span>' : ''}</h2>
+  <p class="price">${priceLabel}</p>
+  <p class="summary">${PLAN_DESCRIPTIONS[planKey].summary}</p>
+  <div class="details">
+    <div style="margin-bottom:1rem;">${PLAN_DESCRIPTIONS[planKey].details}</div>
+    <div class="details-buttons">
+      <button class="btn-secondary view-limits">View Limits</button>
+      ${
+        planKey === 'free'
+          ? `<button class="btn-primary plan-action-btn" onclick="window.location.href='./Login/signup.html'">Get Started</button>`
+          : `<button class="btn-primary plan-action-btn">Select</button>`
+      }
+    </div>
+  </div>
+  <div class="limits"></div>
+`;
     container.appendChild(card);
 
     const details = card.querySelector('.details');
@@ -683,5 +687,6 @@ function syncCurrencySelectorUI() {
 
 </body>
 </html>
+
 
 
