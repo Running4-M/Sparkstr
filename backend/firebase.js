@@ -1310,6 +1310,23 @@ async function deleteUserAccount() {
 function getMessagingInstance() {
   return messaging;
 }
+
+async function saveLandingPageSubmission(userData) {
+  await firebaseInitPromise;
+  try {
+    const submissionRef = collection(db, "landingpage");
+    const docRef = await addDoc(submissionRef, {
+      ...userData,
+      timestamp: new Date().toISOString(),
+      status: "pending"
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Error saving landing page submission:", error);
+    throw error;
+  }
+}
+
 // Exports
 export {
   initializeFirebase,
@@ -1369,6 +1386,7 @@ export {
   signInWithGoogle,
   deleteUserAccount,
   getMessagingInstance,
+  saveLandingPageSubmission,
   // Firebase initialization promise
   firebaseInitPromise,
   // Firebase services
@@ -1377,4 +1395,5 @@ export {
   onMessage,
   db
 };
+
 
