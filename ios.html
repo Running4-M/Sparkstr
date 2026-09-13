@@ -1,363 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Sparkstr — Coming to iPhone</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, Helvetica, Arial, sans-serif;
-
-            color: #171717;
-
-            background:
-                radial-gradient(circle at 15% 15%, rgba(255, 180, 220, 0.35), transparent 32%),
-                radial-gradient(circle at 85% 20%, rgba(170, 210, 255, 0.35), transparent 30%),
-                radial-gradient(circle at 50% 100%, rgba(255, 220, 150, 0.25), transparent 35%),
-                #fafafa;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 30px 20px;
-        }
-
-        .content {
-            width: 100%;
-            max-width: 580px;
-            text-align: center;
-        }
-
-        /* Logo */
-
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-
-            font-size: 27px;
-            font-weight: 800;
-            letter-spacing: -1.2px;
-
-            margin-bottom: 65px;
-        }
-
-        .spark {
-            font-size: 27px;
-
-            background: linear-gradient(
-                135deg,
-                #ff4f9a,
-                #8b5cf6,
-                #3b82f6
-            );
-
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* Main icon */
-
-        .app-icon {
-    width: 82px;
-    height: 82px;
-
-    margin: 0 auto 30px;
-
-    border-radius: 24px;
-
-    display: block;
-
-    object-fit: cover;
-
-    box-shadow:
-        0 15px 35px rgba(139, 92, 246, 0.22);
-}
-        /* Heading */
-
-        h1 {
-            font-size: clamp(36px, 7vw, 54px);
-            line-height: 1.04;
-            letter-spacing: -2.5px;
-
-            margin-bottom: 20px;
-        }
-
-        /* Description */
-
-        .description {
-            max-width: 480px;
-
-            margin: 0 auto;
-
-            color: #666;
-
-            font-size: 17px;
-            line-height: 1.6;
-        }
-
-        /* Social section */
-
-        .social-text {
-            margin-top: 38px;
-            margin-bottom: 16px;
-
-            color: #888;
-
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-
-            flex-wrap: wrap;
-        }
-
-        .social-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-
-            min-width: 145px;
-
-            padding: 13px 19px;
-
-            border-radius: 12px;
-
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 700;
-
-            transition:
-                transform 0.18s ease,
-                box-shadow 0.18s ease,
-                opacity 0.18s ease;
-        }
-
-        .social-button:hover {
-            transform: translateY(-2px);
-        }
-
-        .social-button:active {
-            transform: translateY(0);
-        }
-
-        /* Instagram */
-
-        .instagram {
-            color: white;
-
-            background: linear-gradient(
-                135deg,
-                #833ab4,
-                #fd1d1d,
-                #fcb045
-            );
-
-            box-shadow:
-                0 8px 20px rgba(253, 29, 29, 0.18);
-        }
-
-        .instagram:hover {
-            box-shadow:
-                0 12px 26px rgba(253, 29, 29, 0.25);
-        }
-
-        /* TikTok */
-
-        .tiktok {
-            color: white;
-            background: #111;
-
-            box-shadow:
-                0 8px 20px rgba(0, 0, 0, 0.14);
-        }
-
-        .tiktok:hover {
-            box-shadow:
-                0 12px 26px rgba(0, 0, 0, 0.20);
-        }
-
-        /* Icons */
-
-        .social-icon {
-            width: 19px;
-            height: 19px;
-
-            flex-shrink: 0;
-        }
-
-        /* Footer */
-
-        .footer {
-            margin-top: 65px;
-
-            color: #aaa;
-
-            font-size: 12px;
-        }
-
-        /* Mobile */
-
-        @media (max-width: 500px) {
-
-            body {
-                padding: 24px 18px;
-            }
-
-            .logo {
-                margin-bottom: 52px;
-                font-size: 25px;
-            }
-
-            .app-icon {
-    width: 72px;
-    height: 72px;
-
-    border-radius: 21px;
-
-    margin-bottom: 25px;
-}
-
-            h1 {
-                letter-spacing: -1.8px;
-            }
-
-            .description {
-                font-size: 16px;
-            }
-
-            .social-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .social-button {
-                width: 100%;
-                max-width: 280px;
-            }
-
-            .footer {
-                margin-top: 50px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparkstr — Coming to iPhone</title>
+
+  <!-- Umami analytics -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="8f97482c-87ea-4d9c-a816-bd7142999737"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #171717;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 180, 220, 0.35), transparent 32%),
+        radial-gradient(circle at 85% 20%, rgba(170, 210, 255, 0.35), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(255, 220, 150, 0.25), transparent 35%),
+        #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 580px;
+      text-align: center;
+    }
+
+    /* Logo */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      margin-bottom: 65px;
+    }
+
+    .spark {
+      font-size: 27px;
+      background: linear-gradient(135deg, #ff4f9a, #8b5cf6, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Main icon */
+    .app-icon {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 30px;
+      border-radius: 24px;
+      display: block;
+      object-fit: cover;
+      box-shadow: 0 15px 35px rgba(139, 92, 246, 0.22);
+    }
+
+    /* Heading */
+    h1 {
+      font-size: clamp(36px, 7vw, 54px);
+      line-height: 1.04;
+      letter-spacing: -2.5px;
+      margin-bottom: 20px;
+    }
+
+    /* Description */
+    .description {
+      max-width: 480px;
+      margin: 0 auto;
+      color: #666;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* Social section */
+    .social-text {
+      margin-top: 38px;
+      margin-bottom: 16px;
+      color: #888;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .social-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-width: 145px;
+      padding: 13px 19px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    }
+
+    .social-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .social-button:active {
+      transform: translateY(0);
+    }
+
+    /* Instagram */
+    .instagram {
+      color: white;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      box-shadow: 0 8px 20px rgba(253, 29, 29, 0.18);
+    }
+
+    .instagram:hover {
+      box-shadow: 0 12px 26px rgba(253, 29, 29, 0.25);
+    }
+
+    /* TikTok */
+    .tiktok {
+      color: white;
+      background: #111;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+    }
+
+    .tiktok:hover {
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.20);
+    }
+
+    /* YouTube */
+    .youtube {
+      color: white;
+      background: #ff0000;
+      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.16);
+    }
+
+    .youtube:hover {
+      box-shadow: 0 12px 26px rgba(255, 0, 0, 0.24);
+    }
+
+    /* Icons */
+    .social-icon {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+    }
+
+    /* Swipeable image carousel */
+    .carousel {
+      margin: 30px auto 0;
+      width: 100%;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-radius: 22px;
+    }
+
+    .carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      padding: 2px 1px 8px;
+    }
+
+    .carousel-slide {
+      width: min(78vw, 340px);
+      flex: 0 0 min(78vw, 340px);
+      scroll-snap-align: center;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(35, 35, 80, 0.12);
+    }
+
+    .carousel-slide img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+    }
+
+    .carousel-hint {
+      margin-top: 10px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 65px;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    /* Mobile */
+    @media (max-width: 500px) {
+      body {
+        padding: 24px 18px;
+      }
+
+      .logo {
+        margin-bottom: 52px;
+        font-size: 25px;
+      }
+
+      .app-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 21px;
+        margin-bottom: 25px;
+      }
+
+      h1 {
+        letter-spacing: -1.8px;
+      }
+
+      .description {
+        font-size: 16px;
+      }
+
+      .social-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .social-button {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .carousel {
+        margin-top: 26px;
+      }
+
+      .carousel-slide {
+        width: min(78vw, 310px);
+        flex-basis: min(78vw, 310px);
+      }
+
+      .footer {
+        margin-top: 50px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <main class="content">
+    <!-- App icon -->
+    <img class="app-icon" src="Sparkstr.png" alt="Sparkstr app icon">
 
-    <main class="content">
+    <!-- Main message -->
+    <h1>Sparkstr is coming to iPhone.</h1>
 
-       
+    <p class="description">
+      The iOS version isn't available just yet, but we're working on it and it'll be coming soon.
+    </p>
 
+    <!-- Social links -->
+    <p class="social-text">Follow us to stay in the loop</p>
 
-        <!-- App icon -->
-        <!-- App icon -->
-<img
-    class="app-icon"
-    src="Sparkstr.png"
-    alt="Sparkstr app icon"
->
+    <div class="social-buttons">
+      <!-- Instagram -->
+      <a
+        class="social-button instagram"
+        href="https://www.instagram.com/spark_str/?hl=en"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+          <circle cx="12" cy="12" r="4"></circle>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+        </svg>
+        Instagram
+      </a>
 
+      <!-- TikTok -->
+      <a
+        class="social-button tiktok"
+        href="https://www.tiktok.com/@spark_str"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-3.77A4.8 4.8 0 0 1 15.7 2h-3.36v13.67a2.86 2.86 0 1 1-2-2.71V9.54a6.2 6.2 0 1 0 5.49 6.13V8.79a8.2 8.2 0 0 0 3.76.91V6.69z"></path>
+        </svg>
+        TikTok
+      </a>
 
-        <!-- Main message -->
-        <h1>
-            Sparkstr is coming to iPhone.
-        </h1>
+      <!-- YouTube -->
+      <a
+        class="social-button youtube"
+        href="https://www.youtube.com/channel/UC3sUcPkyL23kC5HLEYkaL9g"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"></path>
+        </svg>
+        YouTube
+      </a>
+    </div>
 
-        <p class="description">
-            The iOS version isn't available just yet,
-            but we're working on it and it'll be coming soon.
-        </p>
-
-
-        <!-- Social links -->
-        <p class="social-text">
-            Follow us to stay in the loop
-        </p>
-
-        <div class="social-buttons">
-
-            <!-- Instagram -->
-            <a
-                class="social-button instagram"
-                href="https://www.instagram.com/spark_str/?hl=en"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <!-- Instagram SVG icon -->
-                <svg
-                    class="social-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r="1"
-                        fill="currentColor"
-                        stroke="none"
-                    ></circle>
-                </svg>
-
-                Instagram
-
-            </a>
-
-
-            <!-- TikTok -->
-            <a
-                class="social-button tiktok"
-                href="https://www.tiktok.com/@spark_str"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <!-- TikTok icon -->
-                <svg
-                    class="social-icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                >
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-3.77A4.8 4.8 0 0 1 15.7 2h-3.36v13.67a2.86 2.86 0 1 1-2-2.71V9.54a6.2 6.2 0 1 0 5.49 6.13V8.79a8.2 8.2 0 0 0 3.76.91V6.69z"/>
-                </svg>
-
-                TikTok
-
-            </a>
-
+    <!-- Swipeable app preview carousel -->
+    <section class="carousel" aria-label="Sparkstr app previews">
+      <div class="carousel-track">
+        <div class="carousel-slide">
+          <img src="05_save_the_videos_that_matter(3).png" alt="Save the videos that matter in Sparkstr" loading="lazy">
         </div>
-
-
-        <div class="footer">
-            © 2026 Sparkstr
+        <div class="carousel-slide">
+          <img src="04_every_video_organized(3).png" alt="Keep every video organised in Sparkstr" loading="lazy">
         </div>
+        <div class="carousel-slide">
+          <img src="01_scroll_through_your_saves(3).png" alt="Scroll through your saved videos in Sparkstr" loading="lazy">
+        </div>
+        <div class="carousel-slide">
+          <img src="02_find_any_video(3).png" alt="Find any saved video in Sparkstr" loading="lazy">
+        </div>
+        <div class="carousel-slide">
+          <img src="03_every_video_summarized(3).png" alt="Get every video summarised in Sparkstr" loading="lazy">
+        </div>
+      </div>
+    </section>
+    <p class="carousel-hint">Swipe to explore</p>
 
-    </main>
-
+    <div class="footer">© 2026 Sparkstr</div>
+  </main>
 </body>
 </html>
