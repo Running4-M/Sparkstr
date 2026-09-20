@@ -88,6 +88,25 @@
       text-decoration: underline;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #e5e5e5;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f7f7f7;
+      color: #111;
+    }
+
     footer {
       text-align: center;
       padding: 24px;
@@ -108,6 +127,19 @@
       h1 {
         font-size: 24px;
       }
+
+      table,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        display: block;
+      }
+
+      th {
+        margin-top: 12px;
+      }
     }
   </style>
 </head>
@@ -121,258 +153,615 @@
 <div class="container">
 
   <h1>Privacy Policy</h1>
-  <p class="date"><strong>Effective Date:</strong> 06/07/2026</p>
+  <p class="date"><strong>Effective date:</strong> 20 September 2026</p>
 
-  <h2>1. Introduction</h2>
+  <h2>1. Who We Are</h2>
+
   <p>
-    Sparkstr is committed to protecting your privacy. This Privacy Policy explains what information may be collected, how it is used, how it is stored, and what choices you have when using the Sparkstr mobile application ("App").
+    This Privacy Policy explains how Sparkstr ("Sparkstr", "we", "us", or "our")
+    collects, uses, stores, shares, and protects information when you use the
+    Sparkstr mobile application and related services ("App").
   </p>
+
   <p>
-    Sparkstr is designed to help users save, organise, analyse, search, and rediscover videos and related information.
+    Sparkstr helps users save, organise, analyse, search, and rediscover videos
+    and related information.
+  </p>
+
+  <p>
+    For privacy questions or requests, contact:
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>.
   </p>
 
   <h2>2. Information We Collect</h2>
 
-  <h3>2.1 Content You Provide</h3>
-  <p>
-    When you use Sparkstr, you may choose to provide content through the App. This may include:
-  </p>
-  <ul>
-    <li>Supported video links or content links that you choose to save or share with Sparkstr</li>
-    <li>Optional text associated with saved videos, such as notes, folder names, key points, or a save reason</li>
-    <li>Information generated from your saved videos or links, such as titles, summaries, key points, tags, folders, thumbnails, and related metadata</li>
-  </ul>
+  <h3>2.1 Anonymous account information</h3>
 
-  <h3>2.2 Automatically Collected Information</h3>
   <p>
-    To provide the core features of Sparkstr, the App may collect or use limited technical information, including:
-  </p>
-  <ul>
-    <li>An anonymous user identifier through Firebase</li>
-    <li>Your timezone</li>
-    <li>Basic technical information needed for app functionality, syncing, analytics, or troubleshooting</li>
-    <li>App version, device information, operating system information, and usage information such as app opens, screens viewed, and feature interactions</li>
-  </ul>
-  <p>
-    The Firebase anonymous identifier is used to provide app functionality and is not linked to your real-world identity by Sparkstr.
+    Sparkstr automatically creates an anonymous Firebase account so that
+    features such as Sparks, saved processing jobs, recommendations,
+    notifications, subscriptions, and account recovery can work.
   </p>
 
-  <h3>2.3 Analytics</h3>
   <p>
-    Sparkstr may use Firebase Analytics to help understand how the App is used and to improve its features, performance, reliability, and user experience.
-  </p>
-  <p>
-    Analytics information may include app opens, screen views, feature usage, general app interactions, app version, device information, operating system information, approximate location derived from technical information, and diagnostic or usage information.
-  </p>
-  <p>
-    Sparkstr does not use Firebase Analytics to collect the actual content of your saved videos, notes, summaries, feedback messages, or full search query text.
-  </p>
-
-  <h3>2.4 Feedback and Support Messages</h3>
-  <p>
-    Sparkstr may allow you to send feedback, report issues, or suggest improvements through a feedback form.
-  </p>
-  <p>
-    Feedback can be submitted without providing your name or email address. If you want a reply, you may choose to provide an email address. Providing an email address is optional.
+    This account has a unique Firebase user identifier ("UID"). Sparkstr does
+    not require your name, email address, telephone number, or social-media
+    account to create this account.
   </p>
 
   <div class="note">
-    <strong>Important:</strong> Feedback submissions are not linked to your Firebase anonymous user identifier. When you send feedback, Sparkstr does not receive your Firebase ID as part of that feedback submission.
+    Although the account is described as anonymous, its UID is a persistent
+    technical identifier. It allows Sparkstr to recognise the same account and
+    associate relevant records with it. Sparkstr does not intentionally connect
+    that UID to your real-world identity unless you provide identifying
+    information yourself, for example in feedback or a save reason.
   </div>
 
-  <p>
-    If you do not provide an email address, Sparkstr will not be able to reply to your feedback. However, feedback messages may still be reviewed to improve the App.
-  </p>
-  <p>
-    Please avoid including personal or sensitive information in feedback messages unless it is necessary for your request.
-  </p>
+  <h3>2.2 Content you provide</h3>
 
-  <h3>2.5 Notifications</h3>
-  <p>
-    If you enable notifications, Sparkstr may send reminders, rediscovery notifications, or other app-related notifications.
-  </p>
-  <p>
-    Sparkstr may use Firebase Cloud Messaging to deliver notifications. This may involve the use of a device token or similar technical identifier so notifications can be delivered to your device.
-  </p>
-  <p>
-    You can control notifications through the App settings or your device settings.
-  </p>
+  <p>Information you choose to provide may include:</p>
 
-  <h3>2.6 Advertising Data</h3>
-  <p>
-    Sparkstr may use third-party advertising services such as Google AdMob. These services may collect or use information such as:
-  </p>
   <ul>
-    <li>Advertising ID</li>
-    <li>Device-level data</li>
-    <li>Ad interaction data</li>
-    <li>Information used to show personalised or non-personalised ads, depending on your choices and applicable law</li>
+    <li>Video links and content links you save or share with Sparkstr</li>
+    <li>An optional reason explaining why you saved a video</li>
+    <li>Folder names, tags, categories, key points, and other organisation information</li>
+    <li>Search terms and interactions used to operate search and recommendation features</li>
+    <li>Videos or media files you choose to import directly</li>
+    <li>Feedback, support messages, and an optional contact email address</li>
   </ul>
 
-  <h2>3. How We Use Information</h2>
   <p>
-    We use information to operate, improve, and support Sparkstr. This includes using information to:
+    Notes and your downloaded vault media are generally stored locally on your
+    device. Information needed to process a video, including its link and save
+    reason, may be sent to Sparkstr's backend services.
   </p>
+
+  <h3>2.3 Generated video information</h3>
+
+  <p>
+    Sparkstr may create or store information generated from a saved video or
+    link, including:
+  </p>
+
   <ul>
-    <li>Store and manage saved videos, links, and related content within the App</li>
-    <li>Generate titles, summaries, key points, tags, folders, thumbnails, and other useful metadata</li>
-    <li>Provide search, folders, rediscovery, recommendations, and other core features</li>
-    <li>Sync app data where cloud services are used</li>
-    <li>Understand how users interact with Sparkstr and improve the App through analytics</li>
-    <li>Send notifications if enabled</li>
-    <li>Display advertisements</li>
-    <li>Manage subscriptions or purchases through Google Play</li>
-    <li>Review feedback and improve the App</li>
-    <li>Respond to feedback or support requests if you provide an email address</li>
-    <li>Detect, investigate, and fix bugs, errors, or technical issues</li>
+    <li>Titles and summaries</li>
+    <li>Key points, tags, keywords, folders, and categories</li>
+    <li>Thumbnails, screenshots, transcripts, or related media information</li>
+    <li>Recommendations, matching signals, and semantic representations</li>
+    <li>Processing status, errors, and technical job information</li>
   </ul>
 
-  <h2>4. Data Storage</h2>
-  <p>
-    Sparkstr may store data locally on your device and, where applicable, in cloud services such as Firebase or other backend services used to provide app functionality.
-  </p>
+  <h3>2.4 Device, technical, and usage information</h3>
+
+  <p>Depending on the features you use, Sparkstr and its providers may process:</p>
+
   <ul>
-    <li>Saved videos, links, and related data may be stored locally on your device</li>
-    <li>Some data may be stored in Firebase cloud services where needed for app functionality</li>
-    <li>Processing jobs, generated metadata, and related app data may be associated with an anonymous identifier</li>
-    <li>Feedback messages are handled separately from the Firebase anonymous user identifier</li>
+    <li>Device type, operating system, and app version</li>
+    <li>Anonymous or device-level identifiers</li>
+    <li>Timezone and approximate location derived from technical information</li>
+    <li>IP address and network information</li>
+    <li>App opens, screens viewed, feature interactions, and ad interactions</li>
+    <li>Crash, diagnostic, performance, and security information</li>
   </ul>
+
+  <h3>2.5 Analytics</h3>
+
   <p>
-    Data associated with the Firebase anonymous identifier is not linked to your real-world identity by Sparkstr.
+    Sparkstr may use services such as Firebase Analytics to understand how the
+    App is used and to improve its features, performance, reliability, and user
+    experience.
   </p>
 
-  <h2>5. Video Processing and Generated Information</h2>
   <p>
-    When you save, share, or process a supported video or link, Sparkstr may process that video or related link to create useful information such as a title, summary, key points, tags, folder/category, thumbnail, save reason, and other metadata.
-  </p>
-  <p>
-    This processing may use cloud-based services and artificial intelligence models. Only the information needed to provide this functionality is transmitted and processed.
-  </p>
-  <p>
-    This processing is used to make your saved videos easier to search, organise, understand, and rediscover later.
-  </p>
-  <p>
-    AI-generated summaries, titles, key points, tags, folders, and recommendations are provided for convenience and may occasionally be inaccurate, incomplete, or outdated. You should review important information yourself before relying on it.
+    Analytics may include app opens, screen views, feature usage, app version,
+    device information, operating-system information, approximate location,
+    and diagnostic or usage events.
   </p>
 
-  <h2>6. Advertising</h2>
   <p>
-    Sparkstr may use third-party advertising services such as Google AdMob to display ads. These services may:
+    Sparkstr does not intentionally send the contents of locally stored notes,
+    full saved videos, feedback messages, or full search-query text to Firebase
+    Analytics.
   </p>
+
+  <h3>2.6 Feedback and support</h3>
+
+  <p>
+    You may send feedback, report an issue, or suggest improvements. Providing
+    an email address is optional, but we may be unable to reply if you do not
+    provide one.
+  </p>
+
+  <p>
+    To prevent abuse, diagnose problems, and understand which account submitted
+    a report, a feedback submission may include your Firebase UID, source IP
+    address, app version, device or platform information, and the contents of
+    your message.
+  </p>
+
+  <p>
+    Please do not include sensitive or unnecessary personal information in
+    feedback, save reasons, folder names, or other free-text fields.
+  </p>
+
+  <h3>2.7 Notifications</h3>
+
+  <p>
+    If you enable notifications, Sparkstr may process a push-notification token,
+    platform information, notification preferences, delivery information, and
+    interactions with notifications.
+  </p>
+
+  <p>
+    Sparkstr may use Firebase Cloud Messaging and Apple or Google notification
+    services to deliver notifications. You can disable notifications through
+    Sparkstr or your device settings.
+  </p>
+
+  <h3>2.8 Advertising information</h3>
+
+  <p>
+    Sparkstr uses Google AdMob to provide rewarded advertisements. Depending on
+    your choices, device settings, location, and applicable law, Google and its
+    advertising partners may process:
+  </p>
+
   <ul>
-    <li>Show personalised or non-personalised ads</li>
-    <li>Use device identifiers and similar technologies</li>
-    <li>Measure ad performance and interactions</li>
+    <li>Advertising and device identifiers</li>
+    <li>IP address and approximate location</li>
+    <li>Advertising data and ad interactions</li>
+    <li>Device, diagnostic, and performance information</li>
+    <li>Information used to provide personalised or non-personalised advertising</li>
   </ul>
+
+  <h3>2.9 Purchases and subscriptions</h3>
+
   <p>
-    Users in regions such as the United Kingdom, European Economic Area, and other applicable regions may be asked for consent before personalised ads are shown.
+    Purchases and subscriptions are processed by Google Play on Android and
+    Apple's App Store on iOS. Sparkstr may receive purchase identifiers,
+    product information, transaction status, subscription status, and
+    entitlement information.
   </p>
 
-  <h2>7. Subscriptions and Payments</h2>
   <p>
-    Subscriptions and payments are managed through the Google Play Store. Sparkstr does not collect or store your payment card details.
-  </p>
-  <p>
-    Google Play may process payment information according to Google's own terms and privacy policies.
+    Sparkstr does not receive or store your complete payment-card details.
   </p>
 
-  <h2>8. Data Retention and Deletion</h2>
+  <h2>3. How and Why We Use Information</h2>
+
   <p>
-    We keep information only for as long as reasonably needed to provide Sparkstr, support users, improve the App, comply with legal obligations, and protect the App from misuse.
+    Depending on your location, data-protection law requires us to identify a
+    lawful basis for processing personal information.
   </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Purpose</th>
+        <th>Typical lawful basis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          Creating and maintaining the anonymous account; saving and processing
+          links; providing folders, search, Sparks, recommendations,
+          rediscovery, account recovery, and requested app features
+        </td>
+        <td>
+          Performance of our agreement with you and taking steps you request
+          when using the App
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Detecting fraud, preventing abuse, securing the App, enforcing limits,
+          troubleshooting errors, and protecting users and services
+        </td>
+        <td>
+          Our legitimate interests in operating a safe, reliable, and secure service
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Understanding general usage and improving the App
+        </td>
+        <td>
+          Our legitimate interests in improving Sparkstr, or consent where
+          consent is required by law
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Personalised advertising, advertising identifiers, and cross-app
+          tracking where applicable
+        </td>
+        <td>
+          Your consent
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Sending optional notifications
+        </td>
+        <td>
+          Your permission or consent
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Managing purchases, subscriptions, accounting records, refunds,
+          disputes, and tax obligations
+        </td>
+        <td>
+          Performance of our agreement with you and compliance with legal obligations
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Responding to feedback and support requests
+        </td>
+        <td>
+          Our legitimate interests in supporting users and improving Sparkstr,
+          or taking steps at your request
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Local and Cloud Storage</h2>
+
+  <p>
+    Sparkstr uses a combination of local device storage and cloud services.
+  </p>
+
   <ul>
-    <li>Locally stored data may be removed if you uninstall the App or clear app data</li>
-    <li>Cloud-stored app data may remain unless deleted through the App or removed following a request</li>
-    <li>Feedback messages may be kept for as long as reasonably necessary to review the feedback, improve the App, or respond where requested</li>
-    <li>If you provided an email address for feedback, you can request deletion of that email address and related feedback message</li>
+    <li>
+      Vault media, local notes, folders, settings, and related information may
+      be stored in the App's private storage on your device.
+    </li>
+    <li>
+      Account profiles, Sparks, subscription status, notification information,
+      processing jobs, generated metadata, and recommendation information may
+      be stored using Firebase, Google Cloud, or other backend providers.
+    </li>
+    <li>
+      Video links, save reasons, and information needed to analyse or organise
+      content may be transmitted to cloud processing services.
+    </li>
   </ul>
+
   <p>
-    Because Sparkstr mainly uses anonymous identifiers, we may need information from you to help locate the relevant data when responding to deletion or privacy requests.
-  </p>
-  <p>
-    For assistance with data removal, contact: <strong>contact@sparkstr.com</strong>
+    Removing the App or clearing its storage may delete locally stored content.
+    Cloud information is handled separately as described below.
   </p>
 
-  <h2>9. Data Sharing</h2>
+  <h2>5. Video Processing and Artificial Intelligence</h2>
+
   <p>
-    We do not sell your data.
+    When you submit a supported video, media file, or link, Sparkstr may send
+    the content or link to backend, video-processing, extraction, and artificial
+    intelligence providers.
   </p>
+
   <p>
-    We may share limited information with service providers where necessary to operate Sparkstr, including:
+    These services may be used to retrieve supported content and generate
+    titles, summaries, transcripts, key points, tags, folders, thumbnails,
+    screenshots, recommendations, and other metadata.
   </p>
+
+  <p>
+    Providers may include Google Firebase and Google Cloud, OpenAI,
+    ScrapeCreators, and other infrastructure or content-processing providers
+    used to deliver the requested feature.
+  </p>
+
+  <p>
+    AI-generated information may be inaccurate, incomplete, or outdated.
+    Sparkstr's output should not be treated as professional, medical, legal, or
+    financial advice.
+  </p>
+
+  <h2>6. Advertising and Your Choices</h2>
+
+  <p>
+    Sparkstr may offer rewarded ads through Google AdMob. In applicable regions,
+    a consent message may allow you to choose between available advertising
+    options.
+  </p>
+
+  <p>
+    On iOS, Apple may also ask whether you allow tracking through the App
+    Tracking Transparency prompt. If you decline, Sparkstr can still request
+    ads, but the advertising identifier will not be available for that request.
+  </p>
+
+  <p>You can review or change relevant choices through:</p>
+
   <ul>
-    <li>Cloud and backend service providers used for storage, syncing, processing, or app functionality</li>
-    <li>Google Firebase services, including services used for app functionality, analytics, notifications, storage, syncing, authentication, or diagnostics where applicable</li>
-    <li>Artificial intelligence or processing providers used to generate summaries, tags, folders, key points, and related metadata</li>
-    <li>Advertising providers for ad delivery and measurement</li>
-    <li>Google Play for subscriptions, purchases, and payment management</li>
-    <li>Analytics, crash reporting, or technical service providers if used to maintain and improve the App</li>
+    <li>Sparkstr's Privacy Settings option, where available</li>
+    <li>iOS Settings for Apple tracking permission</li>
+    <li>Your Android or Google advertising settings</li>
+    <li>Your device settings</li>
   </ul>
+
   <p>
-    These services may process information according to their own terms and privacy policies.
+    Withdrawing consent does not affect processing that occurred lawfully
+    before consent was withdrawn.
   </p>
 
-  <h2>10. Third-Party Services and Platforms</h2>
+  <h2>7. Purchases and Subscriptions</h2>
+
   <p>
-    Sparkstr may use third-party services to provide app functionality, analytics, notifications, cloud processing, advertising, payments, and technical support. These may include services such as Firebase, Google Cloud, Google Play, Google AdMob, and artificial intelligence or processing providers.
-  </p>
-  <p>
-    Sparkstr may also allow you to save or process content from third-party platforms such as YouTube, TikTok, Instagram, and Facebook.
-  </p>
-  <p>
-    Sparkstr is not responsible for the privacy practices, content, or policies of those third-party services or platforms. Your use of third-party platforms remains subject to their own terms and privacy policies.
+    Google Play and Apple's App Store process purchases and subscriptions under
+    their own terms and privacy policies.
   </p>
 
-  <h2>11. Security</h2>
   <p>
-    We take reasonable steps to protect information handled by Sparkstr. Information transmitted between your device and Sparkstr's servers is encrypted using HTTPS/TLS where applicable.
-  </p>
-  <p>
-    However, no app, website, server, or storage system can be guaranteed to be completely secure.
-  </p>
-  <p>
-    You should avoid submitting sensitive personal information through Sparkstr unless it is necessary.
+    Deleting your Sparkstr account does not automatically cancel an active
+    store subscription. You should manage or cancel subscriptions through
+    Google Play or Apple's App Store.
   </p>
 
-  <h2>12. Children's Privacy</h2>
+  <h2>8. When We Share Information</h2>
+
   <p>
-    Sparkstr is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13.
-  </p>
-  <p>
-    If you believe a child has provided information through Sparkstr, please contact us so we can take appropriate action.
+    We do not sell personal information for money.
   </p>
 
-  <h2>13. Your Rights</h2>
   <p>
-    Depending on your location, you may have rights relating to your personal information. These may include the right to request access, correction, deletion, restriction, or objection to certain processing.
-  </p>
-  <p>
-    To make a privacy-related request, contact us at: <strong>contact@sparkstr.com</strong>
-  </p>
-  <p>
-    Because Sparkstr mainly uses anonymous identifiers, we may need information from you to help locate the relevant data. For feedback messages, if you submitted an email address, please contact us from that same email address where possible.
+    We may disclose information to service providers where necessary to operate
+    Sparkstr, including:
   </p>
 
-  <h2>14. Changes to This Policy</h2>
+  <ul>
+    <li>Firebase and Google Cloud for authentication, storage, backend services, analytics, and notifications</li>
+    <li>Google AdMob and participating advertising providers</li>
+    <li>Apple and Google for app distribution, purchases, and subscriptions</li>
+    <li>OpenAI and other artificial-intelligence processing providers</li>
+    <li>ScrapeCreators and other supported-content processing providers</li>
+    <li>Email and support providers used to receive and respond to feedback</li>
+    <li>Hosting, security, monitoring, and technical infrastructure providers</li>
+  </ul>
+
   <p>
-    We may update this Privacy Policy from time to time. Any changes will be posted in the App or made available through the same place where this policy is provided.
-  </p>
-  <p>
-    The effective date at the top of this page will show when this Privacy Policy was last updated.
+    Advertising-related disclosure may be considered "sharing" or
+    cross-context behavioural advertising under certain laws even where no
+    money is paid for personal information. Where required, Sparkstr provides
+    consent or privacy controls.
   </p>
 
-  <h2>15. Contact</h2>
   <p>
-    If you have any questions about this Privacy Policy or how Sparkstr handles information, contact us at:
+    We may also disclose information when reasonably necessary to comply with
+    law, protect legal rights, investigate fraud or abuse, protect users, or
+    respond to valid legal requests.
   </p>
+
+  <h2>9. International Transfers</h2>
+
   <p>
-    <strong>Email:</strong> <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>
+    Some service providers may process information outside your country,
+    including in the United States or other locations where they operate.
+  </p>
+
+  <p>
+    Where required, international transfers are protected using appropriate
+    safeguards, such as adequacy regulations, contractual protections, or
+    standard contractual clauses provided by the relevant service provider.
+  </p>
+
+  <h2>10. Retention</h2>
+
+  <p>
+    We retain information according to the following criteria:
+  </p>
+
+  <ul>
+    <li>
+      Anonymous account and profile information is kept while the account
+      remains active or until the account is deleted.
+    </li>
+    <li>
+      Notification tokens are kept while notifications remain enabled, until
+      the account is deleted, or until the token is replaced or becomes invalid.
+    </li>
+    <li>
+      Processing jobs and generated video metadata may be kept while needed to
+      provide Sparkstr, support recommendations, prevent duplicate processing,
+      maintain the content service, resolve technical problems, and protect the
+      service from abuse.
+    </li>
+    <li>
+      When an account is deleted, Sparkstr removes the UID from retained job
+      and recommendation-index records. The remaining video metadata and save
+      reason may be retained without the deleted account UID.
+    </li>
+    <li>
+      Feedback and support messages are kept while reasonably needed to respond,
+      investigate the issue, improve Sparkstr, maintain support history, and
+      protect against abuse.
+    </li>
+    <li>
+      Purchase, transaction, security, and legal records may be kept for the
+      periods required by applicable law, dispute handling, fraud prevention,
+      accounting, or store requirements.
+    </li>
+    <li>
+      Provider logs, backups, and diagnostic records are retained according to
+      applicable provider settings and backup cycles before being overwritten
+      or deleted.
+    </li>
+  </ul>
+
+  <p>
+    Information may be retained for longer where necessary to establish,
+    exercise, or defend legal claims, comply with law, investigate abuse, or
+    enforce our terms.
+  </p>
+
+  <h2>11. Account Deletion</h2>
+
+  <p>
+    You can initiate account deletion inside Sparkstr by opening Settings,
+    selecting Privacy, and choosing Delete Account.
+  </p>
+
+  <p>Deleting the account will:</p>
+
+  <ul>
+    <li>Delete the anonymous Firebase Authentication account</li>
+    <li>Delete the account's cloud profile and user-owned subcollections</li>
+    <li>Remove notification registrations and account-specific preferences stored in that profile</li>
+    <li>Remove the deleted UID from matching processing jobs and recommendation-index records</li>
+  </ul>
+
+  <p>
+    Sparkstr preserves the remaining processing-job and generated video
+    information, including a save reason where one exists, but removes the
+    deleted account UID from those records. Do not put identifying or sensitive
+    personal information in a save reason.
+  </p>
+
+  <p>
+    Account deletion does not delete the vault stored locally on your device.
+    You can remove local information by clearing the App's data, using any
+    available local deletion controls, or uninstalling the App.
+  </p>
+
+  <p>
+    After deletion, Sparkstr may create a new anonymous account if you continue
+    using or reopen the App. The new account will have a different UID.
+  </p>
+
+  <p>
+    Account deletion does not automatically cancel an App Store or Google Play
+    subscription.
+  </p>
+
+  <h2>12. Your Privacy Rights</h2>
+
+  <p>
+    Depending on where you live, you may have rights to:
+  </p>
+
+  <ul>
+    <li>Request access to personal information</li>
+    <li>Request correction of inaccurate information</li>
+    <li>Request deletion of information</li>
+    <li>Request restriction of certain processing</li>
+    <li>Object to processing based on legitimate interests</li>
+    <li>Request a portable copy of eligible information</li>
+    <li>Withdraw consent where processing is based on consent</li>
+    <li>Complain to an applicable data-protection authority</li>
+  </ul>
+
+  <p>
+    These rights may be subject to legal exceptions. Because Sparkstr primarily
+    uses anonymous identifiers, we may need your UID, job identifier, feedback
+    email address, or other information to locate the relevant records.
+  </p>
+
+  <p>
+    To exercise a privacy right, contact
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>.
+  </p>
+
+  <p>
+    If you are in the United Kingdom, you also have the right to complain to the
+    Information Commissioner's Office:
+    <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">
+      https://ico.org.uk/make-a-complaint/
+    </a>.
+  </p>
+
+  <h2>13. Automated Processing and Recommendations</h2>
+
+  <p>
+    Sparkstr may use automated systems to generate summaries, categorise saved
+    content, recommend videos, and decide when to resurface content.
+  </p>
+
+  <p>
+    These features are intended to organise and personalise the App. They are
+    not intended to make decisions that produce legal or similarly significant
+    effects about you.
+  </p>
+
+  <h2>14. Third-Party Content and Platforms</h2>
+
+  <p>
+    Sparkstr can process links from third-party platforms such as YouTube,
+    TikTok, Instagram, and Facebook. Your use of those services remains subject
+    to their respective terms and privacy policies.
+  </p>
+
+  <p>
+    Sparkstr does not control the privacy practices, content availability, or
+    policies of third-party platforms.
+  </p>
+
+  <h2>15. Security</h2>
+
+  <p>
+    Sparkstr takes reasonable technical and organisational measures to protect
+    information. Information transmitted between the App and Sparkstr's backend
+    is encrypted using HTTPS/TLS where applicable.
+  </p>
+
+  <p>
+    No application, network, server, or storage system can be guaranteed to be
+    completely secure. You should avoid entering unnecessary sensitive
+    information into save reasons, feedback, folders, or other free-text fields.
+  </p>
+
+  <h2>16. Children's Privacy</h2>
+
+  <p>
+    Sparkstr is not intended for children under 13, and we do not knowingly
+    collect personal information from children under 13.
+  </p>
+
+  <p>
+    If you believe a child has provided information through Sparkstr, contact
+    us at
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>.
+  </p>
+
+  <h2>17. Changes to This Policy</h2>
+
+  <p>
+    We may update this Privacy Policy to reflect changes to Sparkstr, its
+    providers, legal requirements, or privacy practices.
+  </p>
+
+  <p>
+    The latest version will be published at this location. The effective date
+    at the top identifies when the policy was last updated.
+  </p>
+
+  <h2>18. Contact</h2>
+
+  <p>
+    For questions, requests, or complaints about this Privacy Policy or
+    Sparkstr's handling of information, contact:
+  </p>
+
+  <p>
+    <strong>Sparkstr</strong><br>
+    Email:
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>
   </p>
 
 </div>
 
 <footer>
-  © 2026 Sparkstr. All rights reserved.
+  &copy; 2026 Sparkstr. All rights reserved.
 </footer>
 
 </body>
