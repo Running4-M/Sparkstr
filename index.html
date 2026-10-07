@@ -153,7 +153,7 @@
 <div class="container">
 
   <h1>Privacy Policy</h1>
-  <p class="date"><strong>Effective date:</strong> 20 September 2026</p>
+  <p class="date"><strong>Effective date:</strong> 8 October 2026</p>
 
   <h2>1. Who We Are</h2>
 
@@ -180,7 +180,7 @@
   <p>
     Sparkstr automatically creates an anonymous Firebase account so that
     features such as Sparks, saved processing jobs, recommendations,
-    notifications, subscriptions, and account recovery can work.
+    notifications, and subscriptions can work.
   </p>
 
   <p>
@@ -192,9 +192,11 @@
   <div class="note">
     Although the account is described as anonymous, its UID is a persistent
     technical identifier. It allows Sparkstr to recognise the same account and
-    associate relevant records with it. Sparkstr does not intentionally connect
-    that UID to your real-world identity unless you provide identifying
-    information yourself, for example in feedback or a save reason.
+    associate relevant records with it. This is pseudonymous information,
+    rather than necessarily anonymous information under data-protection law.
+    Sparkstr does not intentionally connect that UID to your real-world identity
+    unless you provide identifying information yourself, for example in
+    feedback or a save reason.
   </div>
 
   <h3>2.2 Content you provide</h3>
@@ -214,6 +216,12 @@
     Notes and your downloaded vault media are generally stored locally on your
     device. Information needed to process a video, including its link and save
     reason, may be sent to Sparkstr's backend services.
+  </p>
+
+  <p>
+    Providing a save reason or a support email address is optional. If you do
+    not provide a link or media needed for a requested processing feature,
+    Sparkstr cannot carry out that request.
   </p>
 
   <h3>2.3 Generated video information</h3>
@@ -237,10 +245,10 @@
 
   <ul>
     <li>Device type, operating system, and app version</li>
-    <li>Anonymous or device-level identifiers</li>
+    <li>Account, installation, or device-level identifiers</li>
     <li>Timezone and approximate location derived from technical information</li>
     <li>IP address and network information</li>
-    <li>App opens, screens viewed, feature interactions, and ad interactions</li>
+    <li>App opens, screens viewed, and feature interactions</li>
     <li>Crash, diagnostic, performance, and security information</li>
   </ul>
 
@@ -293,26 +301,28 @@
   </p>
 
   <p>
-    Sparkstr may use Firebase Cloud Messaging and Apple or Google notification
-    services to deliver notifications. You can disable notifications through
-    Sparkstr or your device settings.
+    Sparkstr uses Firebase Cloud Messaging to support push notifications.
+    On iOS, delivery also uses Apple Push Notification service ("APNs").
+    Firebase may associate an APNs device token with an FCM registration token
+    so that notifications can reach the correct app installation. Sparkstr's
+    backend stores notification registration information associated with your
+    account.
   </p>
-
-  <h3>2.8 Advertising information</h3>
 
   <p>
-    Sparkstr uses Google AdMob to provide rewarded advertisements. Depending on
-    your choices, device settings, location, and applicable law, Google and its
-    advertising partners may process:
+    You can disable notifications through Sparkstr or your device settings.
+    Notification previews may appear on your lock screen depending on your
+    device settings.
   </p>
 
-  <ul>
-    <li>Advertising and device identifiers</li>
-    <li>IP address and approximate location</li>
-    <li>Advertising data and ad interactions</li>
-    <li>Device, diagnostic, and performance information</li>
-    <li>Information used to provide personalised or non-personalised advertising</li>
-  </ul>
+  <h3>2.8 Advertising</h3>
+
+  <p>
+    Current versions of Sparkstr on Android and iOS do not display
+    advertisements or offer rewarded ads. Sparkstr does not use Google AdMob
+    in these versions and does not collect advertising identifiers for
+    personalised advertising or cross-app advertising tracking.
+  </p>
 
   <h3>2.9 Purchases and subscriptions</h3>
 
@@ -321,6 +331,21 @@
     Apple's App Store on iOS. Sparkstr may receive purchase identifiers,
     product information, transaction status, subscription status, and
     entitlement information.
+  </p>
+
+  <p>
+    On iOS, this can include signed transaction information, transaction and
+    original transaction identifiers, an app account token used to associate
+    a purchase with an account, purchase and expiry dates, renewal status,
+    and information about billing grace periods, cancellations, refunds,
+    and revocations.
+  </p>
+
+  <p>
+    Sparkstr uses this information to verify purchases, restore subscriptions,
+    manage access to Premium, and maintain the correct Sparks allowance.
+    Store transaction identifiers may continue to identify the same purchase
+    after reinstalling the App or creating a new anonymous Firebase account.
   </p>
 
   <p>
@@ -346,7 +371,7 @@
         <td>
           Creating and maintaining the anonymous account; saving and processing
           links; providing folders, search, Sparks, recommendations,
-          rediscovery, account recovery, and requested app features
+          rediscovery, and requested app features
         </td>
         <td>
           Performance of our agreement with you and taking steps you request
@@ -357,7 +382,8 @@
       <tr>
         <td>
           Detecting fraud, preventing abuse, securing the App, enforcing limits,
-          troubleshooting errors, and protecting users and services
+          preventing duplicate subscription allowances, troubleshooting errors,
+          and protecting users and services
         </td>
         <td>
           Our legitimate interests in operating a safe, reliable, and secure service
@@ -369,18 +395,8 @@
           Understanding general usage and improving the App
         </td>
         <td>
-          Our legitimate interests in improving Sparkstr, or consent where
-          consent is required by law
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          Personalised advertising, advertising identifiers, and cross-app
-          tracking where applicable
-        </td>
-        <td>
-          Your consent
+          Our legitimate interests in improving Sparkstr where permitted by law,
+          or your consent where consent is required
         </td>
       </tr>
 
@@ -389,17 +405,27 @@
           Sending optional notifications
         </td>
         <td>
-          Your permission or consent
+          Your consent, with the notification permissions required by your device
         </td>
       </tr>
 
       <tr>
         <td>
-          Managing purchases, subscriptions, accounting records, refunds,
-          disputes, and tax obligations
+          Verifying purchases, restoring subscriptions, maintaining subscription
+          status and Sparks allowances, and handling refunds
         </td>
         <td>
-          Performance of our agreement with you and compliance with legal obligations
+          Performance of our agreement with you
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          Keeping accounting records, meeting tax obligations, and complying
+          with legally required recordkeeping
+        </td>
+        <td>
+          Compliance with legal obligations
         </td>
       </tr>
 
@@ -435,6 +461,12 @@
       Video links, save reasons, and information needed to analyse or organise
       content may be transmitted to cloud processing services.
     </li>
+    <li>
+      Apple subscription records and remaining Sparks allowances may be stored
+      separately from the Firebase user profile, using an identifier derived
+      from the original Apple purchase. This allows restoration without
+      issuing the same paid-period allowance more than once.
+    </li>
   </ul>
 
   <p>
@@ -459,7 +491,9 @@
   <p>
     Providers may include Google Firebase and Google Cloud, OpenAI,
     ScrapeCreators, and other infrastructure or content-processing providers
-    used to deliver the requested feature.
+    used to deliver the requested feature. Information sent for processing
+    may include your submitted save reason where it is used to personalise
+    the requested analysis.
   </p>
 
   <p>
@@ -468,32 +502,31 @@
     financial advice.
   </p>
 
-  <h2>6. Advertising and Your Choices</h2>
+  <h2>6. Your Choices and Consent</h2>
 
   <p>
-    Sparkstr may offer rewarded ads through Google AdMob. In applicable regions,
-    a consent message may allow you to choose between available advertising
-    options.
+    You can choose whether to provide optional save reasons, submit feedback,
+    supply a support email address, or enable notifications.
   </p>
 
   <p>
-    On iOS, Apple may also ask whether you allow tracking through the App
-    Tracking Transparency prompt. If you decline, Sparkstr can still request
-    ads, but the advertising identifier will not be available for that request.
+    You can turn off notifications through Sparkstr's notification settings
+    or your device settings. To withdraw consent for other processing that
+    relies on consent, contact
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>.
   </p>
-
-  <p>You can review or change relevant choices through:</p>
-
-  <ul>
-    <li>Sparkstr's Privacy Settings option, where available</li>
-    <li>iOS Settings for Apple tracking permission</li>
-    <li>Your Android or Google advertising settings</li>
-    <li>Your device settings</li>
-  </ul>
 
   <p>
     Withdrawing consent does not affect processing that occurred lawfully
-    before consent was withdrawn.
+    before consent was withdrawn. It also does not automatically stop
+    processing that has another lawful basis, such as keeping records
+    required by law.
+  </p>
+
+  <p>
+    Current versions of Sparkstr do not offer advertising or advertising
+    personalisation, so advertising consent is not required to earn or
+    replenish Sparks.
   </p>
 
   <h2>7. Purchases and Subscriptions</h2>
@@ -501,6 +534,20 @@
   <p>
     Google Play and Apple's App Store process purchases and subscriptions under
     their own terms and privacy policies.
+  </p>
+
+  <p>
+    Sparkstr verifies subscription information with the relevant store.
+    On iOS, Apple's signed transactions and server notifications help us
+    recognise renewals, cancellations, expiry, refunds, and other changes
+    affecting your subscription.
+  </p>
+
+  <p>
+    Restoring an Apple subscription may associate the original purchase and
+    its remaining allowance with your current anonymous Firebase account.
+    This does not necessarily restore locally stored videos, notes, or other
+    vault content.
   </p>
 
   <p>
@@ -512,7 +559,8 @@
   <h2>8. When We Share Information</h2>
 
   <p>
-    We do not sell personal information for money.
+    We do not sell personal information for money or share it for
+    cross-context behavioural advertising in current versions of Sparkstr.
   </p>
 
   <p>
@@ -522,8 +570,7 @@
 
   <ul>
     <li>Firebase and Google Cloud for authentication, storage, backend services, analytics, and notifications</li>
-    <li>Google AdMob and participating advertising providers</li>
-    <li>Apple and Google for app distribution, purchases, and subscriptions</li>
+    <li>Apple and Google for app distribution, purchases, subscriptions, and notification delivery</li>
     <li>OpenAI and other artificial-intelligence processing providers</li>
     <li>ScrapeCreators and other supported-content processing providers</li>
     <li>Email and support providers used to receive and respond to feedback</li>
@@ -531,10 +578,10 @@
   </ul>
 
   <p>
-    Advertising-related disclosure may be considered "sharing" or
-    cross-context behavioural advertising under certain laws even where no
-    money is paid for personal information. Where required, Sparkstr provides
-    consent or privacy controls.
+    Sparkstr may use saved-content metadata to provide recommendations to
+    other users. Content you submit may also contain information about you
+    or other people, so avoid including unnecessary personal or sensitive
+    information.
   </p>
 
   <p>
@@ -554,6 +601,8 @@
     Where required, international transfers are protected using appropriate
     safeguards, such as adequacy regulations, contractual protections, or
     standard contractual clauses provided by the relevant service provider.
+    You can contact us for information about the safeguards applicable to
+    your information.
   </p>
 
   <h2>10. Retention</h2>
@@ -565,11 +614,14 @@
   <ul>
     <li>
       Anonymous account and profile information is kept while the account
-      remains active or until the account is deleted.
+      remains active or until the account is deleted, subject to any
+      applicable legal retention requirements.
     </li>
     <li>
-      Notification tokens are kept while notifications remain enabled, until
-      the account is deleted, or until the token is replaced or becomes invalid.
+      Notification registration information is kept as needed to deliver
+      enabled notifications and manage delivery. Registrations stored under
+      your profile are removed when that profile is deleted. Providers may
+      separately retain technical records under their own retention settings.
     </li>
     <li>
       Processing jobs and generated video metadata may be kept while needed to
@@ -578,19 +630,34 @@
       service from abuse.
     </li>
     <li>
-      When an account is deleted, Sparkstr removes the UID from retained job
+      When an account is deleted, Sparkstr removes the UID from matching job
       and recommendation-index records. The remaining video metadata and save
-      reason may be retained without the deleted account UID.
+      reason may be retained without that account UID. Removing the UID does
+      not make information anonymous if the remaining content identifies
+      someone.
     </li>
     <li>
       Feedback and support messages are kept while reasonably needed to respond,
-      investigate the issue, improve Sparkstr, maintain support history, and
-      protect against abuse.
+      investigate the issue, maintain support history, and protect against
+      abuse. Feedback stored only in deleted user-owned subcollections is
+      removed with those subcollections; separate support correspondence may
+      remain subject to these retention criteria.
     </li>
     <li>
-      Purchase, transaction, security, and legal records may be kept for the
-      periods required by applicable law, dispute handling, fraud prevention,
-      accounting, or store requirements.
+      Apple purchase identifiers, subscription status, and the associated
+      allowance record may remain separately from the user profile after
+      account deletion. These records support subscription restoration,
+      verification, and prevention of duplicate paid-period allowances.
+      The link from the deleted Firebase account to that subscription record
+      is removed.
+    </li>
+    <li>
+      Purchase, transaction, security, and legal records may be retained for
+      applicable legal obligations, store requirements, legitimate dispute
+      handling, and proportionate fraud prevention. Relevant criteria include
+      whether a subscription or restoration entitlement continues, whether
+      a refund or dispute remains possible or unresolved, and whether
+      retention is legally required.
     </li>
     <li>
       Provider logs, backups, and diagnostic records are retained according to
@@ -600,16 +667,23 @@
   </ul>
 
   <p>
+    Retained purchase and technical identifiers are not necessarily anonymous.
+    Retention must remain necessary and proportionate to its purpose and is
+    subject to applicable privacy rights and legal obligations. You can
+    contact us about a particular record or retention period.
+  </p>
+
+  <p>
     Information may be retained for longer where necessary to establish,
-    exercise, or defend legal claims, comply with law, investigate abuse, or
-    enforce our terms.
+    exercise, or defend legal claims, comply with law, or investigate abuse,
+    where permitted by applicable law.
   </p>
 
   <h2>11. Account Deletion</h2>
 
   <p>
-    You can initiate account deletion inside Sparkstr by opening Settings,
-    selecting Privacy, and choosing Delete Account.
+    You can initiate account deletion inside Sparkstr using the Delete Account
+    option in Settings.
   </p>
 
   <p>Deleting the account will:</p>
@@ -619,29 +693,49 @@
     <li>Delete the account's cloud profile and user-owned subcollections</li>
     <li>Remove notification registrations and account-specific preferences stored in that profile</li>
     <li>Remove the deleted UID from matching processing jobs and recommendation-index records</li>
+    <li>Remove the stored link between that Firebase account and its separate Apple subscription record</li>
   </ul>
 
   <p>
     Sparkstr preserves the remaining processing-job and generated video
     information, including a save reason where one exists, but removes the
-    deleted account UID from those records. Do not put identifying or sensitive
-    personal information in a save reason.
+    deleted account UID from those records. This is not a guarantee that
+    the remaining content contains no personal information.
+  </p>
+
+  <p>
+    If a retained save reason, video, or other record contains information
+    identifying you, you may request deletion or correction by contacting
+    <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>.
+    Please provide enough information to identify the relevant record, without
+    sending unnecessary sensitive information.
+  </p>
+
+  <p>
+    Separate purchase, allowance, security, and legal records may remain as
+    described in section 10. Deleting a profile therefore does not mean that
+    every transaction or technical record has been erased.
   </p>
 
   <p>
     Account deletion does not delete the vault stored locally on your device.
-    You can remove local information by clearing the App's data, using any
-    available local deletion controls, or uninstalling the App.
+    You can remove local information by clearing the App's data, using available
+    local deletion controls, or uninstalling the App. Copies held in device
+    backups may need to be managed separately through your device or backup
+    provider.
   </p>
 
   <p>
     After deletion, Sparkstr may create a new anonymous account if you continue
     using or reopen the App. The new account will have a different UID.
+    Restoring an existing Apple purchase may reconnect its subscription
+    entitlement and remaining allowance to this new account.
   </p>
 
   <p>
     Account deletion does not automatically cancel an App Store or Google Play
-    subscription.
+    subscription. Unless cancelled through the relevant store, an
+    auto-renewing subscription may continue to renew and be charged.
   </p>
 
   <h2>12. Your Privacy Rights</h2>
@@ -663,8 +757,15 @@
 
   <p>
     These rights may be subject to legal exceptions. Because Sparkstr primarily
-    uses anonymous identifiers, we may need your UID, job identifier, feedback
-    email address, or other information to locate the relevant records.
+    uses pseudonymous technical identifiers, we may need your UID, job
+    identifier, relevant purchase reference, feedback email address, or other
+    information to locate the relevant records and reasonably verify your
+    request.
+  </p>
+
+  <p>
+    Please do not send payment-card details, account passwords, authentication
+    tokens, or other unnecessary sensitive information with a privacy request.
   </p>
 
   <p>
@@ -678,6 +779,7 @@
     <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener noreferrer">
       https://ico.org.uk/make-a-complaint/
     </a>.
+    You do not have to contact us before exercising that right.
   </p>
 
   <h2>13. Automated Processing and Recommendations</h2>
