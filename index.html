@@ -413,7 +413,7 @@
       <nav class="nav-links" aria-label="Main">
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
-        <a href="privacy.html">Privacy</a>
+        <a href="/privacy">Privacy</a>
         <a class="nav-cta" id="navCta" href="https://play.google.com/store/apps/details?id=com.sparkstr.MR&amp;utm_source=sparkstr.com&amp;utm_medium=nav" data-umami-event="cta-nav">Get the app</a>
       </nav>
     </div>
@@ -448,7 +448,7 @@
               <svg width="26" height="28" aria-hidden="true"><use href="#play-logo"/></svg>
               <span><small>Get it on</small><b>Google Play</b></span>
             </a>
-            <a class="store-btn btn-ios" href="ios.html" data-umami-event="cta-ios-hero">
+            <a class="store-btn btn-ios" href="/ios" data-umami-event="cta-ios-hero">
               <svg width="26" height="26" aria-hidden="true"><use href="#apple-logo"/></svg>
               <span><small>iPhone <span class="soon">Soon</span></small><b>App Store</b></span>
             </a>
@@ -622,7 +622,7 @@
               <svg width="26" height="28" aria-hidden="true"><use href="#play-logo"/></svg>
               <span><small>Get it on</small><b>Google Play</b></span>
             </a>
-            <a class="store-btn btn-ios" href="ios.html" data-umami-event="cta-ios-final">
+            <a class="store-btn btn-ios" href="/ios" data-umami-event="cta-ios-final">
               <svg width="26" height="26" aria-hidden="true"><use href="#apple-logo"/></svg>
               <span><small>iPhone <span class="soon">Soon</span></small><b>App Store</b></span>
             </a>
@@ -640,8 +640,8 @@
         Sparkstr
       </a>
       <nav class="foot-links" aria-label="Footer">
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="ios.html">iPhone updates</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/ios">iPhone updates</a>
         <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>
       </nav>
       <div class="socials">
@@ -674,7 +674,7 @@
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       if (isIOS) {
         var cta = document.getElementById('navCta');
-        cta.href = 'ios.html';
+        cta.href = '/ios';
         cta.textContent = 'iPhone: coming soon';
         cta.setAttribute('data-umami-event', 'cta-nav-ios');
       }
