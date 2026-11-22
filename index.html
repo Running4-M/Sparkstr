@@ -78,6 +78,9 @@
     }
     .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -.01em; }
     .brand svg { width: 13px; height: auto; }
+    .nav-right { display: flex; align-items: center; gap: 22px; }
+    .nav-link { color: #c7c7cc; font-size: 14.5px; font-weight: 500; }
+    .nav-link:hover { color: var(--text); }
     .nav-cta { padding: 9px 18px; border-radius: 999px; background: var(--text); color: #000; font-size: 14px; font-weight: 500; }
     .nav-cta:hover { background: #fff; }
 
@@ -133,11 +136,23 @@
     .no-js .steps li { color: var(--text); }
 
     /* ---------- Share band ---------- */
-    .band { display: grid; grid-template-columns: 1fr 1fr; min-height: 100svh; align-items: stretch; border-top: 1px solid #111; }
-    .band .footage { position: relative; overflow: hidden; background: #111; }
-    .band .footage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .band .footage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 60%, var(--bg)); }
-    .band .words { display: flex; flex-direction: column; justify-content: center; padding: 80px var(--gutter); }
+    .band-wrap { border-top: 1px solid #111; overflow-x: clip; }
+    .band { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(32px, 6vw, 110px); max-width: 1440px; margin: 0 auto; padding: clamp(48px, 8vh, 110px) var(--gutter); min-height: 100svh; }
+    .band .big { font-size: clamp(48px, 5.4vw, 92px); }
+    .band .words { display: flex; flex-direction: column; justify-content: center; }
+    /* The whole frame is always shown: the box has the video's exact shape */
+    .stage { position: relative; display: flex; justify-content: center; isolation: isolate; }
+    .screen {
+      position: relative; height: min(78svh, 860px); aspect-ratio: 864 / 1200; border-radius: 30px; overflow: hidden; background: #111;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .12), 0 70px 140px -40px rgba(0, 0, 0, .95);
+    }
+    .screen video { width: 100%; height: 100%; object-fit: cover; }
+    .screen::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14); pointer-events: none; }
+    /* Ambient light: a tiny, blurred copy of the playing video glows behind it */
+    .ambient { position: absolute; z-index: -1; left: 50%; top: 50%; width: 130%; height: 110%; transform: translate(-50%, -50%); filter: blur(60px) saturate(1.6); opacity: .7; pointer-events: none; border-radius: 40%; }
+    .duo .ambient { width: 150%; height: 95%; opacity: .55; }
+    .tag { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 22px; padding: 7px 14px 7px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .12); background: rgba(255, 255, 255, .04); color: #c7c7cc; font-size: 13.5px; font-weight: 500; width: max-content; }
+    .tag i { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 12px #22c55e; }
     .big { margin: 0; font-weight: 600; letter-spacing: -.055em; line-height: .92; font-size: clamp(48px, 6.6vw, 108px); }
     .sub { margin: 24px 0 0; color: var(--dim); font-size: clamp(17px, 1.5vw, 21px); letter-spacing: -.01em; max-width: 420px; }
     .flow { display: flex; align-items: flex-start; gap: clamp(10px, 1.4vw, 18px); margin-top: 40px; }
@@ -153,8 +168,23 @@
     /* ---------- Summary band ---------- */
     .duo { overflow-x: clip; position: relative; display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: clamp(24px, 5vw, 80px); max-width: 1320px; margin: 0 auto; padding: clamp(80px, 12vh, 140px) var(--gutter); min-height: 100svh; }
     .duo .phone { height: min(72svh, 640px); }
-    .duo .stage { display: flex; justify-content: center; position: relative; }
-    .duo .stage::before { content: ""; position: absolute; inset: 0 -20%; background: radial-gradient(closest-side, rgba(56, 189, 248, .18), transparent); pointer-events: none; }
+
+    /* ---------- Articles ---------- */
+    .reads { max-width: 1320px; margin: 0 auto; padding: clamp(72px, 10vh, 120px) var(--gutter); border-top: 1px solid #111; }
+    .reads-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 36px; }
+    .reads-head .big { font-size: clamp(40px, 5vw, 76px); }
+    .reads-head a { color: var(--dim); font-size: 16px; font-weight: 500; }
+    .reads-head a:hover { color: var(--text); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+    .card { position: relative; display: flex; flex-direction: column; gap: 12px; min-height: 300px; padding: clamp(24px, 3vw, 36px); border-radius: 28px; border: 1px solid rgba(255, 255, 255, .09); background: #0d0d10; overflow: hidden; transition: border-color .25s, transform .35s var(--ease); }
+    .card:hover { border-color: rgba(139, 92, 246, .5); transform: translateY(-4px); }
+    .card::before { content: ""; position: absolute; right: -25%; bottom: -55%; width: 420px; height: 420px; background: radial-gradient(closest-side, var(--glow), transparent); pointer-events: none; }
+    .card .kicker { color: var(--lilac); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .card h3 { margin: 0; font-size: clamp(24px, 2.4vw, 32px); font-weight: 600; line-height: 1.12; letter-spacing: -.035em; max-width: 520px; }
+    .card p { margin: 0; color: var(--dim); font-size: 16.5px; max-width: 480px; }
+    .card .more { margin-top: auto; font-size: 15px; font-weight: 500; }
+    .card .icons { display: flex; gap: 6px; }
+    .card .icons svg { width: 36px; height: 36px; }
 
     /* ---------- Final ---------- */
     .final { position: relative; text-align: center; padding: clamp(100px, 18vh, 180px) var(--gutter); overflow: hidden; border-top: 1px solid #111; }
@@ -191,10 +221,10 @@
       .phone { height: auto; width: min(76vw, 330px); border-radius: 46px; padding: 9px; }
       .phone video { border-radius: 38px; }
       .duo .phone { height: auto; }
-      .band { grid-template-columns: 1fr; min-height: 0; }
-      .band .footage { aspect-ratio: 864 / 1200; max-height: 92svh; }
-      .band .footage::after { background: linear-gradient(180deg, transparent 55%, var(--bg)); }
-      .band .words { padding: 8px var(--gutter) 96px; margin-top: -90px; position: relative; text-align: center; align-items: center; }
+      .band { grid-template-columns: 1fr; min-height: 0; padding: 80px var(--gutter) 96px; gap: 44px; }
+      .screen { height: auto; width: min(86vw, 420px); border-radius: 24px; }
+      .band .words { text-align: center; align-items: center; }
+      .tag { margin-left: auto; margin-right: auto; }
       .flow { justify-content: center; }
       .apps svg { width: 52px; height: 52px; }
       .duo { grid-template-columns: 1fr; text-align: center; min-height: 0; padding: 96px var(--gutter); gap: 48px; }
@@ -242,7 +272,10 @@
 
   <header class="nav">
     <a class="brand" href="/" aria-label="Sparkstr home"><svg viewBox="0 0 513 858" aria-hidden="true"><use href="#logo"/></svg>Sparkstr</a>
-    <a class="nav-cta" id="navCta" href="#download" data-umami-event="cta-nav">Download</a>
+    <div class="nav-right">
+      <a class="nav-link" href="/articles">Articles</a>
+      <a class="nav-cta" id="navCta" href="#download" data-umami-event="cta-nav">Download</a>
+    </div>
   </header>
 
   <main>
@@ -282,13 +315,18 @@
     </section>
 
     <!-- Share: real footage -->
+    <div class="band-wrap">
     <section class="band">
-      <div class="footage">
-        <video class="watch" data-src="assets/video/share-any.mp4" poster="assets/video/share-any.jpg" muted loop playsinline preload="none"
-          aria-label="TikTok, Instagram, YouTube and Facebook icons flow into Sparkstr, then a real Instagram video is shared to Sparkstr and saved to the vault"></video>
+      <div class="stage">
+        <canvas class="ambient" width="24" height="32" aria-hidden="true"></canvas>
+        <div class="screen">
+          <video class="watch" data-src="assets/video/share-any.mp4" poster="assets/video/share-any.jpg" muted loop playsinline preload="none"
+            aria-label="TikTok, Instagram, YouTube and Facebook icons flow into Sparkstr, then a real Instagram video is shared to Sparkstr and saved to the vault"></video>
+        </div>
       </div>
       <div class="words drift">
-        <h2 class="big">One tap from <span class="serif">any app.</span></h2>
+        <p class="tag"><i></i>Real phone, real share</p>
+        <h2 class="big">One tap from<br> <span class="serif">any app.</span></h2>
         <div class="flow" aria-label="TikTok, Instagram, YouTube and Facebook all share into Sparkstr">
           <ul class="flow-apps">
             <li><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#app-tt"/></svg>TikTok</li>
@@ -302,6 +340,7 @@
         <p class="sub">Hit share, pick Sparkstr. Done.</p>
       </div>
     </section>
+    </div>
 
     <!-- Summary -->
     <section class="duo">
@@ -310,10 +349,35 @@
         <p class="sub">Every video turned into the key points, steps and numbers.</p>
       </div>
       <div class="stage">
+        <canvas class="ambient" width="24" height="32" aria-hidden="true"></canvas>
         <div class="phone">
           <video class="watch" data-src="assets/video/summary.mp4" poster="assets/video/summary.jpg" muted loop playsinline preload="none"
             aria-label="A saved Instagram video shown with its summary and key details"></video>
         </div>
+      </div>
+    </section>
+
+    <!-- Articles -->
+    <section class="reads" aria-labelledby="reads-title">
+      <div class="reads-head">
+        <h2 class="big" id="reads-title">Get more from <span class="serif">every video.</span></h2>
+        <a href="/articles">All articles →</a>
+      </div>
+      <div class="cards">
+        <a class="card" href="/articles/find-a-video-you-watched" style="--glow: rgba(254, 44, 85, .3)">
+          <div class="icons" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#app-tt"/></svg><svg viewBox="0 0 64 64"><use href="#app-ig"/></svg><svg viewBox="0 0 64 64"><use href="#app-yt"/></svg><svg viewBox="0 0 64 64"><use href="#app-fb"/></svg></div>
+          <span class="kicker">Guide · 7 min read</span>
+          <h3>How to find a video you watched on TikTok, Instagram, YouTube or Facebook</h3>
+          <p>Step-by-step ways to dig up a video you scrolled past, plus what to try when it's not in your history.</p>
+          <span class="more">Read the guide →</span>
+        </a>
+        <a class="card" href="/articles/learn-while-you-scroll" style="--glow: rgba(56, 189, 248, .28)">
+          <div class="icons" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#app-tt"/></svg><svg viewBox="0 0 64 64"><use href="#app-ig"/></svg><svg viewBox="0 0 64 64"><use href="#app-yt"/></svg><svg viewBox="0 0 64 64"><use href="#app-fb"/></svg></div>
+          <span class="kicker">Learning · 8 min read</span>
+          <h3>How to learn while you scroll, and actually remember it</h3>
+          <p>You watch dozens of useful videos a day and remember almost none. A simple, research-backed way to make them stick.</p>
+          <span class="more">Read the guide →</span>
+        </a>
       </div>
     </section>
 
@@ -338,6 +402,7 @@
   <footer>
     <span>&copy; 2026 Sparkstr</span>
     <nav aria-label="Footer">
+      <a href="/articles">Articles</a>
       <a href="/privacy">Privacy Policy</a>
       <a href="mailto:contact@sparkstr.com">contact@sparkstr.com</a>
     </nav>
@@ -404,6 +469,20 @@
       }, { threshold: [0, 0.15, 0.65, 0.9] });
 
       watched.forEach(function (v) { lazy.observe(v); play.observe(v); });
+
+      // Ambient light: paint a tiny copy of each video behind it (blurred by CSS)
+      document.querySelectorAll('.stage').forEach(function (stage) {
+        var c = stage.querySelector('canvas.ambient'), v = stage.querySelector('video');
+        if (!c || !v) return;
+        var ctx = c.getContext('2d'), last = 0;
+        function paint(src) { try { ctx.drawImage(src, 0, 0, c.width, c.height); } catch (err) {} }
+        var poster = new Image(); poster.onload = function () { paint(poster); }; poster.src = v.poster;
+        function loop(now) {
+          if (!v.paused && v.readyState >= 2 && now - last > 120) { paint(v); last = now; }
+          requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+      });
 
       // Pause the hero film while it is off screen
       new IntersectionObserver(function (entries) {
